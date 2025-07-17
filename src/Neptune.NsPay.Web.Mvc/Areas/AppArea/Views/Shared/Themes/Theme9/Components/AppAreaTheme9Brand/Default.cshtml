@@ -1,0 +1,10 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Layout
+@using Neptune.NsPay.Web.Areas.AppArea.Views.Shared.Components.AppAreaLogo
+@model HeaderViewModel
+@{
+    Layout = null;
+    var skin = @Model.LoginInformations.Theme.BaseSettings.Layout.DarkMode ? "dark" : "light";
+}
+<a href="@Url.Action("Index", "Home", new {area = string.Empty})" target="_blank" class="brand-logo">
+    @await Component.InvokeAsync(typeof(AppAreaLogoViewComponent), new {logoSkin = skin + "-sm", logoClass="h-40px"})
+</a>

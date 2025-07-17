@@ -1,0 +1,65 @@
+﻿@using Neptune.NsPay.Authorization
+@using Abp.Configuration;
+@using Neptune.NsPay
+@using Neptune.NsPay.Configuration
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.RechargeOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model RechargeOrdersViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.PayOrder.RechargeOrders;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/RechargeOrders/Index.js" asp-append-version="true"></script>
+}
+<div class="@(await GetContainerClass())">
+    <div class="card" >
+        <div class="card-body">
+           
+            <div>
+                <form id="createRechargeOrderForm" role="form" novalidate class="form-validation">
+                <div class="form-group my-3">
+                    <label class="form-label" for="MerchantCode">@L("MerchantCode")</label>
+                        <span class="text-danger">*</span>
+                        <select id="MerchantCode" name="merchantCode" class="form-control select2" defaultValue="null">
+                    </select>
+                </div>
+
+                <div class="form-group  my-3">
+                    <label class="form-label" for="OrderMoney">@L("OrderMoney")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control m-input" id="OrderMoney" value="" type="number" required name="orderMoney" step="0.01" min="-100000000" max="100000000" />
+                </div>
+
+                <div class="form-group  my-3">
+                    <label class="form-label" for="OrderMoney">@L("ComputeRate")</label>
+                        <span class="text-danger">*</span>
+                        <select class="form-select" name="computeRate" id="ComputeRateFilterId" defaultValue="null">
+                        <option value="" disabled selected>@L("PleaseSelectChargeType")</option>
+                        <option value="1">@L("YesComputeRate")</option>
+                        <option value="2">@L("NoComputeRate")</option>
+                    </select>
+                </div>
+
+                <div class="form-group  my-3">
+                    <label class="form-label" for="Remark">@L("Remark")</label>
+                    <input class="form-control m-input" id="Remark" value="" name="remark" maxlength="500" />
+                </div>
+            </form>
+                <div class="my-3">
+                    <button id="SaveRechargeOrders" class="btn btn-primary ms-5">
+                        <i class="fa fa-save btn-md-icon"></i>
+                        <span class="d-none d-md-inline-block">
+                            @L("Save")
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

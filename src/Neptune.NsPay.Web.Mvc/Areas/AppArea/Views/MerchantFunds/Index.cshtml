@@ -1,0 +1,151 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantFunds
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantFundsViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.Merchant.MerchantFunds;
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/MerchantFunds/Index.js" asp-append-version="true"></script>
+}
+
+
+
+                <abp-page-subheader title='@L("MerchantFunds")' description='@L("MerchantFundsHeaderInfo")'>
+                     
+                     @if (IsGranted(AppPermissions.Pages_MerchantFunds_Create))
+                     {
+                         <button id="CreateNewMerchantFundButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewMerchantFund")</button>                
+                     }
+                </abp-page-subheader>
+            
+<div class="@(await GetContainerClass())">   
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">                        
+                        
+                        
+                <div class="my-3">
+                    <div class="input-group">
+                        <input type="text" id="MerchantFundsTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                        <button id="GetMerchantFundsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>                        
+                    </div>
+                </div>
+            
+                    </div>
+                </div>
+			</div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+						
+					</div>
+
+
+							<div class="col-md-3">
+								<div class="my-3">
+									<label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+									<input type="text" class="form-control reload-on-keyup" name="merchantCodeFilter" id="MerchantCodeFilterId">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinMerchantIdFilterId">@L("MinMax") @L("MerchantId")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minMerchantIdFilter" id="MinMerchantIdFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxMerchantIdFilter"  id="MaxMerchantIdFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinDepositAmountFilterId">@L("MinMax") @L("DepositAmount")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minDepositAmountFilter" id="MinDepositAmountFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxDepositAmountFilter"  id="MaxDepositAmountFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinWithdrawalAmountFilterId">@L("MinMax") @L("WithdrawalAmount")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minWithdrawalAmountFilter" id="MinWithdrawalAmountFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxWithdrawalAmountFilter"  id="MaxWithdrawalAmountFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinRateFeeBalanceFilterId">@L("MinMax") @L("RateFeeBalance")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minRateFeeBalanceFilter" id="MinRateFeeBalanceFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxRateFeeBalanceFilter"  id="MaxRateFeeBalanceFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinBalanceFilterId">@L("MinMax") @L("Balance")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minBalanceFilter" id="MinBalanceFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxBalanceFilter"  id="MaxBalanceFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                    <div class="my-3">
+										<label class="form-label" for="MinCreationTimeFilterId">@L("CreationTimeRange")</label>
+										<div class="input-group">
+											<input class="form-control m-input date-picker startDate" type="text" placeholder="@L("MinValue")"  id="MinCreationTimeFilterId">
+											<span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+											<input class="form-control m-input date-picker endDate" type="text" placeholder="@L("MaxValue")"  id="MaxCreationTimeFilterId">
+										</div>
+									</div>
+                            </div>
+                            <div class="col-md-3">
+                                    <div class="my-3">
+										<label class="form-label" for="MinUpdateTimeFilterId">@L("UpdateTimeRange")</label>
+										<div class="input-group">
+											<input class="form-control m-input date-picker startDate" type="text" placeholder="@L("MinValue")"  id="MinUpdateTimeFilterId">
+											<span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+											<input class="form-control m-input date-picker endDate" type="text" placeholder="@L("MaxValue")"  id="MaxUpdateTimeFilterId">
+										</div>
+									</div>
+                            </div>
+
+
+                    <div class="col-md-12 mt-5">
+                        <button class="btn btn-secondary btn-sm" id="btn-reset-filters">Reset</button>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            <div class="row align-items-center">
+                <table id="MerchantFundsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            
+                            <th>@L("Actions")</th>
+								<th>@L("MerchantCode")</th>
+								<th>@L("MerchantId")</th>
+								<th>@L("DepositAmount")</th>
+								<th>@L("WithdrawalAmount")</th>
+								<th>@L("RateFeeBalance")</th>
+								<th>@L("Balance")</th>
+								<th>@L("CreationTime")</th>
+								<th>@L("UpdateTime")</th>                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

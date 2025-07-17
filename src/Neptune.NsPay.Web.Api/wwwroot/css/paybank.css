@@ -1,0 +1,763 @@
+﻿/* Toast  */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toast {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+}
+
+    .toast .toastMsg {
+        animation: popup 0.7s;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+
+.paymentMethod:active {
+    animation: none !important;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-size: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
+}
+.text-red {
+    color: #d2161c;
+}
+/* Header  */
+.headerBar {
+    width: 100%;
+    height: 4rem;
+    color: white;
+    background-color: #f81123;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .headerBar .backBtn {
+        display: none;
+        height: 100%;
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-top: 0;
+        cursor: pointer;
+        color: white;
+    }
+
+        .headerBar .backBtn img {
+            filter: brightness(0) invert(1);
+        }
+
+    .headerBar .platformName {
+        font-size: 1.5rem;
+    }
+
+    .headerBar .timerCountdown {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        font-size: 1.2re;
+    }
+
+.backBtn {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: -2rem;
+    cursor: pointer;
+    color: #75767d;
+}
+
+    .backBtn img {
+        width: 15px;
+        height: 10px;
+    }
+
+/* Container  */
+.container {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+/* Payment Row  */
+.paymentRow {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    background-color: white;
+    margin-top: 3rem;
+}
+
+    .paymentRow img {
+        width: 400px;
+        margin-top: -4rem;
+    }
+
+.paymentDesc {
+    font-size: 1.1rem;
+}
+
+.paymentAmount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #e23930;
+}
+
+/* PaymentMethod  */
+.paymentMethodRow {
+    width: 100%;
+    background-color: #efefef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.paymentMethodTitle {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.paymentMethodDesc {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+.paymentMethod {
+    width: 100%;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.paymentMethodItem {
+    width: 250px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: auto;
+}
+
+    .paymentMethodItem img {
+        width: 100%;
+    }
+
+/* Payment Container  */
+.paymentContainerNew {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+}
+
+.bankContent {
+    border-top: 3px solid #e23930;
+    background: #ffffff;
+    padding: 2rem 1rem;
+}
+
+/* Payment Header  */
+.bankHeader {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 0.3rem;
+}
+
+.bankName {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/* Payment Body  */
+.bankBody {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.bankQr {
+    border-radius: 15px;
+    padding: 0.5rem;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bankQrImg {
+    cursor: pointer;
+    /*border: 2px solid #000;*/
+}
+
+
+.qrPaymentWrap {
+    border: 3px solid #000000;
+    border-radius: 10px;
+    padding: 2rem 2rem 1rem 2rem;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+	background-color: #f8f8f8;
+}
+
+    .qrPaymentWrap img {
+        width: 250px;
+    }
+
+.bankLogo img {
+    width: 100px;
+}
+
+.qrPaymentDesc {
+    font-size: 1.1rem;
+    color: black;
+}
+
+.qrPaymentAmount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: black;
+}
+
+/* Transfer Container  */
+.transferContainer_detail {
+    width: 70%;
+    padding: 15px;
+    flex-direction: column;
+}
+
+    .transferContainer_detail .transferAmount div {
+        color: #f81123;
+    }
+
+    .transferContainer_detail .transferDetailRow {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+        .transferContainer_detail .transferDetailRow .detailRow {
+            width: 48%;
+        }
+
+.detailRow .detailTitle {
+    width: 100%;
+    font-size: 1rem;
+    color: #000000;
+    font-weight: 300;
+}
+
+.detailRow .detailInput {
+    width: 100%;
+    position: relative;
+    margin-top: 3px;
+}
+
+    .detailRow .detailInput input {
+        width: 100%;
+        height: 40px;
+        background: #ececec;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 0 8px 8px;
+    }
+
+    .detailRow .detailInput .copyBtn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #3279bb;
+        color: white;
+        height: 100%;
+        width: 5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+    }
+
+.transferDetailContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.transferContainer_detail .userId {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.transferContainer_detail .transferAmount {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Important Note  */
+.importantNote {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+    .importantNote .importantNote_title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        padding-left: 0.5rem;
+    }
+
+    .importantNote ol li {
+        max-width: 100%;
+        word-break: keep-all;
+        margin-top: 0.2rem;
+        font-size: 1.1rem;
+    }
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    width: 380px;
+    background-color: #ffffff;
+    border-radius: 15px;
+}
+
+.modalContentHead {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.modalContentBody {
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modalTitle {
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.modalDesc {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.modalBtn {
+    margin-top: 1rem;
+    padding: 0.8rem 4.5rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    color: white;
+}
+
+.errorBtn {
+    background: #e23930;
+}
+
+.warningBtn {
+    background: #f4b617;
+}
+
+.yellow {
+    background: linear-gradient(270deg, #ffc42e 0%, #e6a500 100%);
+}
+
+.red {
+    background: linear-gradient(90deg, #e23930 0%, #ff4c43 100%);
+}
+
+/* successPage  */
+.successContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.successContent {
+    background-color: #ffffff;
+    padding: 15px;
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+}
+
+.successLogo {
+    margin-top: -10%;
+    width: 100px;
+}
+
+.successTitle {
+    font-weight: 800;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+}
+
+.successContent hr {
+    width: 100%;
+    border-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.successDesc {
+    color: #75767d;
+}
+
+.successDetail {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.transDetailRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.transDetailItem {
+    font-weight: 600;
+}
+
+.transBtnRow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.transBtn {
+    width: 40%;
+    background-color: #30c076;
+    padding: 0.5rem;
+    border-radius: 0.35rem;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+/* Button Animation  */
+.paymentMethodItem:active,
+.copyBtn:active,
+.modalBtn:active {
+    animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(0.95);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    75% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Padding  */
+.headerBar,
+.container,
+.paymentContainerNew {
+    padding-left: 20rem;
+    padding-right: 20rem;
+}
+
+@media only screen and (max-width: 1399.98px) {
+    .headerBar,
+    .container,
+    .paymentContainerNew {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+}
+
+@media only screen and (max-width: 1199.98px) {
+    .headerBar,
+    .container,
+    .paymentContainerNew {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+}
+
+@media only screen and (max-width: 991.98px) {
+    .headerBar,
+    .container,
+    .paymentContainerNew {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    .bankBody {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bankQr {
+        width: fit-content;
+    }
+
+    .qrPaymentDesc {
+        text-wrap: nowrap;
+    }
+
+    .transferContainer_detail {
+        width: 100%;
+        padding: 0 15px 15px 15px;
+    }
+}
+
+@media only screen and (max-width: 767.98px) {
+    .headerBar,
+    .container,
+    .paymentContainerNew {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #mainBack {
+        margin-top: -4rem;
+    }
+
+    .paymentRow img {
+        width: 300px;
+        margin-top: -3rem;
+    }
+    /* paymentMethod  */
+    .paymentMethod {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+    }
+
+        .paymentMethod .paymentMethodItem {
+            width: 45%;
+        }
+
+    .transferContainer_detail {
+        width: 100%;
+        padding: 0 15px 15px 15px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .headerBar,
+    .container,
+    .paymentContainerNew {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+
+    .paymentContainerNew {
+        margin-top: 0rem;
+    }
+
+    .bankContent {
+        padding: 0;
+        border: none;
+    }
+    /* Header  */
+    .bankHeader {
+        flex-direction: column;
+    }
+
+    .bankLogo {
+        border: none;
+    }
+
+    .bankName {
+        text-align: center;
+    }
+
+    #mainBack {
+        margin-top: 0;
+    }
+
+    .headerBar .backBtn.phoneBackBtn {
+        display: flex;
+    }
+
+    .pcBackBtn {
+        display: none;
+    }
+    /* Container  */
+    .container {
+        margin-bottom: 3rem;
+    }
+
+    .paymentRow img {
+        width: 300px;
+        margin-top: -3rem;
+    }
+
+    .paymentMethodDesc {
+        text-align: center;
+    }
+    /* Body  */
+    .bankBody {
+        flex-direction: column;
+    }
+
+    .bankQr,
+    .transferContainer_detail {
+        width: 100%;
+    }
+
+    .bankQr {
+        gap: 0.3rem;
+        padding: 0.5rem 0.5rem 0 0.5rem;
+    }
+
+    .transferContainer_detail .transferAmount {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        margin-top: 0.3rem;
+    }
+
+    .transferContainer_detail .userId {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0rem;
+    }
+
+    .transferContainer_detail {
+        width: 100%;
+        padding: 0 15px 15px 15px;
+    }
+
+        .transferContainer_detail .transferDetailRow {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+            .transferContainer_detail .transferDetailRow .detailRow {
+                width: 100%;
+            }
+
+    .qrPaymentWrap {
+        padding: 1rem 1rem 0 1rem;
+    }
+    /* paymentMethod  */
+    .paymentMethod {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        row-gap: 0.5rem;
+    }
+
+        .paymentMethod .paymentMethodItem {
+            width: 45%;
+        }
+
+    .successContainer {
+        padding: 0 0.8rem;
+    }
+
+    .transBtn {
+        width: 100%;
+        padding: 0.8rem;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+}

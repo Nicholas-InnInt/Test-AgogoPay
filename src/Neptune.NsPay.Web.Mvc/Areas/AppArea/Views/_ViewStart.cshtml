@@ -1,0 +1,5 @@
+﻿@using Neptune.NsPay.UiCustomization.Dto
+@{
+    UiCustomizationSettingsDto theme = await GetTheme();
+    Layout = "~/Areas/AppArea/Views/Layout/" + theme.BaseSettings.Theme + "/_Layout.cshtml";
+}

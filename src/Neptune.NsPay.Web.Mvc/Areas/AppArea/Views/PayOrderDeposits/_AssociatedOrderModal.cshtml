@@ -1,0 +1,24 @@
+﻿@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrderDeposits
+@model AssociatedDepositOrderViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("CallBcakDeposit")) : L("CallBcakDeposit")))
+
+<div class="modal-body">
+    <div id="AssociatedOrderInformationsTab">
+        <form name="AssociatedOrderForm" role="form" novalidate class="form-validation">
+            
+            <input type="hidden" name="id" value="@Model.AssociatedOrder.Id" />
+            <input type="hidden" name="payType" value="@Model.AssociatedOrder.PayType" />
+
+            <div class="form-group">
+                <label for="PayOrder_OrderNumber">@L("CallBcakDepositMsg")</label>
+                <input id="PayOrder_OrderNumber" name="orderNumber" auto-focus class="form-control" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

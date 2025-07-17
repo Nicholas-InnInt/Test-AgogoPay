@@ -1,0 +1,609 @@
+/* common */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.red {
+  border-top: 5px solid #f81123;
+  background-color: #f81123;
+  border-bottom: 5px solid #f81123;
+}
+
+.text-red {
+  color: #d2161c;
+}
+
+.text-success {
+  color: #25b39e;
+}
+
+.text-fail {
+  color: #e72424;
+}
+
+.opa0 {
+  opacity: 0;
+}
+
+/* Main  */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.banner {
+  width: 100%;
+  height: 5rem;
+  color: white;
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+/* Payment  */
+.paymentContainer {
+  padding-bottom: 3.5rem;
+  margin: 3rem calc((100% - (300px * 3)) / 2);
+  background: none !important;
+  border-top: 0;
+}
+
+.paymentContainer .paymentContainer_logo {
+  width: 100%;
+  background: none !important;
+}
+
+.paymentContainer .paymentContainer_logo hr {
+  width: 100%;
+  border-bottom: 0;
+}
+
+.paymentContainer .paymentContainer_title {
+  margin-top: 2rem;
+  color: #d2161c;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.paymentContainer .paymentContainer_desc {
+  margin-top: 1rem;
+  font-size: 1.3rem;
+}
+
+.paymentContainer_paymentMethod {
+  width: 100%;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.paymentContainer_paymentMethod div {
+  flex-basis: 30%;
+  height: 6rem;
+  box-shadow: 0px 2px 8px #b0b0b0;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.paymentContainer_paymentMethod div .ACBBank {
+  width: 100px;
+}
+
+.paymentContainer_paymentMethod div .TechcomBank {
+  width: 250px;
+}
+
+.paymentContainer_paymentMethod div .BidvBank {
+  width: 150px;
+}
+
+.paymentContainer_paymentMethod div .MBBank {
+  width: 120px;
+}
+
+.paymentContainer_paymentMethod div .VietcomBank {
+  width: 200px;
+}
+
+.paymentContainer_paymentMethod div .VietinBank {
+  width: 200px;
+}
+
+.paymentContainer_paymentMethod div .PVcomBank {
+  width: 120px;
+}
+
+.paymentContainer_paymentMethod div .momoBank {
+  width: 70px;
+}
+
+/* Transfer  */
+.transferBanner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  box-sizing: border-box;
+  color: #ffffff;
+  padding-right: 20rem;
+}
+.transferBanner .bannerTitle {
+  font-size: 1.2rem;
+}
+.transferBanner .bannerCountdown {
+  font-size: 1.5rem;
+}
+.transferPopUpRow {
+  margin: 2rem 0.5rem;
+  flex-direction: row;
+}
+.transferPopUp {
+  width: 100%;
+  background-color: #dfecff;
+  padding: 10px 8px 10px 10px;
+  word-wrap: break-word;
+  word-break: keep-all;
+  flex-direction: row;
+  border-radius: 15px;
+}
+.transferPopUp .transferPopUpText {
+  width: 92%;
+  color: #0066fa;
+}
+.transferPopUp .transferPopUpClose {
+  width: 8%;
+}
+.transferPopUp .transferPopUpClose img {
+  width: 1.5rem;
+  cursor: pointer;
+}
+.bankLogoRow {
+  width: 100%;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.bankLogoRow img {
+  width: 8rem;
+}
+.bankLogoRow .bankName {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-left: 1rem;
+}
+.transferContainer {
+  width: 100%;
+  flex-direction: column;
+  padding: 3rem 25rem 0 25rem;
+}
+.transferContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.transferContainer .transferContentTop {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-shadow: 0px 0px 6px #00000029;
+  border-radius: 15px;
+}
+.transferContent .transferContentTop .qrContainer {
+  width: 30%;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  flex-direction: column;
+}
+.transferContentTop .qrContainer .qrCodeContainer {
+  border: 5px solid #fff;
+  padding: 20px;
+  border-radius: 15px;
+}
+.transferContentTop .qrContainer .qrCodeContainer img {
+  width: 10.6rem;
+}
+.transferContentTop .qrContainer .qrName {
+  margin-top: 1rem;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.transferContentTop .qrContainer .qrAmount {
+  margin-top: 1rem;
+  color: #fff;
+  font-weight: 800;
+  font-size: 2.5rem;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+.transferContentTop .transferContainer_detail {
+  width: 70%;
+  padding: 15px;
+  flex-direction: column;
+}
+.transferContainer_detail .userId {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+.transferContainer_detail .transferAmount {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+.transferDetailContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+.transferDetailContainter .detailRow {
+  margin-top: 1rem;
+}
+.transferContainer_detail .transferAmount span {
+  color: #f81123;
+}
+.transferContainer_detail .transferDetailRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.transferContainer_detail .transferDetailRow .detailRow {
+  width: 48%;
+}
+.detailRow .detailTitle {
+  width: 100%;
+  font-size: 1rem;
+  color: #888888;
+  font-weight: 300;
+}
+.detailRow .detailInput {
+  width: 100%;
+  position: relative;
+  margin-top: 3px;
+}
+.detailRow .detailInput input {
+  width: 100%;
+  height: 40px;
+  background: #ececec;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 0 8px 8px;
+}
+.detailRow .detailInput .copyBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0d6efd;
+  color: white;
+  height: 100%;
+  width: 5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+.transferContainer .importantNote {
+  width: 100%;
+  margin-top: 1rem;
+}
+.importantNote .importantNote_title {
+  color: #d2161c;
+  font-size: 1.2rem;
+  text-decoration: underline;
+  font-weight: 800;
+  padding-left: 0.5rem;
+}
+.importantNote ol li {
+  max-width: 100%;
+  word-break: keep-all;
+  margin-top: 0.2rem;
+  font-size: 1.3rem;
+}
+
+/* Modal  */
+.modal {
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+}
+
+.modal .modalContent {
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px #00000029;
+  padding: 2rem 5.5rem;
+  flex-direction: column;
+}
+
+.modal .modalContent .modalLogo img {
+  width: 8rem;
+}
+
+.modal .modalContent .modalTitle {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.modal .modalContent .modalDesc {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.modal .modalContent .timeUpDesc {
+  max-width: 16rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  text-align: center;
+}
+
+.modal .modalContent .modalAmount {
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.modal .modalContent .modalBtn {
+  border: none;
+  margin-top: 1.5rem;
+  background-color: #f81123;
+  color: white;
+  padding: 0.7rem 3.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.importantModal {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+}
+
+.importantModalContent {
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px #00000029;
+  flex-direction: column;
+}
+
+.importantModal_header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #77aaf7;
+}
+
+.importantModalCloseBtn{
+  padding-top: 5px;
+}
+
+.importantModalCloseBtn img{
+  width: 30px;
+  cursor: pointer;
+}
+
+.importantModal_title{
+  color: #d2161c;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.importantModal_desc{
+  color: #d2161c;
+  word-break: break-all;
+  max-width: 20rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+
+/* Toast  */
+.toast {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+}
+
+.toast .toastMsg {
+  animation: popup 0.7s;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+/* Animation  */
+button:active {
+  animation: bounce 0.3s;
+}
+
+.paymentMethod:active {
+  animation: bounce 0.3s;
+}
+
+@media only screen and (max-width: 900px) {
+  .opa0 {
+    display: none;
+  }
+
+  /* Payment Page  */
+  .paymentContainer {
+    padding-bottom: 3.5rem;
+    margin: 1rem 0.5rem 3rem 0.5rem;
+  }
+
+  .paymentContainer .paymentContainer_title {
+    font-size: 1.1rem;
+  }
+
+  .paymentContainer .paymentContainer_desc {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .paymentContainer_paymentMethod div {
+    flex-basis: 45%;
+    margin: 10px 5px;
+  }
+
+  .paymentContainer_paymentMethod div img {
+    width: 150px !important;
+  }
+
+  .paymentContainer_paymentMethod div .momoBank {
+    width: 50px !important;
+  }
+
+  /* Transfer Page */
+  .transferBanner {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-right: 0;
+  }
+  .transferBanner .bannerTitle {
+    font-size: 0.9rem;
+  }
+  .transferBanner .bannerCountdown {
+    margin-left: 0.5rem;
+  }
+  .bankLogoRow {
+    align-items: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin: 10px 0;
+  }
+  .bankLogoRow img {
+    width: 5rem;
+  }
+  .bankLogoRow .bankName {
+    font-size: 1.3rem;
+  }
+  .transferContent .transferContentTop .qrContainer{
+    width: 100%;
+    padding: 1rem 1rem;
+  }
+  .transferContainer {
+    padding: 1rem 0.5rem 1.5rem 0.5rem;
+  }
+  .transferContentTop .qrContainer .qrCodeContainer img {
+    width: 10.6rem;
+  }
+  .transferContent .transferContentTop .qrContainer {
+    width: 100%;
+    padding: 20px 15px;
+  }
+  .transferContainer_detail .userId {
+    font-size: 1rem;
+  }
+  .transferContainer_detail .transferAmount {
+    font-size: 1rem;
+  }
+  .transferContentTop .transferContainer_detail {
+    width: 100%;
+  }
+  .detailRow {
+    width: 100% !important;
+    margin-top: 1rem;
+  }
+  .transferDetailContainer {
+    gap: 0rem;
+    margin-top: 0.5rem;
+  }
+  .importantNote .importantNote_title {
+    font-size: 1rem;
+  }
+  .importantNote ol li {
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .transferContainer {
+    padding: 1rem 10rem 0rem 10rem;
+  }
+  .transferBanner {
+    padding-right: 0;
+  }
+  .transferContent .transferContentTop .qrContainer{
+    padding: 1rem 1rem;
+  }
+  .transferContentTop .qrContainer .qrCodeContainer img {
+    width: 8.6rem;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .transferContainer {
+    padding: 1rem 15rem 0rem 15rem;
+  }
+  .transferBanner {
+    padding-right: 15rem;
+  }
+  .transferContent .transferContentTop .qrContainer{
+    padding: 1rem 1rem;
+  }
+  .transferContentTop .qrContainer .qrCodeContainer img {
+    width: 10.6rem;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

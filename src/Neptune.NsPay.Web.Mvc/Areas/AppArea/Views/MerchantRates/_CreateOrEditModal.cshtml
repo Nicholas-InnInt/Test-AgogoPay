@@ -1,0 +1,48 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantRates
+@model CreateOrEditMerchantRateModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantRate")) : L("CreateNewMerchantRate")))
+
+<div class="modal-body">
+        <div id="MerchantRateInformationsTab">
+            <form name="MerchantRateInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.MerchantRate.Id" />
+                }
+
+				
+                
+				
+                
+								<div class="my-3">
+									<label class="form-label" for="MerchantRate_MerchantCode">@L("MerchantCode")</label>
+									<input class="form-control" id="MerchantRate_MerchantCode" value="@Model.MerchantRate.MerchantCode" type="text" name="merchantCode"  required  maxlength="@Neptune.NsPay.MerchantRates.MerchantRateConsts.MaxMerchantCodeLength"  minlength="@Neptune.NsPay.MerchantRates.MerchantRateConsts.MinMerchantCodeLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantRate_MerchantId">@L("MerchantId")</label>
+									<input class="form-control m-input" id="MerchantRate_MerchantId" value="@Model.MerchantRate.MerchantId.ToString(CultureInfo.InvariantCulture)" type="number" name="merchantId"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantRate_ScanBankRate">@L("ScanBankRate")</label>
+									<input class="form-control m-input" id="MerchantRate_ScanBankRate" value="@Model.MerchantRate.ScanBankRate.ToString(CultureInfo.InvariantCulture)" type="number" name="scanBankRate"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantRate_ScratchCardRate">@L("ScratchCardRate")</label>
+									<input class="form-control m-input" id="MerchantRate_ScratchCardRate" value="@Model.MerchantRate.ScratchCardRate.ToString(CultureInfo.InvariantCulture)" type="number" name="scratchCardRate"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantRate_MoMoRate">@L("MoMoRate")</label>
+									<input class="form-control m-input" id="MerchantRate_MoMoRate" value="@Model.MerchantRate.MoMoRate.ToString(CultureInfo.InvariantCulture)" type="number" name="moMoRate"   />								</div>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

@@ -1,0 +1,35 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.WithdrawalDevices
+@using Neptune.NsPay.WithdrawalDevices.Dtos
+@model Dictionary<WithdrawalDevicesBankTypeEnum, List<WithdrawalDeviceDto>>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("BatchPauseWithdrawalDevice")))
+
+<div class="modal-body">
+    <div id="BatchPauseWithdrawalDeviceModal">
+        <form name="BatchPauseWithdrawalDeviceForm" class="form-validation" role="form" novalidate>
+            <div>
+                <label for="selectBatchPauseWithdrawalDeviceBank">@L("BankName")</label>
+                <select id="selectBatchPauseWithdrawalDeviceBank" class="form-select select2" name="pauseBank">
+                    @foreach (var bankType in Enum.GetValues<WithdrawalDevicesBankTypeEnum>())
+                    {
+                        var withdrawalDevicesByBankType = Model.ContainsKey(bankType) ? Model[bankType] : new List<WithdrawalDeviceDto>();
+                        @if (withdrawalDevicesByBankType is { Count: > 0 })
+                        {
+                            <option value="@bankType.ToInt()">@L($"Enum_WithdrawalDevicesBankTypeEnum_{bankType.ToInt()}"): @withdrawalDevicesByBankType.Count</option>
+                        }
+                        else
+                        {
+                            <option value="@bankType.ToInt()" disabled>@L($"Enum_WithdrawalDevicesBankTypeEnum_{bankType.ToInt()}"): @withdrawalDevicesByBankType.Count</option>
+                        }
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light-primary fw-bold close-button" data-bs-dismiss="modal">@L("Cancel")</button>
+    <button type="submit" class="btn btn-primary save-button">@L("Pause")</button>
+</div>

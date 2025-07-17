@@ -1,0 +1,61 @@
+﻿@using Neptune.NsPay.MerchantBills;				
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantBills
+@model CreateOrEditMerchantBillModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantBill")) : L("CreateNewMerchantBill")))
+
+<div class="modal-body">
+        <div id="MerchantBillInformationsTab">
+            <form name="MerchantBillInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.MerchantBill.Id" />
+                }
+
+				<div class="form-group">
+					<label for="WithdrawalDevice_MerchantCode">@L("MerchantCode")</label>
+					<select class="form-control select2" id="WithdrawalDevice_MerchantCode" name="merchantCode">
+						<option value="NsPay">NsPay</option>
+						@foreach (var item in Model.Merchants)
+						{
+							@if (Model.MerchantBill.MerchantCode == item.MerchantCode)
+							{
+								<option value="@item.MerchantCode" selected="selected">@item.Name [ @item.MerchantCode ]</option>
+							}
+							else
+							{
+								<option value="@item.MerchantCode">@item.Name [ @item.MerchantCode ]</option>
+							}
+						}
+					</select>
+				</div>
+
+				@{
+					var selectListBillType = Html.GetEnumSelectList(typeof(MerchantBillTypeEnum));
+					 foreach (var selectOption in selectListBillType) { selectOption.Text = L("Enum_MerchantBillTypeEnum_" + selectOption.Value); }
+				}
+
+				<div class="my-3">
+					<label class="form-label" for="MerchantBill_BillType">@L("BillType")</label>
+						<select class="form-select m-input m-input--square" name="billType" id="MerchantBill_BillType" asp-for="@Model.MerchantBill.BillType" asp-items="@selectListBillType">
+					</select>
+				</div>
+					
+				<div class="my-3">
+					<label class="form-label" for="MerchantBill_Money">@L("Money")</label>
+					<input class="form-control m-input" id="MerchantBill_Money" value="@Model.MerchantBill.Money.ToString(CultureInfo.InvariantCulture)" type="number" name="money"   />
+				</div>
+
+				<div class="my-3">
+					<label class="form-label" for="MerchantBill_Remark">@L("Remark")</label>
+					<input class="form-control" id="MerchantBill_Remark" value="@Model.MerchantBill.Remark" type="text" name="remark" />
+				</div>
+            </form>
+
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

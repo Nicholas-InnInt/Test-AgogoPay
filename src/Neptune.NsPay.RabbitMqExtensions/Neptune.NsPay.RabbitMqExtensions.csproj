@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.CAP" Version="8.1.1" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.1.1" />
+    <PackageReference Include="DotNetCore.CAP.SqlServer" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.Commons\Neptune.NsPay.Commons.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.Core.Shared\Neptune.NsPay.Core.Shared.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

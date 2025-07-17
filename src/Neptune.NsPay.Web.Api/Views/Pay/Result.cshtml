@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link href="~/css/index.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <!-- 成功弹窗 -->
+    <div id="successModal" class="modal flex-center hidden">
+        <div class="modalContent flex-center">
+            <div class="modalLogo">
+                <img src="~/img/successLogo.svg" alt="" />
+            </div>
+            <div class="modalTitle text-success">Nạp tiền thành công!</div>
+            @*             <div class="modalDesc">You successfully top-up amount of</div> *@
+            <div class="modalAmount">10.000 d</div>
+            @*        <button id="successModalBtn" class="modalBtn">OKAY</button> *@
+        </div>
+    </div>
+
+    <!-- 失败弹窗 -->
+    <div id="failModal" class="modal flex-center hidden">
+        <div class="modalContent flex-center">
+            <div class="modalLogo">
+                <img src="~/img/failedLogo.svg" alt="" />
+            </div>
+            <div class="modalTitle text-fail">Nạp tiền thất bại!</div>
+            @*             <div class="modalDesc">Your fail to top-up amount of</div> *@
+            <div class="modalAmount">10.000 d</div>
+            @*    <button id="failModalBtn" class="modalBtn">OKAY</button> *@
+        </div>
+    </div>
+
+    <!-- 时间已到弹窗 -->
+    <div id="timeUpModal" class="modal flex-center hidden">
+        <div class="modalContent flex-center">
+            <div class="modalLogo">
+                <img src="~/img/timeupLogo.svg" alt="" />
+            </div>
+            <div class="modalTitle">Đơn hàng đã hết thời gian!</div>
+            @*             <div class="modalDesc timeUpDesc">Oops! It looks like you took too long to complete your action.</div> *@
+            @* <button id="timeUpModalBtn" class="modalBtn">OKAY</button> *@
+        </div>
+    </div>
+
+    <script>
+        let condition = getQueryString("condition")
+        let money = getQueryString("money")
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementsByClassName("modalAmount")[0].textContent = formatter.format(money);
+            document.getElementsByClassName("modalAmount")[1].textContent = formatter.format(money);
+            if (condition) {
+                switch (condition) {
+                    case "fail":
+                        document.getElementById("failModal").classList.remove("hidden")
+                        break
+
+                    case "success":
+                        document.getElementById("successModal").classList.remove("hidden")
+                        break
+
+                    case "timeup":
+                        document.getElementById("timeUpModal").classList.remove("hidden")
+                        break
+
+                    default:
+                        break
+                }
+            }
+        })
+
+        // 成功页面按钮处理
+        document.getElementById("successModalBtn").addEventListener("click", () => { })
+
+        // 失败页面按钮处理
+        document.getElementById("failModalBtn").addEventListener("click", () => { })
+
+        // 超时页面按钮处理
+        document.getElementById("timeUpModalBtn").addEventListener("click", () => { })
+
+        // 从网址得到相对的数值
+        function getQueryString(key) {
+            var result = window.location.search.match(new RegExp("[\?\&]" + key + "=([^\&]+)", "i"))
+            if (result == null || result.length < 1) {
+                return ""
+            }
+            return result[1]
+        }
+    </script>
+</body>
+</html>

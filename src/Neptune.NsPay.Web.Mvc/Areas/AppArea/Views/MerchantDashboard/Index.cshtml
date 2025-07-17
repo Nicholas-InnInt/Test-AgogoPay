@@ -1,0 +1,159 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawlDashboard
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantDashboardViewModel
+@{
+ViewBag.CurrentPageName = AppAreaPageNames.Merchant.MerchantDashboard;
+}
+@section Scripts
+{
+<script abp-src="/view-resources/Areas/AppArea/Views/MerchantDashboard/Index.js" asp-append-version="true"></script>
+}
+
+<abp-page-subheader title='@L("MerchantDashboard")' description='@L("MerchantDashboardHeaderInfo")'>
+
+</abp-page-subheader>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-5">
+                    <div class="my-3">
+                        <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                        <select id="MerchantCodeFilterId" name="merchantCodeFilterId" class="form-select select2" multiple="multiple">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label for="OrderCreationTimeRange" class="form-label">@L("OrderCreationTimeRange")</label>
+                        <input id="OrderCreationTimeRange" type="text" class="form-control date-range-picker" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="margin-top:2.8rem !important; margin-bottom:0.75rem !important">
+                        <button id="GetMerchantDashboardButton" class="btn btn-primary" type="submit">
+                            <i class="flaticon-search-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row row-no-padding row-col-separator-xl">
+                <div class="row row-no-padding row-col-separator-xl">
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("TotalMerchantFund")
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                                    @L("TotalMerchantCount")
+                                    <span id="totalMerchantCount"></span>
+                                </span>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalMerchantFund">...</span>
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                                    @L("MerchantFrozenBalance")
+                                </span>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalFrozenBalance">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("TotalMerchantFee")
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">...</span>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-info fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalMerchantFee">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("TotalPayOrderCashIn")
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                                    @L("TotalPayOrderCashInCount")
+                                    <span id="totalPayOrderCashInCount">...</span>
+                                   
+                                </span>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-success fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalPayOrderCashIn">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("TotalMerchantBillWithdraw")
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                                    @L("TotalMerchantBillWithdrawCount")
+                                    <span id="totalMerchantBillWithdrawCount">...</span>
+                                   
+                                </span>
+                                <div class="fw-bold text-muted font-size-sm text-left">
+                                    <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalMerchantBillWithdraw">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("TotalWithdrawalOrder")
+                                </div>
+                                <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                                    @L("TotalWithdrawalOrderCount")
+                                    <span id="totalWithdrawalOrderCount">...</span>
+                                    
+                                </span>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalWithdrawalOrder">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row align-items-center">
+                <table id="MerchantDashboardTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("MerchantFund")</th>
+                            <th>@L("MerchantFrozenBalance")</th>
+                            <th>@L("MerchantFee")</th>
+                            <th>@L("MerchantBillCashIn")</th>
+                            <th>@L("MerchantBillWithdraw")</th>
+                            <th>@L("WithdrawalOrder")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

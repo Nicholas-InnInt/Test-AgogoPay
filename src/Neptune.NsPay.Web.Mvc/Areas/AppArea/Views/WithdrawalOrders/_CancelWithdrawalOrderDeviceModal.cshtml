@@ -1,0 +1,29 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@model EditWithdrawalOrderDeviceModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("WithdrawalOrderCancelDevice")))
+
+<div class="modal-body">
+    <div id="EditWithdrawalOrderDeviceModal">
+        <form name="EditWithdrawalDeviceForm" role="form" novalidate class="form-validation">
+            <div class="my-3 form-group">
+                <label class="form-label" for="WithdrawalOrder_OrderNo">@L("OrderNo")</label><br />
+                @for (var i = 0; i < Model.EditWithdrawalOrderDeviceDto.OrderNos.Count; i++)
+                {
+                    <label class="form-label" for="WithdrawalOrder_OrderNo">@Model.EditWithdrawalOrderDeviceDto.OrderNos[@i]</label>
+                    <input type="hidden" name="OrderNos[@i]" value="@Model.EditWithdrawalOrderDeviceDto.OrderNos[i]" />
+                    <br />
+                }       
+            </div>
+            @for (var i = 0; i < Model.EditWithdrawalOrderDeviceDto.WithdrawalIds.Count; i++)
+            {
+                <input type="hidden" name="WithdrawalIds[@i]" value="@Model.EditWithdrawalOrderDeviceDto.WithdrawalIds[i]" />
+            }
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

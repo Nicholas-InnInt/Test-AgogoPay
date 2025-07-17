@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Neptune.NsPay.BillingExtensions\Neptune.NsPay.BillingExtensions.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.MongoDbExtensions\Neptune.NsPay.MongoDbExtensions.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.PlatfromServices\Neptune.NsPay.PlatfromServices.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

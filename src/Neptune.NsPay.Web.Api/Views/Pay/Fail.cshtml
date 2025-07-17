@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Thanh toán">
+    <meta name="author" content="NsPay">
+    <meta name="keyword" content="Bank Gate, Game, Momo, ZaloPay, Viettel Pay, Bank, Money, Transfer, ScratchCard">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-utilities.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/css/payweb.css" rel="stylesheet" />
+    <script src="~/lib/toast/jquery.toast.min.js"></script>
+    <link href="~/lib/toast/jquery.toast.min.css" rel="stylesheet" />
+    <title>Thanh toán</title>
+    <style>
+        .modal-step {
+            background: #3da8ed;
+            -webkit-border-radius: 25px;
+            border-radius: 25px;
+            width: 30px;
+            height: 30px;
+            margin: 0 auto 10px;
+            color: #fff;
+            font-size: 21px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .modal-body p {
+            margin: 0px;
+        }
+
+        .modal-content-mobile {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            pointer-events: auto;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0.3rem;
+            outline: 0;
+            -webkit-border-radius: 10px 10px 20px 20px;
+            border-radius: 10px 10px 20px 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .text-red {
+            color: red;
+        }
+
+        .bold {
+            font-weight: 900
+        }
+    </style>
+</head>
+
+
+<body class="bg-light">
+    <div class="d-flex align-items-center p-1 text-white bg-purple shadow-sm">
+        <div style="text-align: center;width: 100%;">
+        </div>
+    </div>
+    <main class="container">
+        <div id="transaction_success" style="text-align: center;">
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold">Nạp tiền thất bại</h1>  @*充值失败*@
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4" id="errormessage">Nạp tiền thất bại</p>  @*充值失败，重新填写*@
+                </div>
+                <div>
+                    <button type="button" class="w-100 btn btn-primary btn-lg bg-purple" id="goback">quay trở lại</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#goback").click(function(){
+                window.location.href = "window.history.go(-1)";
+            })
+        </script>
+    </main>
+</body>
+</html>

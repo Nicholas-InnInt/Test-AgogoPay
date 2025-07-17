@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Telegram.BotAPI" Version="7.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Neptune.NsPay.Commons\Neptune.NsPay.Commons.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+    <ProjectReference Include="..\src\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

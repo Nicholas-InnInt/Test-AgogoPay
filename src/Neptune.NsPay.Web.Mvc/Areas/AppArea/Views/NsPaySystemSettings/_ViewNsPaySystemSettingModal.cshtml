@@ -1,0 +1,28 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.NsPaySystemSettings
+@model NsPaySystemSettingViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="NsPaySystemSettingInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("Key") :</h6>
+                @Model.NsPaySystemSetting.Key
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Value") :</h6>
+                @Model.NsPaySystemSetting.Value
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

@@ -1,0 +1,73 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@model WithdrawalOrderViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="WithdrawalOrderInformationsTab">
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.WithdrawalOrder.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantId") :</h6>
+                @Model.WithdrawalOrder.MerchantId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PlatformCode") :</h6>
+                @Model.WithdrawalOrder.PlatformCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("WithdrawNo") :</h6>
+                @Model.WithdrawalOrder.WithdrawNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("TransactionNo") :</h6>
+                @Model.WithdrawalOrder.TransactionNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderStatus") :</h6>
+                @L("Enum_WithdrawalOrderStatusEnum_" + (int)Model.WithdrawalOrder.OrderStatus)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderMoney") :</h6>
+                @Model.WithdrawalOrder.OrderMoney
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Rate") :</h6>
+                @Model.WithdrawalOrder.Rate
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("FeeMoney") :</h6>
+                @Model.WithdrawalOrder.FeeMoney
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("DeviceId") :</h6>
+                @Model.WithdrawalOrder.DeviceId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("NotifyStatus") :</h6>
+                @L("Enum_WithdrawalNotifyStatusEnum_" + (int)Model.WithdrawalOrder.NotifyStatus)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BenAccountName") :</h6>
+                @Model.WithdrawalOrder.BenAccountName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BenBankName") :</h6>
+                @Model.WithdrawalOrder.BenBankName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BenAccountNo") :</h6>
+                @Model.WithdrawalOrder.BenAccountNo
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")

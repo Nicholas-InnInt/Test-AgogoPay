@@ -1,0 +1,25 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrderDeposits
+@model RejectDepositOrderViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("DepositOrderStatusEnum_3")) : L("DepositOrderStatusEnum_3")))
+
+<div class="modal-body">
+    <div id="AssociatedOrderInformationsTab">
+        <form name="RejectOrderForm" role="form" novalidate class="form-validation">
+            
+            <input type="hidden" name="id" value="@Model.RejectOrder.Id" />
+            <input type="hidden" name="payType" value="@Model.RejectOrder.PayType" />
+
+            <div class="form-group">
+                <label for="PayOrder_RejectRemark">@L("RejectDepositMsg")</label>
+                <textarea id="MerchantWithdrawPayOrder_RejectRemark_ReviewMsg" name="rejectRemark" auto-focus class="form-control my-3" rows="4"></textarea>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

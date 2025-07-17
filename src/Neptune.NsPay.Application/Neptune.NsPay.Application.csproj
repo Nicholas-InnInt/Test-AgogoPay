@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props"></Import>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>Neptune.NsPay.Application</AssemblyName>
+    <PackageId>Neptune.NsPay.Application</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>Neptune.NsPay</RootNamespace>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Abp.EntityFrameworkCore.EFPlus" Version="9.1.1" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
+    <PackageReference Include="MiniExcel" Version="1.31.3" />
+    <PackageReference Include="NPOI" Version="2.7.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.Application.Shared\Neptune.NsPay.Application.Shared.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.Commons\Neptune.NsPay.Commons.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.Core\Neptune.NsPay.Core.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.ELKLogExtension\Neptune.NsPay.ELKLogExtension.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.EntityFrameworkCore\Neptune.NsPay.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.HttpExtensions\Neptune.NsPay.HttpExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.KafkaExtensions\Neptune.NsPay.KafkaExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.MongoDbExtensions\Neptune.NsPay.MongoDbExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.PlatfromServices\Neptune.NsPay.PlatfromServices.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

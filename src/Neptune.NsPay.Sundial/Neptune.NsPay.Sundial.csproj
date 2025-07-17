@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Neptune.NsPay.Sundial-1849f935-d44e-4072-b76e-a66498d14988</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Sundial" Version="2.55.0" />
+    <PackageReference Include="Sundial.Dashboard" Version="2.55.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.Commons\Neptune.NsPay.Commons.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.Core\Neptune.NsPay.Core.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+</Project>

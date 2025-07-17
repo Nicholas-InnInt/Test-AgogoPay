@@ -1,0 +1,6 @@
+@Neptune.NsPay.AccountChecker_HostAddress = http://localhost:5161
+
+GET {{Neptune.NsPay.AccountChecker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

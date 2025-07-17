@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Neptune.NsPay.PlatformWithdraw-ee4c2617-f97d-4b37-938e-d0a6b5b58f28</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.Commons\Neptune.NsPay.Commons.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+</Project>

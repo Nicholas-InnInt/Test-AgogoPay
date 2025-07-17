@@ -1,0 +1,50 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdraws
+@model MerchantWithdrawViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantWithdrawInformationsTab">
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.MerchantWithdraw.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("WithDrawNo") :</h6>
+                @Model.MerchantWithdraw.WithDrawNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Money") :</h6>
+                @Model.MerchantWithdraw.Money
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankName") :</h6>
+                @Model.MerchantWithdraw.BankName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ReceivCard") :</h6>
+                @Model.MerchantWithdraw.ReceivCard
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ReceivName") :</h6>
+                @Model.MerchantWithdraw.ReceivName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Status") :</h6>
+                @L("Enum_MerchantWithdrawStatusEnum_" + (int)Model.MerchantWithdraw.Status)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ReviewTime") :</h6>
+                @Model.MerchantWithdraw.ReviewTime
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")

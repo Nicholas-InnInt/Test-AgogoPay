@@ -1,0 +1,40 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdrawBanks
+@model MerchantWithdrawBankViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantWithdrawBankInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;">@Model.MerchantWithdrawBank.MerchantCode</span>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankName") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;"> @Model.MerchantWithdrawBank.BankName</span>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ReceivCard") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;"> @Model.MerchantWithdrawBank.ReceivCard</span>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ReceivName") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;">@Model.MerchantWithdrawBank.ReceivName</span>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Status") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;">@Model.MerchantWithdrawBank.Status</span>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

@@ -1,0 +1,195 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrderDeposits
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model PayOrderDepositsViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.PayOrder.PayOrderDepositsCrypto;
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/PayOrderDepositsCrypto/Index.js" asp-append-version="true"></script>
+}
+
+<abp-page-subheader title='@L("PayOrderDeposits")' description='@L("PayOrderDepositsHeaderInfo")'>
+    @*     <button id="BulkRejection" class="btn btn-danger blue">@L("BulkRejection")</button>
+    <button id="ResetMatch" class="btn btn-primary blue">@L("ResetMatch")</button>
+    <button id="ExportToExcelButton" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button> *@
+</abp-page-subheader>
+
+<style>
+    .badge-inline {
+        word-wrap: break-word; /* Breaks long words into new lines */
+        white-space: normal; /* Allows wrapping of text in elements */
+        overflow-wrap: break-word; /* Ensures long words are broken up */
+        max-width: 100%; /* Make sure text doesn't overflow outside the container */
+    }
+</style>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <section class="my-4">
+                <div class="input-group">
+                    <input type="text" id="PayOrderDepositsTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                    <button id="GetPayOrderDepositsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                </div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row py-2">
+                    @if (Model.IsShowMerchant)
+                    {
+                        <div class="col-md-3">
+                            <div class="my-3">
+                                <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                                <select id="MerchantCodeFilterId" name="merchantCodeFilterId" class="form-select reload-on-change select2">
+                                </select>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="BankOrderStatusFilterId">@L("BankOrderStatus")</label>
+                            <select class="form-select reload-on-change " name="BankOrderStatusFilter" id="BankOrderStatusFilterId">
+                                <option value="-1" selected>@L("All")</option>
+                                <option value="CRDT">@L("BankOrderCredit")</option>
+                                <option value="DBIT">@L("BankOrderDebit")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="DepositOrderStatusFilterId">@L("DepositOrderStatus")</label>
+                            <select class="form-select reload-on-change " name="DepositOrderStatusFilter" id="DepositOrderStatusFilterId">
+                                <option value="-1" selected>@L("All")</option>
+                                <option value="1">@L("DepositOrderStatusEnum_1")</option>
+                                <option value="2">@L("DepositOrderStatusEnum_2")</option>
+                                <option value="3">@L("DepositOrderStatusEnum_3")</option>
+                                <option value="4">@L("AssociatedDepositOrder")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderPayTypeFilterId">@L("OrderPayType")</label>
+                            <select class="form-select reload-on-change  select2" name="OrderPayTypeFilter" id="OrderPayTypeFilterId">
+                                <option value="-1">@L("All")</option>
+                                @foreach (var bank in PayMentHelper.GetCryptoList)
+                                {
+                                    <option value='@bank.ToInt()'>@L($"Enum_PayMentTypeEnum_{@bank.ToInt()}")</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderMarkFilterId">@L("OrderMark")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="orderMarkFilter" id="OrderMarkFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="UserNameFilterId">@L("BankUserName")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="userNameFilter" id="UserNameFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="AccountNoFilterId">@L("BankAccountNo")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="accountNoFilter" id="AccountNoFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderNoFilterId">@L("OrderNo")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="orderNoFilter" id="OrderNoFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="UserMemberFilterId">@L("UserMember")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="UserMemberFilter" id="UserMemberFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="RefNoFilterId">@L("RefNo")</label>
+                            <input type="text" class="form-control reload-on-keyup " name="refNoFilter" id="RefNoFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="my-3">
+                            <label class="form-label" for="UtcTimeFilterId">GMT</label>
+                            <select class="form-select " name="UtcTimeFilter" id="UtcTimeFilterId">
+                                <option value="GMT7+" selected>GMT+7</option>
+                                <option value="GMT8+">GMT+8</option>
+                                <option value="GMT4-">GMT-4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="my-3">
+                            <label for="MinTransactionTimeFilter" class="form-label">@L("BankStartCreateTime")</label>
+                            <input id="MinTransactionTimeFilter" type="datetime" class="form-control reload-on-keyup  datetime-picker" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="my-3">
+                            <label for="MaxTransactionTimeFilter" class="form-label">@L("BankEndCreateTime")</label>
+                            <input id="MaxTransactionTimeFilter" type="datetime" class="form-control reload-on-keyup  datetime-picker" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="MinMoneyFilterId">@L("OrderMoney")</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control reload-on-keyup  m-input" placeholder="@L("MinValue")" name="minMoneyFilter" id="MinMoneyFilterId" />
+                                <input type="number" class="form-control reload-on-keyup  m-input" placeholder="@L("MaxValue")" name="maxMoneyFilter" id="MaxMoneyFilterId" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-5">
+                        <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                    </div>
+                </div>
+                <div class="py-4">
+                    <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                    <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                </div>
+            </section>
+
+            <div class="row align-items-center">
+                <table id="PayOrderDepositsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                    @*  <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#PayOrderDepositsTable .form-check-input" value="1" /> *@
+                                    <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#PayOrderDepositsTable .form-check-input" value="1" id="select-all" />
+                                </div>
+                            </th>
+                            <th>@L("Actions")</th>
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("CreditAmountInfo")</th>
+                            <th>@L("BenAccountInfo")</th>
+                            <th>@L("OrderInfo")</th>
+                            <th>@L("DescriptionInfo")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

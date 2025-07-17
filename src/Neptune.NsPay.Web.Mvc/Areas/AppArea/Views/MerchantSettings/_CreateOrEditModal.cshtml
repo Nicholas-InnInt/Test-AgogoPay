@@ -1,0 +1,100 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantSettings
+@model CreateOrEditMerchantSettingModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantSetting")) : L("CreateNewMerchantSetting")))
+
+<div class="modal-body">
+        <div id="MerchantSettingInformationsTab">
+            <form name="MerchantSettingInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.MerchantSetting.Id" />
+                }
+                
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_MerchantCode">@L("MerchantCode")</label>
+									<input class="form-control" id="MerchantSetting_MerchantCode" value="@Model.MerchantSetting.MerchantCode" type="text" name="merchantCode"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxMerchantCodeLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinMerchantCodeLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_MerchantId">@L("MerchantId")</label>
+									<input class="form-control m-input" id="MerchantSetting_MerchantId" value="@Model.MerchantSetting.MerchantId.ToString(CultureInfo.InvariantCulture)" type="number" name="merchantId"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_NsPayTitle">@L("NsPayTitle")</label>
+									<input class="form-control" id="MerchantSetting_NsPayTitle" value="@Model.MerchantSetting.NsPayTitle" type="text" name="nsPayTitle"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxNsPayTitleLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinNsPayTitleLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_LogoUrl">@L("LogoUrl")</label>
+									<input class="form-control" id="MerchantSetting_LogoUrl" value="@Model.MerchantSetting.LogoUrl" type="text" name="logoUrl"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxLogoUrlLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinLogoUrlLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_LoginIpAddress">@L("LoginIpAddress")</label>
+									<input class="form-control" id="MerchantSetting_LoginIpAddress" value="@Model.MerchantSetting.LoginIpAddress" type="text" name="loginIpAddress"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxLoginIpAddressLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinLoginIpAddressLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_BankNotify">@L("BankNotify")</label>
+									<input class="form-control" id="MerchantSetting_BankNotify" value="@Model.MerchantSetting.BankNotify" type="text" name="bankNotify"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxBankNotifyLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinBankNotifyLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_BankNotifyText">@L("BankNotifyText")</label>
+									<input class="form-control" id="MerchantSetting_BankNotifyText" value="@Model.MerchantSetting.BankNotifyText" type="text" name="bankNotifyText"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxBankNotifyTextLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinBankNotifyTextLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_TelegramNotifyBotId">@L("TelegramNotifyBotId")</label>
+									<input class="form-control" id="MerchantSetting_TelegramNotifyBotId" value="@Model.MerchantSetting.TelegramNotifyBotId" type="text" name="telegramNotifyBotId"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxTelegramNotifyBotIdLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinTelegramNotifyBotIdLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_TelegramNotifyChatId">@L("TelegramNotifyChatId")</label>
+									<input class="form-control" id="MerchantSetting_TelegramNotifyChatId" value="@Model.MerchantSetting.TelegramNotifyChatId" type="text" name="telegramNotifyChatId"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxTelegramNotifyChatIdLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinTelegramNotifyChatIdLength"  />
+								</div>
+					
+                                <label class="form-check form-check-custom">
+                                    <input
+                                        id="MerchantSetting_OpenRiskWithdrawal"
+                                        name="openRiskWithdrawal"                                        
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        value="true"
+                                        @Html.Raw(Model.MerchantSetting.OpenRiskWithdrawal ?"checked=\"checked\"":"") 
+                                    />
+                                    <span class="form-check-label">
+                                        @L("OpenRiskWithdrawal")
+                                    </span>
+                                </label>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_PlatformUrl">@L("PlatformUrl")</label>
+									<input class="form-control" id="MerchantSetting_PlatformUrl" value="@Model.MerchantSetting.PlatformUrl" type="text" name="platformUrl"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxPlatformUrlLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinPlatformUrlLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_PlatformUserName">@L("PlatformUserName")</label>
+									<input class="form-control" id="MerchantSetting_PlatformUserName" value="@Model.MerchantSetting.PlatformUserName" type="text" name="platformUserName"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxPlatformUserNameLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinPlatformUserNameLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_PlatformPassWord">@L("PlatformPassWord")</label>
+									<input class="form-control" id="MerchantSetting_PlatformPassWord" value="@Model.MerchantSetting.PlatformPassWord" type="text" name="platformPassWord"   maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxPlatformPassWordLength"  minlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinPlatformPassWordLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantSetting_PlatformLimitMoney">@L("PlatformLimitMoney")</label>
+									<input class="form-control m-input" id="MerchantSetting_PlatformLimitMoney" value="@Model.MerchantSetting.PlatformLimitMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="platformLimitMoney"   />								</div>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

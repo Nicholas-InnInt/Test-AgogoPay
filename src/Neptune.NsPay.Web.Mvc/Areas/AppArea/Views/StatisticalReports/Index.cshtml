@@ -1,0 +1,262 @@
+﻿@using Neptune.NsPay.Authorization
+@using Abp.Configuration;
+@using Neptune.NsPay
+@using Neptune.NsPay.Configuration
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.RechargeOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.StatisticalReport.StatisticalReports;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/StatisticalReports/Index.js" asp-append-version="true"></script>
+}
+<div class="@(await GetContainerClass())">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="my-3">
+                                    <label for="OrderCreationTimeRange" class="form-label">@L("OrderCreationTimeRange")</label>
+                                    <input id="OrderCreationTimeRange" type="text" class="form-control date-range-picker" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="my-3">
+                                    <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                                    <select id="MerchantCode" name="merchantCodeFilter" class="form-control select2">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="my-3">
+                                    <label class="form-label" for="">&nbsp;</label>
+                                    <div class="input-group">
+                                        <button id="GetSearchButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--代收-->
+            <div class="TopStatsContainer h-100">
+                <div class="row row-no-padding row-col-separator-xl">
+                    <!--代收总订单-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("PayOrderSumCount")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSumCount"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代收成功订单-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("PayOrderSuccessCount")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-info fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSuccessCount"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代收手续费-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("PayOrderFeeMoney")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                   @L("StatisticalReportsBank")<span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderBankFeeMoney"></span>
+                                    <br/>
+                                   @L("StatisticalReportsSc")<span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderScFeeMoney"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代收成功金额-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("PayOrderSuccessMoney")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    @L("StatisticalReportsBank")<span class="text-success fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSuccessBankMoney"></span>
+                                    <br />
+                                    @L("StatisticalReportsSc")<span class="text-success fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSuccessScMoney"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代收成功率-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("PayOrderSuccessRate")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                   @L("StatisticalReportsBank")<span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSuccessBankRate"></span>
+                                    <br/>
+                                    @L("StatisticalReportsSc")<span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="PayOrderSuccessScRate"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--代付-->
+            <div class="TopStatsContainer h-100 my-3">
+                <div class="row row-no-padding row-col-separator-xl">
+                    <!--代付总订单-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("WithdrawOrderSumCount")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="WithdrawOrderSumCount"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代付成功订单-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("WithdrawOrderSuccessCount")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-info fw-bolder fs-2 me-2 dashboard-placeholder2" id="WithdrawOrderSuccessCount"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代付手续费-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("WithdrawOrderFeeMoney")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="WithdrawOrderFeeMoney"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代付成功金额-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("WithdrawOrderSuccessMoney")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-success fw-bolder fs-2 me-2 dashboard-placeholder2" id="WithdrawOrderSuccessMoney"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--代付成功率-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("WithdrawOrderSuccessRate")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="WithdrawOrderSuccessRate"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--商户提现-->
+            <div class="TopStatsContainer h-100 my-3">
+                <div class="row row-no-padding row-col-separator-xl">
+                    <!--商户余额-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("MerchantSumBalance")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="MerchantSumBalance"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--冻结余额-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("MerchantFrozenBalance")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="MerchantFrozenBalance"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--商户提现-->
+                    <div class="col">
+                        <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                            <div class="card-body">
+                                <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                                    @L("MerchantWithdrawMoney")
+                                </div>
+                                <div class="fw-bold text-muted font-size-lg text-left">
+                                    <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="MerchantWithdrawMoney"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

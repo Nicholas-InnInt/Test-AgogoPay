@@ -1,0 +1,19 @@
+﻿@using Abp.Runtime.Session
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Layout
+@using Neptune.NsPay.Web.Areas.AppArea.Views.Shared.Components.AppAreaLogo
+@model HeaderViewModel
+@{
+    Layout = null;
+}
+<a href="@Url.Action("Index", "Home", new {area = string.Empty})" target="_blank" class="brand-logo">
+    @await Component.InvokeAsync(typeof(AppAreaLogoViewComponent), new
+    {
+        logoSkin = "dark",
+        logoClass = "h-25px h-lg-30px d-none d-md-block"
+    })
+    @await Component.InvokeAsync(typeof(AppAreaLogoViewComponent), new
+        {
+            logoSkin = "dark",
+            logoClass = "h-25px d-block d-md-none"
+        })
+</a>

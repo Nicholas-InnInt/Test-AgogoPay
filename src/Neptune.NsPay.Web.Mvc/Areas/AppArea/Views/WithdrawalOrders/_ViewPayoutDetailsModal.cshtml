@@ -1,0 +1,63 @@
+﻿@using Neptune.NsPay.Common
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@using Neptune.NsPay.WithdrawalOrders
+@model WithdrawalOrderViewPayoutDetailsModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("ViewPayoutDetails")))
+<div class="modal-body">
+    <div id="ViewPayoutDetailsModal">
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantName") :</h6>
+                @Model.MerchantName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.WithdrawalOrder.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("WithdrawalOrderCreationTime") :</h6>
+                @Model.WithdrawalOrder.CreationTime
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderNumber") :</h6>
+                @Model.WithdrawalOrder.OrderNo
+            </div>
+
+            <div class="col-6 mb-3">
+                <h6>@L("OrderMoney") :</h6>
+                @Model.WithdrawalOrder.OrderMoney
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("BenAccountName") :</h6>
+                @Model.WithdrawalOrder.BenAccountName <i class='icon-xl far fa-copy btnCopyModal' data-clipboard-action='copy' data-clipboard-text='@Model.WithdrawalOrder.BenAccountName'></i>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BenBankName") :</h6>
+                @Model.WithdrawalOrder.BenBankName <i class='icon-xl far fa-copy btnCopyModal' data-clipboard-action='copy' data-clipboard-text='@Model.WithdrawalOrder.BenBankName'></i>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BenAccountNo") :</h6>
+                @Model.WithdrawalOrder.BenAccountNo <i class='icon-xl far fa-copy btnCopyModal' data-clipboard-action='copy' data-clipboard-text='@Model.WithdrawalOrder.BenAccountNo'></i>
+            </div>
+            @{
+                <div class="col-12">
+                    <h6>@L("VietQR") :</h6>
+
+                    <div id="qrContainer" class="bankQr">
+                        <div class="qrPaymentWrap">
+                            <img class="bankQrImg" src="@Model.vietQRURL" alt="" id="bankQr">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")

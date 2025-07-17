@@ -1,0 +1,125 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model PayMentsViewModel
+
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.PayMent.PayMents;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/PayMents/Index.js" asp-append-version="true"></script>
+}
+
+<abp-page-subheader title='@L("PayMents")' description='@L("PayMentsHeaderInfo")'>
+    @if (IsGranted(AppPermissions.Pages_PayMents_Create))
+    {
+        <button id="CreateNewPayMentButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewPayMent")</button>
+    }
+</abp-page-subheader>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" id="PayMentsTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                                <button id="GetPayMentsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                <div class="col-md-12">
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="NameFilterId">@L("PayMentName")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="nameFilter" id="NameFilterId">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="TypeFilterId">@L("Type")</label>
+                        <select class="form-select reload-on-change select2" name="TypeFilter" id="TypeFilterId">
+                            <option value="-1">@L("All")</option>
+                            @foreach (var bank in PayMentHelper.GetBankList)
+                            {
+                                var bankValue = bank.PaymentTypeEnum.ToInt();
+                                <option value="@bankValue">@L($"Enum_PayMentTypeEnum_{bankValue}")</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="PhoneFilterId">@L("LoginAccount")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="phoneFilter" id="PhoneFilterId">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="PayMentStatusFilterId">@L("PayMentStatus")</label>
+                        <select class="form-select reload-on-change" name="PayMentStatusFilter" id="PayMentStatusFilterId">
+                            <option value="-1">@L("All")</option>
+                            <option value="1">@L("PayMentStatusOpen")</option>
+                            <option value="0">@L("PayMentStatusClose")</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="ShowStatusFilterId">@L("ShowStatus")</label>
+                        <select class="form-select reload-on-change" name="ShowStatusFilter" id="ShowStatusFilterId">
+                            <option value="-1">@L("All")</option>
+                            <option value="0">@L("ShowPayMent")</option>
+                            <option value="1">@L("HidePayMent")</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="my-2">
+                        <label class="form-label" for="UseMoMoFilterId">@L("UseMoMo")</label>
+                        <select class="form-select reload-on-change" name="UseMoMoFilter" id="UseMoMoFilterId">
+                            <option value="-1">@L("All")</option>
+                            <option value="1">@L("UseMoMoOpen")</option>
+                            <option value="0">@L("UseMoMoClose")</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 mt-5">
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-xl-12">
+                    <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                    <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <table id="PayMentsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@L("Actions")</th>
+                            <th>@L("NameInfo")</th>
+                            <th>@L("PayAccountInfo")</th>
+                            <th>@L("MoneyRange")</th>
+                            <th>@L("LimitMoneyInfo")</th>
+                            <th>@L("StatusInfo")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

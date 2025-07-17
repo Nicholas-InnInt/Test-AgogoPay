@@ -1,0 +1,108 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdrawBanks
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantWithdrawBanksViewModel
+@{
+	ViewBag.CurrentPageName = AppAreaPageNames.Withdraw.MerchantWithdrawBanks;
+}
+@section Scripts
+{
+	<script abp-src="/view-resources/Areas/AppArea/Views/MerchantWithdrawBanks/Index.js" asp-append-version="true"></script>
+}
+
+
+
+<abp-page-subheader title='@L("MerchantWithdrawBanks")' description='@L("MerchantWithdrawBanksHeaderInfo")'>
+
+	@if (IsGranted(AppPermissions.Pages_MerchantWithdrawBanks_Create))
+	{
+		<button id="CreateNewMerchantWithdrawBankButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewMerchantWithdrawBank")</button>
+	}
+</abp-page-subheader>
+
+
+
+<style>
+	table.dataTable > tbody > tr.child span.dtr-title {
+		min-width: 20%;
+	}
+
+	.short-name, .full-name {
+		max-width: 200px; 
+		overflow: hidden; 
+		text-overflow: ellipsis;
+		white-space: normal;
+		word-wrap: break-word; 
+		display: inline-block; 
+	}
+
+</style>
+
+<div class="@(await GetContainerClass())">
+	<div class="card card-custom gutter-b">
+		<div class="card-body">
+			<div class="form">
+				<div class="row align-items-center mb-4">
+					<div class="col-xl-12">
+
+
+						<div class="my-3">
+							<div class="input-group">
+								<input type="text" id="MerchantWithdrawBanksTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+								<button id="GetMerchantWithdrawBanksButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+				<div class="col-md-12">
+				</div>
+				<div class="col-md-3">
+					<div class="my-3">
+						<label class="form-label" for="BankNameFilterId">@L("BankName")</label>
+						<input type="text" class="form-control reload-on-keyup" name="bankNameFilter" id="BankNameFilterId">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="my-3">
+						<label class="form-label" for="ReceivCardFilterId">@L("ReceivCard")</label>
+						<input type="text" class="form-control reload-on-keyup" name="receivCardFilter" id="ReceivCardFilterId">
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="my-3">
+						<label class="form-label" for="ReceivNameFilterId">@L("ReceivName")</label>
+						<input type="text" class="form-control reload-on-keyup" name="receivNameFilter" id="ReceivNameFilterId">
+					</div>
+				</div>
+
+				<div class="col-md-12 mt-5">
+					<button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+				</div>
+			</div>
+			<div class="row my-4">
+				<div class="col-xl-12">
+					<span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+					<span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+				</div>
+			</div>
+			<div class="row align-items-center">
+				<table id="MerchantWithdrawBanksTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+					<thead>
+						<tr>
+							<th></th>
+
+							<th>@L("Actions")</th>
+							<th>@L("WithdrawBankName")</th>
+							<th>@L("WithdrawReceivCard")</th>
+							<th>@L("WithdrawReceivName")</th>
+							<th>@L("Status")</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,207 @@
+﻿@using Neptune.NsPay.PayOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrderDeposits
+@model PayOrderDepositViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+	<div id="PayOrderInformationsTab">
+
+		<div class="row">
+			<div class="col-6 mb-3">
+				<h6>@L("BankAccountNo") :</h6>
+				@Model.PayOrderDeposit.AccountNo
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("BankUserName") :</h6>
+				@Model.PayOrderDeposit.UserName
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("BankPayType") :</h6>
+				@L("Enum_PayMentTypeEnum_" + (int)Model.PayOrderDeposit.PayType)
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("BankPayMentName") :</h6>
+				@Model.PayOrderDeposit.PayMentName
+			</div>
+
+			<div class="col-6 mb-3">
+				<h6>@L("BankOrderStatus") :</h6>
+				@if (@Model.PayOrderDeposit.Type == "DBIT")
+				{
+					<span class="badge label-lg font-weight-bold badge-light-danger label-inline">@L("BankOrderDebit")</span>
+				}
+				else
+				{
+
+					<span class="badge label-lg font-weight-bold badge-light-primary label-inline">@L("BankOrderCredit")</span>
+				}
+
+			</div>
+			<div class="col-6 mb-3">
+				@if (@Model.PayOrderDeposit.Type == "DBIT")
+				{
+					<h6>@L("DebitAmount") :</h6>
+					@Model.PayOrderDeposit.DebitAmount
+				}
+
+				else
+				{
+					<h6>@L("CreditAmount") :</h6>
+					@Model.PayOrderDeposit.CreditAmount
+				}
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("AvailableBalance") :</h6>
+				@Model.PayOrderDeposit.AvailableBalance
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("RefNo") :</h6>
+				@Model.PayOrderDeposit.RefNo
+			</div>
+			<div class="col-6 mb-3">
+				@if (@Model.PayOrderDeposit.Type == "DBIT")
+				{
+					<h6>@L("CreditAcctName") :</h6>
+					@Model.PayOrderDeposit.CreditAcctName
+				}
+
+				else
+				{
+					<h6>@L("DebitAcctName") :</h6>
+					@Model.PayOrderDeposit.DebitAcctName
+				}
+			</div>
+			<div class="col-6 mb-3">
+				@if (@Model.PayOrderDeposit.Type == "DBIT")
+				{
+					<h6>@L("CreditAcctNo") :</h6>
+					@Model.PayOrderDeposit.CreditAcctNo
+				}
+
+				else
+				{
+					<h6>@L("DebitAcctNo") :</h6>
+					@Model.PayOrderDeposit.DebitAcctNo
+				}
+			</div>
+			<div class="col-6 mb-3">
+				@if (@Model.PayOrderDeposit.Type == "DBIT")
+				{
+					<h6>@L("CreditBank") :</h6>
+					@Model.PayOrderDeposit.CreditBank
+				}
+
+				else
+				{
+					<h6>@L("DebitBank") :</h6>
+					@Model.PayOrderDeposit.DebitBank
+				}
+			</div>
+
+			@if (@Model.PayOrderDeposit.OperateUser != null)
+			{
+				<div class="col-6 mb-3">
+					<h6>@L("OperateUser") :</h6>
+					<span class="badge label-lg font-weight-bold badge-light-info label-inline">@Model.PayOrderDeposit.OperateUser</span>
+				</div>
+			}
+
+			@if (@Model.PayOrderDeposit.OrderId == "-1")
+			{
+				<div class="col-6 mb-3">
+					<h6>@L("OrderStatus") :</h6>
+					<span class="badge label-lg font-weight-bold badge-light-danger label-inline">@L("RejectOrder")</span>
+				</div>
+				<div class="col-6 mb-3">
+					<h6>@L("RejectDepositMsg") :</h6>
+					@Model.PayOrderDeposit.RejectRemark
+				</div>
+
+
+
+				<div class="col-6 mb-3">
+					<h6>@L("OperateTime") :</h6>
+					@Model.PayOrderDeposit.OperateTime
+				</div>
+			}
+
+			@if (@Model.PayOrder != null)
+			{
+				<div class="col-6 mb-3">
+					<h6>@L("OrderTransactionTime") :</h6>
+					@Model.PayOrder.CreationTime
+				</div>
+				<div class="col-6 mb-3">
+					<h6>@L("OrderNumber") :</h6>
+					@Model.PayOrder.OrderNumber
+				</div>
+
+				<div class="col-6 mb-3">
+					<h6>@L("OrderStatus") :</h6>
+					@switch (@Model.PayOrder.OrderStatus)
+					{
+						case PayOrderOrderStatusEnum.NotPaid:
+							<span class="badge label-lg font-weight-bold badge-light-primary label-inline">@L("Enum_PayOrderOrderStatusEnum_" + (int)@Model.PayOrder.OrderStatus) </span>
+							break;
+						case PayOrderOrderStatusEnum.Paid:
+							<span class="badge label-lg font-weight-bold badge-light-info label-inline">@L("Enum_PayOrderOrderStatusEnum_" + (int)@Model.PayOrder.OrderStatus)</span>
+							break;
+						case PayOrderOrderStatusEnum.Failed:
+							<span class="badge label-lg font-weight-bold badge-light-danger label-inline">@L("Enum_PayOrderOrderStatusEnum_" + (int)@Model.PayOrder.OrderStatus)</span>
+							break;
+						case PayOrderOrderStatusEnum.TimeOut:
+							<span class="badge label-lg font-weight-bold badge-light-danger label-inline">@L("Enum_PayOrderOrderStatusEnum_" + (int)@Model.PayOrder.OrderStatus)</span>
+							break;
+						case PayOrderOrderStatusEnum.Completed:
+							<span class="badge label-lg font-weight-bold badge-light-success label-inline">@L("Enum_PayOrderOrderStatusEnum_" + (int)@Model.PayOrder.OrderStatus)</span>
+							break;
+						default:
+							@Model.PayOrder.OrderStatus
+							break;
+
+					}
+				</div>
+				<div class="col-6 mb-3">
+					<h6>@L("ScoreStatus") :</h6>
+					@switch (@Model.PayOrder.ScoreStatus)
+					{
+						case PayOrderScoreStatusEnum.NoScore:
+							<span class="badge label-lg font-weight-bold badge-light-primary label-inline">@L("Enum_PayOrderScoreStatusEnum_" + (int)@Model.PayOrder.ScoreStatus)</span>
+							break;
+						case PayOrderScoreStatusEnum.Completed:
+							<span class="badge label-lg font-weight-bold badge-light-success label-inline">@L("Enum_PayOrderScoreStatusEnum_" + (int)@Model.PayOrder.ScoreStatus)</span>
+							break;
+						case PayOrderScoreStatusEnum.Failed:
+							<span class="badge label-lg font-weight-bold badge-light-danger label-inline">@L("Enum_PayOrderScoreStatusEnum_" + (int)@Model.PayOrder.ScoreStatus)</span>
+							break;
+						default:
+							@Model.PayOrder.ScoreStatus
+							break;
+
+					}
+				</div>
+
+			}
+			<div class="col-6 mb-3">
+				<h6>@L("BankCreateTime") :</h6>
+				@Model.PayOrderDeposit.CreationTime
+			</div>
+
+			<div class="col-6 mb-3">
+				<h6>@L("BankTransactionTime") :</h6>
+				@Model.PayOrderDeposit.TransactionTime
+			</div>
+			<div class="col-6 mb-3">
+				<h6>@L("BankDescription") :</h6>
+				<span style="word-wrap: break-word; white-space: normal;">@Model.PayOrderDeposit.Description</span>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

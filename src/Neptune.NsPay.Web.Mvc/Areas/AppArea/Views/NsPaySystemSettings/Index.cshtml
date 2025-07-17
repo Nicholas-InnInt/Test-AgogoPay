@@ -1,0 +1,85 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.NsPaySystemSettings
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model NsPaySystemSettingsViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.NsPays.NsPaySystemSettings;
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/NsPaySystemSettings/Index.js" asp-append-version="true"></script>
+}
+
+
+
+                <abp-page-subheader title='@L("NsPaySystemSettings")' description='@L("NsPaySystemSettingsHeaderInfo")'>
+                     
+                     @if (IsGranted(AppPermissions.Pages_NsPaySystemSettings_Create))
+                     {
+                         <button id="CreateNewNsPaySystemSettingButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewNsPaySystemSetting")</button>                
+                     }
+                </abp-page-subheader>
+            
+<div class="@(await GetContainerClass())">   
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">                        
+                        
+                        
+                <div class="my-3">
+                    <div class="input-group">
+                        <input type="text" id="NsPaySystemSettingsTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                        <button id="GetNsPaySystemSettingsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>                        
+                    </div>
+                </div>
+            
+                    </div>
+                </div>
+			</div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+						
+					</div>
+
+							<div class="col-md-3">
+								<div class="my-3">
+									<label class="form-label" for="KeyFilterId">@L("Key")</label>
+									<input type="text" class="form-control reload-on-keyup" name="keyFilter" id="KeyFilterId">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="my-3">
+									<label class="form-label" for="ValueFilterId">@L("Value")</label>
+									<input type="text" class="form-control reload-on-keyup" name="valueFilter" id="ValueFilterId">
+								</div>
+                            </div>
+
+
+                    <div class="col-md-12 mt-5">
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            <div class="row align-items-center">
+                <table id="NsPaySystemSettingsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            
+                            <th>@L("Actions")</th>
+								<th>@L("Key")</th>
+								<th>@L("Value")</th>                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

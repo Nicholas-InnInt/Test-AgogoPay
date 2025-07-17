@@ -1,0 +1,28 @@
+﻿@using Neptune.NsPay.Common
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@model WithdrawalOrderDisplayProofModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("TransactionProof")))
+<div class="modal-body">
+    <div id="ViewProofModal">
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("OrderNumber") :</h6>
+                @Model.OrderNumber
+            </div>
+        </div>
+        <div class="row">
+           
+            <div class="col-12">
+                <h6>@L("TransactionProof") :</h6>
+                <img style="max-height:70vh ; width:auto" src="@Model.Content.Base64Content" alt="">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")

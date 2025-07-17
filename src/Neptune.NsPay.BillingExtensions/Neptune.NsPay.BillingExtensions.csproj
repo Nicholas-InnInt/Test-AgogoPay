@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.MongoDbExtensions\Neptune.NsPay.MongoDbExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

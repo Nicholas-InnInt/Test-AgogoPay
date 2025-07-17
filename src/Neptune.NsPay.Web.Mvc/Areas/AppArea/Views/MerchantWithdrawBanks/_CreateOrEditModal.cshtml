@@ -1,0 +1,60 @@
+﻿@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdrawBanks
+@model CreateOrEditMerchantWithdrawBankModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantWithdrawBank")) : L("CreateNewMerchantWithdrawBank")))
+
+
+<div class="modal-body">
+	<div id="MerchantWithdrawBankInformationsTab">
+		<form name="MerchantWithdrawBankInformationsForm" role="form" novalidate class="form-validation">
+
+			@if (Model.IsEditMode)
+			{
+				<input type="hidden" name="id" value="@Model.MerchantWithdrawBank.Id" />
+			}
+
+			@* 				<div class="my-3">
+					<label class="form-label" for="MerchantWithdrawBank_MerchantCode">@L("MerchantCode")</label>
+					<input class="form-control" id="MerchantWithdrawBank_MerchantCode" value="@Model.MerchantWithdrawBank.MerchantCode" type="text" name="merchantCode"   maxlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MaxMerchantCodeLength"  minlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MinMerchantCodeLength"  />
+				</div> *@
+
+			<div class="my-3">
+				<label class="form-label" for="MerchantWithdrawBank_BankName">@L("WithdrawBankName")</label>
+				<span class="text-danger">*</span>
+				<input class="form-control" id="MerchantWithdrawBank_BankName" value="@Model.MerchantWithdrawBank.BankName" type="text" name="bankName" maxlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MaxBankNameLength" minlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MinBankNameLength"   required />
+			</div>
+
+			<div class="my-3">
+				<label class="form-label" for="MerchantWithdrawBank_ReceivCard">@L("WithdrawReceivCard")</label>
+				<span class="text-danger">*</span>
+				<input class="form-control" id="MerchantWithdrawBank_ReceivCard" value="@Model.MerchantWithdrawBank.ReceivCard" type="number" inputmode="numeric" name="receivCard" maxlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MaxReceivCardLength" minlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MinReceivCardLength" required />
+			</div>
+
+			<div class="my-3">
+				<label class="form-label" for="MerchantWithdrawBank_ReceivName">@L("WithdrawReceivName")</label>
+				<span class="text-danger">*</span>
+				<input class="form-control" id="MerchantWithdrawBank_ReceivName" value="@Model.MerchantWithdrawBank.ReceivName" type="text" name="receivName" maxlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MaxReceivNameLength" minlength="@Neptune.NsPay.MerchantWithdrawBanks.MerchantWithdrawBankConsts.MinReceivNameLength" pattern="^[a-zA-Z0-9 ]+$" required />
+			</div>
+
+			@*                                 <label class="form-check form-check-custom">
+                    <input
+                        id="MerchantWithdrawBank_Status"
+                        name="status"                                        
+                        type="checkbox"
+                        class="form-check-input"
+                        value="true"
+                        @Html.Raw(Model.MerchantWithdrawBank.Status ?"checked=\"checked\"":"") 
+                    />
+                    <span class="form-check-label">
+                        @L("Status")
+                    </span>
+                </label> *@
+
+
+		</form>
+	</div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

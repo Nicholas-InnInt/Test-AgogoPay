@@ -1,0 +1,169 @@
+﻿@using Abp.Extensions
+@using System.Globalization
+@using Neptune.NsPay.Merchants
+@using Neptune.NsPay.Utils
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Merchants
+@model CreateOrEditMerchantModalViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchant")) : L("CreateNewMerchant")))
+
+<div class="modal-body">
+    <div id="MerchantInformationsTab">
+        <form name="MerchantInformationsForm" role="form" novalidate class="form-validation">
+            @if (Model.IsEditMode)
+            {
+                <input type="hidden" name="id" value="@Model.Merchant.Id" />
+            }
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_Name">@L("Name")</label> <span class="text-danger">*</span>
+                    <input class="form-control" id="Merchant_Name" value="@Model.Merchant.Name" type="text" name="name"
+                           minlength="@Neptune.NsPay.Merchants.MerchantConsts.MinNameLength" maxlength="@Neptune.NsPay.Merchants.MerchantConsts.MaxNameLength" required />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_Mail">@L("Mail")</label> <span class="text-danger">*</span>
+                    <input class="form-control" id="Merchant_Mail" value="@Model.Merchant.Mail" type="email" name="mail" required />
+                </div>
+            </div>
+
+            <div class="row my-3">
+                @{
+                    var selectListType = Html.GetEnumSelectList(typeof(MerchantTypeEnum));
+                    foreach (var selectOption in selectListType) { selectOption.Text = L("Enum_MerchantTypeEnum_" + selectOption.Value); }
+                }
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_MerchantType">@L("MerchantType")</label> <span class="text-danger">*</span>
+                    <select class="form-select m-input m-input--square select2" name="merchantType" id="Merchant_MerchantType" asp-for="@Model.Merchant.MerchantType" asp-items="@selectListType" required>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class=" col-lg-6">
+                    <label class="form-label" for="Merchant_Phone">@L("Phone") <span class="text-danger">*</span></label>
+                    <div class="row">
+                        <div class="col-4">
+                            <select id="Merchant_PhoneCountryCode" class="select2" name="phoneCountryCode">
+                                @foreach (var countryCode in Enum.GetValues<CountryCodeEnum>())
+                                {
+                                    var countryCodeValue = countryCode.ToInt();
+                                    if (Model.Merchant.PhoneCountryCode == countryCode)
+                                    {
+                                        <option value="@countryCodeValue" selected>+@countryCodeValue</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@countryCodeValue">+@countryCodeValue</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <input class="form-control" id="Merchant_Phone" value="@Model.Merchant.Phone" name="phone" type="tel" inputmode="numeric"
+                                   minlength="@Neptune.NsPay.Merchants.MerchantConsts.MinPhoneLength" maxlength="@Neptune.NsPay.Merchants.MerchantConsts.MaxPhoneLength" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_PlatformCode">@L("PlatformCode")</label> <span class="text-danger">*</span>
+                    <select class="form-control select2" id="Merchant_PlatformCode" name="platformCode" required>
+                        @foreach (var selectOption in Model.PlatformCode)
+                        {
+                            if (Model.Merchant.PlatformCode == selectOption)
+                            {
+                                <option value="@selectOption" selected>@selectOption</option>
+                            }
+                            else
+                            {
+                                <option value="@selectOption">@selectOption</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_ScanBankRate">@L("ScanBankRate") [%]</label>
+                    <input class="form-control" id="Merchant_ScanBankRate" value="@Model.MerchantRate.ScanBankRate" type="number" name="ScanBankRate" min="0" max="100" step="0.01" />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_ScratchCardRate">@L("ScratchCardRate") [%]</label>
+                    <input class="form-control" id="Merchant_ScratchCardRate" value="@Model.MerchantRate.ScratchCardRate" type="number" name="ScratchCardRate" min="0" max="100" step="0.01" />
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_MoMoRate">@L("MoMoRate") [%]</label>
+                    <input class="form-control" id="Merchant_MoMoRate" value="@Model.MerchantRate.MoMoRate" type="number" name="MoMoRate" min="0" max="100" step="0.01" />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_ZaloRate">@L("ZaloRate") [%]</label>
+                    <input class="form-control" id="Merchant_ZaloRate" value="@Model.MerchantRate.MoMoRate" type="number" name="ZaloRate" min="0" max="100" step="0.01" />
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_USDTFixedFees">@L("USDTFixedFees")</label>
+                    <input class="form-control" id="Merchant_USDTFixedFees" value="@Model.MerchantRate.USDTFixedFees" type="number" name="USDTFixedFees" min="0" max="100" step="0.01" />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_USDTRateFees">@L("USDTRateFees") [%]</label>
+                    <input class="form-control" id="Merchant_USDTRateFees" value="@Model.MerchantRate.USDTRateFees" type="number" name="USDTRateFees" min="0" max="100" step="0.01" />
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayGroupId">@L("PayGroupId")</label> <span class="text-danger">*</span>
+                    <select class="form-control select2" id="PayGroupId" name="PayGroupId" required>
+                        <option value="-1" selected="selected">@L("ChooseSelectItem")</option>
+                        @foreach (var selectOption in Model.PayGroups)
+                        {
+                            if (Model.Merchant.PayGroupId == selectOption.Id)
+                            {
+                                <option value="@selectOption.Id" selected>@selectOption.GroupName</option>
+                            }
+                            else
+                            {
+                                <option value="@selectOption.Id">@selectOption.GroupName</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="Merchant_CountryType">@L("CountryType")</label> <span class="text-danger">*</span>
+                    <select class="form-control select2" id="Merchant_CountryType" name="countryType" required>
+                        @foreach (var selectOption in Model.Countries)
+                        {
+                            if (Model.Merchant.CountryType == selectOption)
+                            {
+                                <option value="@selectOption" selected>@selectOption</option>
+                            }
+                            else
+                            {
+                                <option value="@selectOption">@selectOption</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row my-3">
+                <label class="form-label" for="Merchant_Remark">@L("Remark")</label>
+                <input class="form-control" id="Merchant_Remark" value="@Model.Merchant.Remark" type="text" name="remark" maxlength="500" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

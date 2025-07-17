@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.3.2" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.Core.Shared\Neptune.NsPay.Core.Shared.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.HttpExtensions\Neptune.NsPay.HttpExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="JS\Bidv\" />
+    <Folder Include="JS\Vtb\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="JS\package.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JS\Bidv\bidv.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JS\Bidv\decryptResponse.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JS\Bidv\encryptRequest_getexternalbeneficiary.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JS\Bidv\encryptRequest_getinternalbeneficiary.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

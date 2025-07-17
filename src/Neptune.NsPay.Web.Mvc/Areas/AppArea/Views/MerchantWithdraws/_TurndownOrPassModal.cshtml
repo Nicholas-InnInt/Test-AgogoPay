@@ -1,0 +1,24 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdraws
+@model TurndownOrPassMerchantWithdrawModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("AuditTurndownMerchantWithdraw")) : L("CreateNewMerchantWithdraw")))
+
+<div class="modal-body">
+    <div id="MerchantWithdrawInformationsTab">
+        <form name="WithdrawTurndownOrPassForm" role="form" novalidate class="form-validation">
+            
+            <input type="hidden" name="id" value="@Model.MerchantWithdraw.Id" />
+
+            <div class="form-group">
+                <label for="MerchantWithdraw_ReviewMsg">@L("AuditTurndownReviewMsg")</label>
+                <textarea id="MerchantWithdraw_ReviewMsg" name="reviewMsg" auto-focus class="form-control" rows="4"></textarea>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

@@ -1,0 +1,130 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantBills
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantBillsViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.PayOrder.MerchantBills;
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/MerchantBills/Index.js" asp-append-version="true"></script>
+}
+
+
+
+<abp-page-subheader title='@L("MerchantBills")' description='@L("MerchantBillsHeaderInfo")'>
+        <button id="ExportToExcelButton" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button>
+            
+</abp-page-subheader>
+            
+<div class="@(await GetContainerClass())">   
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">                        
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" id="MerchantBillsTableFilterId" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                                <button id="GetMerchantBillsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+						
+					</div>
+                    @{
+                    if (Model.IsShowMerchant)
+                    {
+				        <div class="col-md-3">
+					        <div class="my-3">
+						        <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                                <select id="MerchantCodeFilterId" name="merchantCodeFilter" class="form-select reload-on-change select2">
+                                </select>
+					        </div>
+                        </div>
+                        }
+                    }
+					<div class="col-md-3">
+						<div class="my-3">
+							<label class="form-label" for="BillNoFilterId">@L("BillNo")</label>
+							<input type="text" class="form-control reload-on-keyup" name="billNoFilter" id="BillNoFilterId">
+						</div>
+                    </div>
+					<div class="col-md-3">
+						<div class="my-3">
+							<label class="form-label" for="BillTypeFilterId">@L("BillType")</label>
+                        <select class="form-select reload-on-change " name="BillTypeFilter" id="BillTypeFilterId">
+							    <option value="-1">@L("All")</option>
+								<option value="1">@L("Enum_MerchantBillTypeEnum_1")</option>
+								<option value="2">@L("Enum_MerchantBillTypeEnum_2")</option>
+							</select>
+						</div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="my-3">
+                            <label class="form-label" for="UtcTimeFilterId">GMT</label>
+                            <select class="form-select reload-on-change " name="UtcTimeFilter" id="UtcTimeFilterId">
+                                <option value="GMT7+" selected>GMT+7</option>
+                                <option value="GMT8+">GMT+8</option>
+                                <option value="GMT4-">GMT-4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                        <label for="OrderCreationTimeRange" class="form-label">@L("CreationTime")</label>
+                            <input id="OrderCreationTimeRange" type="text" class="form-control reload-on-keyup date-range-picker"/>
+                        </div>
+                    </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label for="OrderTransactionTimeRange" class="form-label">@L("TransactionTime")</label>
+                        <input id="OrderTransactionTimeRange" type="text" class="form-control reload-on-keyup date-range-picker" />
+                    </div>
+                </div>
+@*                     <div class="col-md-3">
+                        <div class="my-3">
+							<label class="form-label" for="MinCreationTimeFilterId">@L("CreationTimeRange")</label>
+							<div class="input-group">
+								<input class="form-control m-input date-picker startDate" type="text" placeholder="@L("MinValue")"  
+                                    id="MinCreationTimeFilterId" name="MinCreationTimeFilter">
+								<span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+								<input class="form-control m-input date-picker endDate" type="text" placeholder="@L("MaxValue")"  
+                                id="MaxCreationTimeFilterId" name="MaxCreationTimeFilter">
+							</div>
+						</div>
+                    </div> *@
+                    <div class="col-md-12 mt-5">
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            <div class="row align-items-center">
+                <table id="MerchantBillsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("BillNo")</th>
+                            <th>@L("BillType")</th>
+                            <th>@L("Money")</th>
+                            <th>@L("FeeMoney")</th>
+                            <th>@L("BalanceBefore")</th>
+                            <th>@L("BalanceAfter")</th>
+                            <th>@L("CreationTime")</th>
+                            <th>@L("TransactionTime")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

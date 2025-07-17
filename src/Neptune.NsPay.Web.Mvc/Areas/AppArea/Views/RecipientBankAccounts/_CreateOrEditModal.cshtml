@@ -1,0 +1,55 @@
+﻿@using System.Globalization
+@using Neptune.NsPay.Merchants
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.RecipientBankAccounts
+@model CreateOrEditRecipientBankAccountsViewModal
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditRecipient")) : L("CreateNewRecipient")))
+
+<div class="modal-body">
+	<div id=CreateOrEditRecipientBankAccountModal">
+		<form name="RecipientBankAccountsForm" role="form" novalidate class="form-validation">
+
+	@if (Model.IsEditMode)
+	{
+				<input type="hidden" name="Id" value="@Model.RecipientBankAccounts.Id" />
+	}
+			<div class="row my-3">
+				<div class="form-group col-lg-12">
+					<label class="form-label" for="MerchantId">@L("MerchantId")</label>
+					<select id="MerchantId" name="MerchantId" class="form-select select2"
+							data-selected-merchant="@Model.RecipientBankAccounts.MerchantId">
+						<option value="">@L("SelectMerchant")</option> 
+					</select>
+
+				</div>
+		     </div>
+
+			<div class="row my-3">
+				<div class="form-group col-lg-12">
+					<label class="form-label" for="HolderName">@L("Holdername")</label> <span class="text-danger">*</span>
+					<input class="form-control" id="HolderName" value="@Model.RecipientBankAccounts.HolderName" type="text" maxlength="@Neptune.NsPay.RecipientBankAccounts.RecipientBankAccountsConsts.MaxHolderName" minlength="@Neptune.NsPay.RecipientBankAccounts.RecipientBankAccountsConsts.MinHolderName" name="HolderName" required />
+				</div>
+			</div>
+
+			<div class="row my-3">
+				<div class="form-group col-lg-12">
+					<label class="form-label" for="AccountNumber">@L("AccountNumber")</label> <span class="text-danger">*</span>
+					<input class="form-control" id="AccountNumber" value="@Model.RecipientBankAccounts.AccountNumber" type="number" pattern="@Neptune.NsPay.PayMents.PayMentConsts.CardNumberRegex" inputmode="numeric"
+						   maxlength="@Neptune.NsPay.RecipientBankAccounts.RecipientBankAccountsConsts.MaxCardNumberLength" minlength="@Neptune.NsPay.RecipientBankAccounts.RecipientBankAccountsConsts.MinCardNumberLength" name="AccountNumber" required />
+				</div>
+				<div class="form-group col-lg-12">
+					<label class="form-label" for="BankName">@L("BankName")</label> <span class="text-danger">*</span>
+					<select id="BankName" name="BankName" class="form-select select2"
+							data-selected-bankname="@Model.RecipientBankAccounts.BankName" required>
+						<option value="">@L("SelectBank")</option>
+					</select>
+				</div>
+
+			</div>
+
+		</form>
+	</div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

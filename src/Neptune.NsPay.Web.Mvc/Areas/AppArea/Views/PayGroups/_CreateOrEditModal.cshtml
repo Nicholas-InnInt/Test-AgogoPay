@@ -1,0 +1,59 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayGroups
+@model CreateOrEditPayGroupModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditPayGroup")) : L("CreateNewPayGroup")))
+
+<div class="modal-body">
+        <div id="PayGroupInformationsTab">
+            <form name="PayGroupInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.PayGroup.Id" />
+                }
+
+				
+                
+				
+                
+								<div class="my-3 form-group">
+									<label class="form-label" for="PayGroup_GroupName">@L("GroupName")</label>
+                                    <span class="text-danger">*</span>
+									<input class="form-control" id="PayGroup_GroupName" value="@Model.PayGroup.GroupName" type="text" name="groupName"   maxlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MaxGroupNameLength"  minlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MinGroupNameLength" required  />
+								</div>
+					
+								<div class="my-3 form-group">
+									<label class="form-label" for="PayGroup_BankApi">@L("BankApi")</label>
+                                    <span class="text-danger">*</span>
+									<input class="form-control" id="PayGroup_BankApi" value="@Model.PayGroup.BankApi" type="text" name="bankApi"   maxlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MaxBankApiLength"  minlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MinBankApiLength" required />
+								</div>
+					
+								<div class="my-3 form-group">
+									<label class="form-label" for="PayGroup_VietcomApi">@L("VietcomApi")</label>
+                                    <span class="text-danger">*</span>
+									<input class="form-control" id="PayGroup_VietcomApi" value="@Model.PayGroup.VietcomApi" type="text" name="vietcomApi"   maxlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MaxVietcomApiLength"  minlength="@Neptune.NsPay.PayGroups.PayGroupConsts.MinVietcomApiLength" required />
+								</div>
+					
+                                <label class="form-check form-check-custom">
+                                    <input
+                                        id="PayGroup_Status"
+                                        name="status"                                        
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        value="true"
+                                        @Html.Raw(Model.PayGroup.Status ?"checked=\"checked\"":"") 
+                                    />
+                                    <span class="form-check-label">
+                                        @L("Status")
+                                    </span>
+                                </label>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

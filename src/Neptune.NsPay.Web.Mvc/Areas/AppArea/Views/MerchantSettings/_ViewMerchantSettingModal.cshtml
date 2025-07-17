@@ -1,0 +1,76 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantSettings
+@model MerchantSettingViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantSettingInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.MerchantSetting.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantId") :</h6>
+                @Model.MerchantSetting.MerchantId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("NsPayTitle") :</h6>
+                @Model.MerchantSetting.NsPayTitle
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("LogoUrl") :</h6>
+                @Model.MerchantSetting.LogoUrl
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("LoginIpAddress") :</h6>
+                @Model.MerchantSetting.LoginIpAddress
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankNotify") :</h6>
+                @Model.MerchantSetting.BankNotify
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankNotifyText") :</h6>
+                @Model.MerchantSetting.BankNotifyText
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("TelegramNotifyBotId") :</h6>
+                @Model.MerchantSetting.TelegramNotifyBotId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("TelegramNotifyChatId") :</h6>
+                @Model.MerchantSetting.TelegramNotifyChatId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OpenRiskWithdrawal") :</h6>
+                @Model.MerchantSetting.OpenRiskWithdrawal
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PlatformUrl") :</h6>
+                @Model.MerchantSetting.PlatformUrl
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantConfigPlatformUserName") :</h6>
+                @Model.MerchantSetting.PlatformUserName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantConfigPlatformPassWord") :</h6>
+                @Model.MerchantSetting.PlatformPassWord
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantConfigPlatformLimitMoney") :</h6>
+                @Model.MerchantSetting.PlatformLimitMoney
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

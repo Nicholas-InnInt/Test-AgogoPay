@@ -1,0 +1,24 @@
+{
+  "QuartzJobs": [
+    {
+      "JobType": "Neptune.NsPay.MongoToSqlWorker.Jobs.ProcessSyncMerchantBills",
+      "TriggerType": "cron",
+      "CronExpression": "0 1 0 ? * * *"
+    },
+    {
+      "JobType": "Neptune.NsPay.MongoToSqlWorker.Jobs.ProcessSyncPayOrderDeposits",
+      "TriggerType": "cron",
+      "CronExpression": "0 1 0 ? * * *"
+    },
+    {
+      "JobType": "Neptune.NsPay.MongoToSqlWorker.Jobs.ProcessSyncPayOrders",
+      "TriggerType": "cron",
+      "CronExpression": "0 1 0 ? * * *"
+    },
+    {
+      "JobType": "Neptune.NsPay.MongoToSqlWorker.Jobs.ProcessSyncWithdrawalOrders",
+      "TriggerType": "cron",
+      "CronExpression": "0 1 0 ? * * *"
+    }
+  ]
+}

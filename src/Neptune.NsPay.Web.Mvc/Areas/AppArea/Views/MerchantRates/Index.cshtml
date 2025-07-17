@@ -1,0 +1,119 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantRates
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantRatesViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.Merchant.MerchantRates;
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/MerchantRates/Index.js" asp-append-version="true"></script>
+}
+
+
+
+                <abp-page-subheader title='@L("MerchantRates")' description='@L("MerchantRatesHeaderInfo")'>
+                     
+                     @if (IsGranted(AppPermissions.Pages_MerchantRates_Create))
+                     {
+                         <button id="CreateNewMerchantRateButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewMerchantRate")</button>                
+                     }
+                </abp-page-subheader>
+            
+<div class="@(await GetContainerClass())">   
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">                        
+                        
+                        
+                <div class="my-3">
+                    <div class="input-group">
+                        <input type="text" id="MerchantRatesTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                        <button id="GetMerchantRatesButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>                        
+                    </div>
+                </div>
+            
+                    </div>
+                </div>
+			</div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+						
+					</div>
+
+
+							<div class="col-md-3">
+								<div class="my-3">
+									<label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+									<input type="text" class="form-control reload-on-keyup" name="merchantCodeFilter" id="MerchantCodeFilterId">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinMerchantIdFilterId">@L("MinMax") @L("MerchantId")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minMerchantIdFilter" id="MinMerchantIdFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxMerchantIdFilter"  id="MaxMerchantIdFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinScanBankRateFilterId">@L("MinMax") @L("ScanBankRate")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minScanBankRateFilter" id="MinScanBankRateFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxScanBankRateFilter"  id="MaxScanBankRateFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinScratchCardRateFilterId">@L("MinMax") @L("ScratchCardRate")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minScratchCardRateFilter" id="MinScratchCardRateFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxScratchCardRateFilter"  id="MaxScratchCardRateFilterId"/>
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <div class="my-3">
+									<label class="form-label" for="MinMoMoRateFilterId">@L("MinMax") @L("MoMoRate")</label>
+									<div class="input-group">
+										<input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MinValue")" name="minMoMoRateFilter" id="MinMoMoRateFilterId"/>
+                                        <input type="number" class="form-control m-input reload-on-keyup" placeholder="@L("MaxValue")" name="maxMoMoRateFilter"  id="MaxMoMoRateFilterId"/>
+									</div>
+                                </div>
+                            </div>
+
+
+                    <div class="col-md-12 mt-5">
+                        <button class="btn btn-secondary btn-sm" id="btn-reset-filters">Reset</button>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            <div class="row align-items-center">
+                <table id="MerchantRatesTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            
+                            <th>@L("Actions")</th>
+								<th>@L("MerchantCode")</th>
+								<th>@L("MerchantId")</th>
+								<th>@L("ScanBankRate")</th>
+								<th>@L("ScratchCardRate")</th>
+								<th>@L("MoMoRate")</th>                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

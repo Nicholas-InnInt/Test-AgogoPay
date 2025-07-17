@@ -1,0 +1,27 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrders
+@using Abp.Extensions
+@model PayOrderModel
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("BatchEnforceCallback")))
+
+<div class="modal-body">
+    <div id="EditPayOrderModel">       
+    <form name="EditPayorderForm" role="form" novalidate class="form-validation">
+    <div class="my-3 form-group">
+        <label class="form-label" for="PayOrder_OrderNo">@L("OrderNo")</label><br />
+        @foreach (var payOrder in Model.ListEditPayOrder)
+        {
+            <label class="form-label" name="OrderId"  for="PayOrder_OrderNo">@payOrder.OrderNumber</label>
+            <input type="hidden" name="OrderId" value="@payOrder.OrderId" />
+            <br />
+        }
+    </div>
+        <div class="form-group row   my-3">
+            <label class="form-label" for="totalOrder">@L("TotalOrder")</label>
+            <label class="form-label" name="totalOrder">@Model.OrderTotalCount</label>
+        </div>
+    </form>
+ </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.AccountCheckerClientExtension\Neptune.NsPay.AccountCheckerClientExtension.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.ELKLogExtension\Neptune.NsPay.ELKLogExtension.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.KafkaExtensions\Neptune.NsPay.KafkaExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.PlatfromServices\Neptune.NsPay.PlatfromServices.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

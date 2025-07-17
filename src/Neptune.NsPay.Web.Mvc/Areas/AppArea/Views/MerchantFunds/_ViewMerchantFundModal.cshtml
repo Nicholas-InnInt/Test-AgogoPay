@@ -1,0 +1,52 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantFunds
+@model MerchantFundViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantFundInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.MerchantFund.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantId") :</h6>
+                @Model.MerchantFund.MerchantId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("DepositAmount") :</h6>
+                @Model.MerchantFund.DepositAmount
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("WithdrawalAmount") :</h6>
+                @Model.MerchantFund.WithdrawalAmount
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("RateFeeBalance") :</h6>
+                @Model.MerchantFund.RateFeeBalance
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Balance") :</h6>
+                @Model.MerchantFund.Balance
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("CreationTime") :</h6>
+                @Model.MerchantFund.CreationTime
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("UpdateTime") :</h6>
+                @Model.MerchantFund.UpdateTime
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

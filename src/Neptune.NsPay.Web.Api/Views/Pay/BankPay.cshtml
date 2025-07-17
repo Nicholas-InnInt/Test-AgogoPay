@@ -1,0 +1,315 @@
+﻿@using Neptune.NsPay.PayMents;
+@{
+    Layout = null;
+}
+@model PayViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+    <title>Thanh toán</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toast/jquery.toast.min.js"></script>
+    <link href="~/lib/toast/jquery.toast.min.css" rel="stylesheet" />
+    <link href="~/css/paybank.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="headerBar">
+        <div class="backBtn phoneBackBtn" id="mainBack">
+            <div>Quay lại</div>
+            <img src="~/img/backBtn.png" alt="">
+        </div>
+        <div class="platformName"></div>
+        <div class="timerCountdown" id="divheaderCountDown">
+            <span>Thời gian phiên</span>
+            <div id="countdownTimer">10:00</div>
+        </div>
+    </div>
+    <div id="paymentContainer" class="paymentContainerNew">
+        <div class="backBtn pcBackBtn" id="paymentBack">
+            <img src="~/img/backBtn.png" alt="">
+            <div>Quay lại</div>
+        </div>
+        <div class="bankContent">
+            <div class="bankBody">
+                <div id="qrContainer" class="bankQr">
+                    <div class="qrPaymentWrap">
+                        @{
+                            if(Model.QrType==1)
+                            {
+                                <img class="bankQrImg" src="@Model.QrCode" alt="" id="bankQr">
+                            }else
+                            {
+                                <img class="bankQrImg" src="data:image/png;base64,@Model.QrCode" alt="" id="bankQr">
+                            }
+                        }
+                        <div class="bankLogo">
+                            <img src="~/img/banklogo/@Model.PayType.ToString().ToLower()Img.png" alt="" id="bankTransferLogo">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="transferContainer_detail flex-center column">
+                    <div class="userId">
+                        Mã đơn hàng:
+                        <div id="userId">@Model.OrderNo</div>
+                    </div>
+                    <div class="transferAmount">
+                        Số Tiền Cần Chuyển:
+                        <div id="amount">@Model.Money</div>
+                    </div>
+                    <div class="transferDetailContainer">
+                        <div class="transferDetailRow">
+                            <div class="detailRow">
+                                <div class="detailTitle">Ngân hàng</div>
+                                <div class="detailInput">
+                                    <input id="bankName" type="text" disabled="" value="@Model.PayType.ToString()">
+                                </div>
+                            </div>
+                            <div class="detailRow">
+                                <div class="detailTitle">
+                                    Số tài khoản
+                                </div>
+                                <div class="detailInput">
+                                    <input id="accNum" type="text" disabled="" value="@Model.Phone">
+                                    <button class="copyBtn flex-center" onclick="copyBtn('accNum')">COPY</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detailRow">
+                            <div class="detailTitle">Tên người nhận</div>
+                            <div class="detailInput">
+                                <input id="accName" type="text" disabled="" value="@Model.Name">
+                            </div>
+                        </div>
+                        <div class="transferDetailRow">
+                            <div class="detailRow">
+                                <div class="detailTitle">Số Tiền Cần Chuyển</div>
+                                <div class="detailInput">
+                                    <input id="transferAmount" type="text" disabled="" value="@Model.OrderMoney">
+                                    <button class="copyBtn flex-center" onclick="copyBtn('transferAmount')">COPY</button>
+                                </div>
+                            </div>
+                            <div class="detailRow">
+                                <div class="detailTitle">Nội dung chuyển tiền bắt buộc</div>
+                                <div class="detailInput">
+                                    <input id="reference" type="text" disabled="" value="@Model.OrderMark">
+                                    <button class="copyBtn flex-center" onclick="copyBtn('reference')">COPY</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="importantNote">
+            <div class="importantNote_title">LƯU Ý QUAN TRỌNG</div>
+            <ol>
+                <li>Kiểm tra chính xác số tài khoản, tên người nhận, mọi trường hợp chuyển tiền nhầm, không đúng tài khoản đang hiển thị sẽ không được giải quyết.</li>
+                <li>Nhập đúng nội dung chuyển khoản <strong id="bankRefRemark" class="text-red">@Model.OrderMark</strong> để giao dịch được cập nhật nhanh nhất.</li>
+                <li>Chuyển khoản đúng số tiền của giao dịch.</li>
+                <li>Không lưu tài khoản ngân hàng nhận dưới mọi hình thức để tránh mất tiền.</li>
+            </ol>
+        </div>
+    </div>
+
+
+    <input value="" hidden id="BankCode" />
+    <input value="@Model.OrderId" hidden id="OrderId" />
+
+    <div id="failModal" class="modal hidden">
+        <div class="modalContent">
+            <div class="modalContentHead red">
+                <img src="~/img/error.png" alt="">
+            </div>
+            <div class="modalContentBody">
+                <div class="modalTitle">Giao dịch thất bại</div>
+                <div class="modalDesc">Vui lòng kiểm tra lại thông tin thanh toán của bạn và thử thực hiện lại giao dịch.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="timeoutModal" class="modal hidden">
+        <div class="modalContent">
+            <div class="modalContentHead yellow">
+                <img src="~/img/timeout.png" alt="">
+            </div>
+            <div class="modalContentBody">
+                <div class="modalTitle">Hết thời gian phiên làm việc</div>
+                <div class="modalDesc">Phiên làm việc của bạn đã hết hạn.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="successContainer hidden">
+        <div class="successContent">
+            <img src="~/img/successLogo.png" alt="" class="successLogo">
+            <div class="successTitle">Thanh toán thành công!</div>
+            <hr>
+            <div class="successDesc">Tóm tắt của bạn</div>
+
+            <div class="successDetail">
+                <div class="transDetailRow">
+                    <div class="transDetail">Mã đơn hàng</div>
+                    <div class="transDetailItem" data-orderno>@Model.OrderNo</div>
+                </div>
+                <div class="transDetailRow">
+                    <div class="transDetail">Ngân hàng</div>
+                    <div class="transDetailItem" data-bankname>@Model.PayType.ToString()</div>
+                </div>
+                <div class="transDetailRow">
+                    <div class="transDetail">Tên người nhận</div>
+                    <div class="transDetailItem" data-accountname>@Model.Name</div>
+                </div>
+                <div class="transDetailRow">
+                    <div class="transDetail">Số tiền cần chuyển</div>
+                    <div class="transDetailItem" data-orderamount>@Model.OrderMoney</div>
+                </div>
+                <div class="transDetailRow">
+                    <div class="transDetail">Số tài khoản</div>
+                    <div class="transDetailItem" data-accountnumber>@Model.Phone</div>
+                </div>
+                <div class="transDetailRow">
+                    <div class="transDetail">Nội dung chuyển tiền bắt buộc</div>
+                    <div class="transDetailItem" data-referencenumber>@Model.OrderMark</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast  -->
+    <div id="toast" class="flex-center toast hidden">
+        <div id="toastMsg" class="toastMsg"></div>
+    </div>
+
+    <script>
+
+        document.getElementById("paymentBack").addEventListener("click", () => {
+            window.location.href = `/Pay/Bank?orderid=` + $("#OrderId").val();
+        })
+
+        // Toast 功能  用法toast("....")
+        const toast = (infoMsg) => {
+            $.toast({
+                text: infoMsg,
+                position: 'buttom-right',
+                stack: false,
+                icon: 'success',
+                showHideTransition: 'fade'
+            })
+        }
+
+        var setTimeoutTimer = null;
+        const countdown = (elementName, minutes, seconds) => {
+            var element, endTime, hours, mins, msLeft, time
+
+            // if not pass minutes &&  seconds then will not set timer
+            clearTimeout(setTimeoutTimer); // reset timer
+
+            if (minutes != null && seconds != null) {
+
+                const twoDigits = (n) => {
+                    return n <= 9 ? "0" + n : n
+                }
+
+
+                const updateTimer = () => {
+                    msLeft = endTime - +new Date()
+                    if (msLeft < 1000) {
+                        //倒数时间到处理
+                        document.getElementById("timeoutModal").classList.remove("hidden");
+                    } else {
+                        time = new Date(msLeft)
+                        hours = time.getUTCHours()
+                        mins = time.getUTCMinutes()
+                        element.innerHTML = (hours ? hours + ":" + twoDigits(mins) : mins) + ":" + twoDigits(time.getUTCSeconds())
+                        setTimeoutTimer = setTimeout(updateTimer, time.getUTCMilliseconds() + 500)
+                    }
+                }
+
+                element = document.getElementById(elementName)
+                endTime = +new Date() + 1000 * (60 * minutes + seconds) + 500
+                updateTimer()
+            }
+
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            countdown("countdownTimer", 15, 0);
+            qrSecurity(true);
+        })
+
+        const copyBtn = async (id) => {
+            let text = document.getElementById(`${id}`).value
+            try {
+                await navigator.clipboard.writeText(text)
+                if (id == "accNum") {
+                    toast("Copy thành công", 1)
+                } else {
+                    toast("Copy thành công", 0)
+                }
+            } catch (err) {
+                toast("Failed to copy: ", err)
+            }
+        }
+
+
+        const successPayment = () => {
+            var successModalElem = document.getElementById("successModal");
+
+            if (successModalElem) {
+                document.getElementById("paymentContainer").classList.add("hidden");
+                successModalElem.classList.remove("hidden");
+            }
+            countdown("countdownTimer");
+        };
+
+        var checkTimeOutIntervalTimer = null;
+        const qrSecurity = (isStartTimer) => {
+
+            if (checkTimeOutIntervalTimer != null) {
+                clearInterval(checkTimeOutIntervalTimer);
+            }
+
+            if (isStartTimer) {
+                checkTimeOutIntervalTimer = setInterval(() => {
+
+                    var currentdate = new Date();
+                    var logContent = "Check Status: " + currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @@ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+
+                    fetch("/Pay/CheckOrderStatus?orderId=@Model.OrderId", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        redirect: "follow",
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.statusCode == 200) {
+                                qrSecurity(false);
+                                successPayment();
+                            } else if (data.statusCode == 600) {
+                                qrSecurity(false);
+                                document.getElementById("failModal").classList.remove("hidden");
+                            } else {
+                            }
+                        })
+                }, 1000)
+            }
+        }
+    </script>
+
+</body>
+</html>

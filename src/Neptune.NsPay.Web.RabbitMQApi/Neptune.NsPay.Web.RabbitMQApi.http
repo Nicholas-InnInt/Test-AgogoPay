@@ -1,0 +1,6 @@
+@Neptune.NsPay.Web.RabbitMQApi_HostAddress = http://localhost:5156
+
+GET {{Neptune.NsPay.Web.RabbitMQApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

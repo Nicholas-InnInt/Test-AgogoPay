@@ -1,0 +1,177 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model PayOrdersViewModel
+
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.PayOrder.PayOrdersCrypto;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/PayOrdersCrypto/Index.js" asp-append-version="true"></script>
+}
+
+<abp-page-subheader title='@L("PayOrders")' description='@L("PayOrdersHeaderInfo")'>
+    @* <button id="ExportToExcelButton" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button> *@
+</abp-page-subheader>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <section class="my-4">
+                <div class="input-group">
+                    <input type="text" id="PayOrdersCryptoTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                    <button id="GetPayOrdersButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                </div>
+
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row py-2">
+                    @if (Model.IsShowMerchant)
+                    {
+                        <div class="col-md-3">
+                            <div class="my-3">
+                                <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                                <select id="MerchantCodeFilterId" name="merchantCodeFilter" class="form-select reload-on-change select2">
+                                </select>
+                            </div>
+                        </div>
+                    }
+
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderNoFilterId">@L("OrderNo")</label>
+                            <input type="text" class="form-control reload-on-keyup" name="orderNoFilter" id="OrderNoFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderMarkFilterId">@L("OrderMark")</label>
+                            <input type="text" class="form-control reload-on-keyup" name="orderMarkFilter" id="OrderMarkFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderTypeFilterId">@L("OrderType")</label>
+                            <select class="form-select reload-on-change " name="OrderTypeFilter" id="OrderTypeFilterId">
+                                <option value="-1">@L("All")</option>
+                                <option value="1">@L("Enum_PayOrderOrderTypeEnum_1")</option>
+                                <option value="2">@L("Enum_PayOrderOrderTypeEnum_2")</option>
+                                <option value="3">@L("Enum_PayOrderOrderTypeEnum_3")</option>
+                                <option value="4">@L("Enum_PayOrderOrderTypeEnum_4")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderBankFilterId">@L("BankName")</label>
+                            <select class="form-select reload-on-change " name="OrderBankFilter" id="OrderBankFilterId">
+                                <option value="-1">@L("All")</option>
+                                @foreach (var bank in PayMentHelper.GetCryptoList)
+                                {
+                                    var bankValue = bank.ToInt();
+                                    <option value="@bankValue">@L($"Enum_PayMentTypeEnum_{bankValue}")</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderStatusFilterId">@L("OrderStatus")</label>
+                            <select class="form-select reload-on-change " name="OrderStatusFilter" id="OrderStatusFilterId">
+                                <option value="-1">@L("All")</option>
+                                <option value="1">@L("Enum_PayOrderOrderStatusEnum_1")</option>
+                                <option value="2">@L("Enum_PayOrderOrderStatusEnum_2")</option>
+                                <option value="3">@L("Enum_PayOrderOrderStatusEnum_3")</option>
+                                <option value="4">@L("Enum_PayOrderOrderStatusEnum_4")</option>
+                                <option value="5">@L("Enum_PayOrderOrderStatusEnum_5")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="ScoreStatusFilterId">@L("ScoreStatus")</label>
+                            <select class="form-select reload-on-change " name="ScoreStatusFilter" id="ScoreStatusFilterId">
+                                <option value="-1">@L("All")</option>
+                                <option value="0">@L("Enum_PayOrderScoreStatusEnum_0")</option>
+                                <option value="1">@L("Enum_PayOrderScoreStatusEnum_1")</option>
+                                <option value="2">@L("Enum_PayOrderScoreStatusEnum_2")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="my-3">
+                            <label class="form-label" for="UtcTimeFilterId">GMT</label>
+                            <select class="form-select reload-on-change " name="UtcTimeFilter" id="UtcTimeFilterId">
+                                <option value="GMT7+" selected>GMT+7</option>
+                                <option value="GMT8+">GMT+8</option>
+                                <option value="GMT4-">GMT-4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label for="OrderCreationTimeRange" class="form-label">@L("OrderCreationTimeRange")</label>
+                            <input id="OrderCreationTimeRange" type="text" class="form-control  reload-on-keyup date-range-picker" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="MinOrderMoneyFilterId">@L("OrderMoney")</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control reload-on-keyup m-input" placeholder="@L("MinValue")" name="minOrderMoneyFilter" id="MinOrderMoneyFilterId" />
+                                <input type="number" class="form-control reload-on-keyup m-input" placeholder="@L("MaxValue")" name="maxOrderMoneyFilter" id="MaxOrderMoneyFilterId" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-5">
+                        <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                    </div>
+                </div>
+
+                <div class="py-4">
+                    <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                    <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                </div>
+            </section>
+
+            <section class="row mb-4">
+                <p class="col-xl-4">@L("OrderTotal"): <span id="OrderTotal"></span></p>
+                <p class="col-xl-4">@L("OrderMoneyTotal"): <span id="OrderMoneyTotal"></span></p>
+                <p class="col-xl-4">@L("FeeMoneyTotal"): <span id="FeeMoneyTotal"></span></p>
+            </section>
+
+            <div class="row align-items-center">
+                <table id="PayOrdersTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                    <input class="form-check-input" type="checkbox" id="select-all-chk" />
+                                </div>
+                            </th>
+                            <th>@L("Actions")</th>
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("OrderNumber")</th>
+                            <th>@L("OrderMoney")</th>
+                            <th>@L("OrderStatus")</th>
+                            <th>@L("OrderPayType")</th>
+                            <th>@L("CryptoWalletAddress")</th>
+                            <th>@L("Remark")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿@using Neptune.NsPay.NsPayBackgroundJobs;
+					@using Neptune.NsPay.NsPayBackgroundJobs;
+					
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.NsPayBackgroundJobs
+@model CreateOrEditNsPayBackgroundJobModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditNsPayBackgroundJob")) : L("CreateNewNsPayBackgroundJob")))
+
+<div class="modal-body">
+        <div id="NsPayBackgroundJobInformationsTab">
+            <form name="NsPayBackgroundJobInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.NsPayBackgroundJob.Id" />
+                }
+
+				
+                
+				
+                
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_Name">@L("Name")</label>
+				<input class="form-control" id="NsPayBackgroundJob_Name" value="@Model.NsPayBackgroundJob.Name" type="text" name="name" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxNameLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinNameLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_GroupName">@L("GroupName")</label>
+				<input class="form-control" id="NsPayBackgroundJob_GroupName" value="@Model.NsPayBackgroundJob.GroupName" type="text" name="groupName" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxGroupNameLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinGroupNameLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_Cron">@L("Cron")</label>
+				<input class="form-control" id="NsPayBackgroundJob_Cron" value="@Model.NsPayBackgroundJob.Cron" type="text" name="cron" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxCronLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinCronLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_ApiUrl">@L("ApiUrl")</label>
+				<input class="form-control" id="NsPayBackgroundJob_ApiUrl" value="@Model.NsPayBackgroundJob.ApiUrl" type="text" name="apiUrl" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxApiUrlLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinApiUrlLength" required />
+								</div>
+					
+								@{
+					var selectListRequsetMode = Html.GetEnumSelectList(typeof(NsPayBackgroundJobRequsetModeEnum));
+					 foreach (var selectOption in selectListRequsetMode) { selectOption.Text = L("Enum_NsPayBackgroundJobRequsetModeEnum_" + selectOption.Value); }
+					}
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_RequsetMode">@L("RequsetMode")</label>
+				<select class="form-select m-input m-input--square" name="requsetMode" id="NsPayBackgroundJob_RequsetMode" asp-for="@Model.NsPayBackgroundJob.RequsetMode" asp-items="@selectListRequsetMode" required>
+									</select>
+								</div>
+					
+								@{
+					var selectListState = Html.GetEnumSelectList(typeof(NsPayBackgroundJobStateEnum));
+					 foreach (var selectOption in selectListState) { selectOption.Text = L("Enum_NsPayBackgroundJobStateEnum_" + selectOption.Value); }
+					}
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_State">@L("State")</label>
+				<select class="form-select m-input m-input--square" name="state" id="NsPayBackgroundJob_State" asp-for="@Model.NsPayBackgroundJob.State" asp-items="@selectListState" required>
+									</select>
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_ParamData">@L("ParamData")</label>
+				<input class="form-control" id="NsPayBackgroundJob_ParamData" value="@Model.NsPayBackgroundJob.ParamData" type="text" name="paramData" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxParamDataLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinParamDataLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_MerchantCode">@L("MerchantCode")</label>
+				<input class="form-control" id="NsPayBackgroundJob_MerchantCode" value="@Model.NsPayBackgroundJob.MerchantCode" type="text" name="merchantCode" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxMerchantCodeLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinMerchantCodeLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_Description">@L("Description")</label>
+				<input class="form-control" id="NsPayBackgroundJob_Description" value="@Model.NsPayBackgroundJob.Description" type="text" name="description" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxDescriptionLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinDescriptionLength" required />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="NsPayBackgroundJob_Remark">@L("Remark")</label>
+				<input class="form-control" id="NsPayBackgroundJob_Remark" value="@Model.NsPayBackgroundJob.Remark" type="text" name="remark" maxlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MaxRemarkLength" minlength="@Neptune.NsPay.NsPayBackgroundJobs.NsPayBackgroundJobConsts.MinRemarkLength" required />
+								</div>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

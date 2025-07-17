@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/toast/jquery.toast.min.js"></script>
+    <link href="~/lib/toast/jquery.toast.min.css" rel="stylesheet" />
+    <link href="~/css/paybank.css" rel="stylesheet" />
+    <title>@Model.MerchantTitle</title>
+</head>
+<body>
+    <div class="headerBar">
+        <div class="platformName">@Model.MerchantTitle</div>
+    </div>
+    <div id="paymentMain" class="container">
+        <div class="paymentRow">
+            @{
+                if (!string.IsNullOrEmpty(Model.MerchantLogoUrl))
+                {
+                    <img src="data:image/png;base64,@Model.MerchantLogoUrl" style="width:250px" alt="">
+                }
+            }
+
+            <div class="paymentDesc">Số tiền cần thanh toán</div>
+            <div class="paymentAmount">@Model.Money</div>
+        </div>
+        <div class="paymentMethodRow">
+            <div class="paymentMethodDesc">Chọn ngân hàng của bạn</div>
+            <div class="paymentMethod">
+
+                @{
+                    foreach (var item in Model.PayMents)
+                    {
+
+                        <div class="paymentMethodItem" onclick="selectBankBtn(this)" data-banklogo="@item.Type.ToString().ToLower()img.png" data-id="@item.Type.ToString()" pay-id="@item.Id">
+                            <img src="~/img/banklogo/@item.Type.ToString().ToLower()img.png" alt="" class="@item.Type.ToString()">
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <input value="" hidden id="BankCode" />
+    <input value="@Model.OrderId" hidden id="OrderId" />
+
+    <script>
+        const selectBankBtn = (selectedBankName) => {
+            console.log(selectedBankName);
+            var bank = selectedBankName.getAttribute("data-id");
+            var payid = selectedBankName.getAttribute("pay-id");
+            var orderId = document.getElementById("OrderId").value;
+            window.location.href = `/Pay/BankPay?orderid=${orderId}&bankcode=${bank}&payid=${payid}`;
+        }
+    </script>
+
+</body>
+</html>

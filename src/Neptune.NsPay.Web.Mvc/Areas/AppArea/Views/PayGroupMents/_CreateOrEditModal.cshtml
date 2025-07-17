@@ -1,0 +1,56 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayGroupMents
+@model CreateOrEditPayGroupMentModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditPayGroupMent")) : L("CreateNewPayGroupMent")))
+
+<div class="modal-body">
+        <div id="PayGroupMentInformationsTab">
+            <form name="PayGroupMentInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.PayGroupMent.Id" />
+                }
+            <div class="my-3">
+                <label class="form-label" for="PayGroupMent_GroupName">@L("GroupName")</label>
+                <input class="form-control" id="PayGroupMent_Group" hidden value="@Model.PayGroupMent.GroupId" type="text" name="groupId" />
+                <input class="form-control" id="PayGroupMent_GroupName" value="@Model.PayGroupMent.GroupName" type="text" readonly />
+            </div>
+					
+            <div class="my-3">
+                <label class="form-label" for="PayGroupMent_GroupName">@L("PayMents")</label>
+                <span class="text-danger">*</span>
+                <select id="TextPayMentSelectionCombobox" name="payMentIds[]"
+                        class="form-control select2" multiple >
+                    @foreach (var payment in Model.PayMents.Where(x =>!Model.PayGroupMent.PayMentIds.Contains(x.Id.Value)))
+                    {
+                        <option value="@payment.Id">
+                            @payment.Name
+                        </option>
+                    }
+                </select>
+            </div>
+					
+            <label class="form-check form-check-custom">
+                <input
+                    id="PayGroupMent_Status"
+                    name="status"                                        
+                    type="checkbox"
+                    class="form-check-input"
+                    value="true"
+                    @Html.Raw(Model.PayGroupMent.Status ?"checked=\"checked\"":"") 
+                />
+                <span class="form-check-label">
+                    @L("Status")
+                </span>
+            </label>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

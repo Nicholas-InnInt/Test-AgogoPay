@@ -1,0 +1,152 @@
+﻿@using Neptune.NsPay.Authorization
+@using Abp.Configuration;
+@using Neptune.NsPay
+@using Neptune.NsPay.Commons
+@using Neptune.NsPay.Configuration
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.RechargeOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.StatisticalReport.StatisticalBankReports;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/StatisticalBankReports/Index.js" asp-append-version="true"></script>
+}
+
+<div class="@(await GetContainerClass())">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="my-3">
+                                    <label for="OrderCreationTimeRange" class="form-label">@L("OrderCreationTimeRange")</label>
+                                    <input id="OrderCreationTimeRange" type="text" class="form-control date-range-picker" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="my-3">
+                                    <label class="form-label" for="CardNumberFilterId">@L("CardNumber")</label>
+                                    <input type="text" id="CardNumberFilter" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="my-3">
+                                    <label class="form-label" for="">&nbsp;</label>
+                                    <div class="input-group">
+                                        <button id="GetSearchButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--银行详情列表-->
+            <div class="col-xl-12 mb-xl-10">
+                <!--begin::Table widget 2-->
+                <div class="card h-md-100">
+                    <!--begin::Header-->
+                    <div class="card-header align-items-center border-0">
+                        <!--begin::Title-->
+                        <h3 class="fw-bold text-gray-900 m-0">@L("ReportsBankDetail")</h3>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-2">
+                        <!--begin::Nav-->
+                        <ul class="nav nav-pills nav-pills-custom mb-3" role="tablist">
+                            @{
+                                for (var i = 0; i < PayMentHelper.GetBankList.Count; i++)
+                                {
+                                    var bank = PayMentHelper.GetBankList[i].PaymentTypeEnum;
+
+                                    <!--begin::Item-->
+                                    <li class="nav-item mb-3" role="presentation">
+                                        <!--begin::Link-->
+                                        <a class='nav-link d-flex justify-content-between flex-column flex-center overflow-hidden w-80px h-85px py-4 @(i == 0 ? "active" : "")' data-bs-toggle="pill" href='@($"#Bank{bank.GetDisplayName()}")' aria-selected='@(i == 0 ? "true" : "false")' role="tab">
+                                            <!--begin::Icon-->
+                                            <div class="nav-icon">
+                                                <img alt="" src='@Url.Content($"~/metronic/assets/media/svg/shapes/{bank.GetDisplayName().ToLower()}.png")' class="nav-icon">
+                                            </div>
+                                            <!--end::Icon-->
+                                            <!--begin::Subtitle-->
+                                            <span class="nav-text text-gray-600 fw-bold fs-6 lh-1">
+                                                @bank
+                                            </span>
+                                            <!--end::Subtitle-->
+                                            <!--begin::Bullet-->
+                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <!--end::Bullet-->
+                                        </a>
+                                        <!--end::Link-->
+                                    </li>
+                                    <!--end::Item-->
+                                }
+                            }
+                        </ul>
+                        <!--end::Nav-->
+                        <!--begin::Tab Content-->
+                        <div class="tab-content">
+                            @{
+                                for (var i = 0; i < PayMentHelper.GetBankList.Count; i++)
+                                {
+                                    var bank = PayMentHelper.GetBankList[i].PaymentTypeEnum;
+
+                                    <!--begin::Tap pane-->
+                                    <div class='tab-pane fade @(i == 0 ? "active show" : "")' id='@($"Bank{bank.GetDisplayName()}")' role="tabpanel">
+                                        <!--begin::Table container-->
+                                        <div class="table-responsive">
+                                            <!--begin::Table-->
+                                            <table class="table  table-hover table-row-dashed table-row-gray-500 align-middle gs-0 gy-4">
+                                                <!--begin::Table head-->
+                                                <thead>
+                                                    <tr class="fw-bold fs-6 text-gray-800 px-7">
+                                                        <th colspan="2" class="align-middle border-bottom border-end w-200px">@L("PayOrders")</th>
+                                                        <th colspan="8" class="border-bottom">@L("PayOrderDeposits")</th>
+                                                    </tr>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="ps-0 min-w-125px">@L("ReportsBanName")</th>
+                                                        <th class="ps-0 min-w-100px">@L("ReportOrderSum")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTCount")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTSuccessCount")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTSuccessMoney")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTAssociatedCount")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTAssociatedMoney")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTRejectCount")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcCRDTRejectMoney")</th>
+                                                        <th class="ps-0 min-w-100px">@L("DepositcDBITMoney")</th>
+                                                    </tr>
+                                                </thead>
+                                                <!--end::Table head-->
+                                                <!--begin::Table body-->
+                                                <tbody id='@($"Bank{bank.GetDisplayName()}body")'></tbody>
+                                                <!--end::Table body-->
+                                            </table>
+                                            <!--end::Table-->
+                                        </div>
+                                        <!--end::Table container-->
+                                    </div>
+                                    <!--end::Tap pane-->
+                                }
+                            }
+                        </div>
+                        <!--end::Tab Content-->
+                    </div>
+                    <!--end: Card Body-->
+                </div>
+                <!--end::Table widget 2-->
+            </div>
+        </div>
+    </div>
+</div>

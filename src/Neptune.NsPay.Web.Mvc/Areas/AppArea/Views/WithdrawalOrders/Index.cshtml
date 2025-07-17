@@ -1,0 +1,210 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@using Neptune.NsPay.WithdrawalDevices
+@model WithdrawalOrdersViewModel
+
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.Withdraw.WithdrawalOrders;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/WithdrawalOrders/Index.js" asp-append-version="true"></script>
+    <script src="~/lib/clipboard/clipboard.min.js"></script>
+}
+
+<abp-page-subheader title='@L("WithdrawalOrders")' description='@L("WithdrawalOrdersHeaderInfo")'>
+
+    @if (IsGranted(AppPermissions.Pages_WithdrawalOrders_ChangeDevice))
+    {
+        <button id="withdrawalOrderChangeDevice" class="btn btn-primary blue" disabled><i class="fa fa-cog"></i>@L("WithdrawalOrderChangeDevice")</button>
+    }
+    @if (IsGranted(AppPermissions.Pages_WithdrawalOrders_Cancel))
+    {
+        <button id="withdrawalOrderCancelDevice" class="btn btn-primary danger " disabled><i class="fa fa-cog"></i>@L("WithdrawalOrderCancelDevice")</button>
+    }
+    @if (IsGranted(AppPermissions.Pages_WithdrawalOrders_CallBack))
+    {
+        <button id="batchCallBackWithdrawal" class="btn btn-primary danger " disabled><i class="fa fa-cog"></i>@L("BatchCallBackWithdrawal")</button>
+    }
+    <button id="ExportToExcelButton" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button>
+  
+</abp-page-subheader>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" id="WithdrawalOrdersTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                                <button id="GetWithdrawalOrdersButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form" id="WithdrawalOrderSearch">
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                            <select id="MerchantCodeFilterId" name="merchantCodeFilterId" class="form-select reload-on-change select2">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderNoFilterId">@L("OrderNumber")</label>
+                            <input type="text" class="form-control reload-on-keyup" name="orderNoFilter" id="OrderNoFilterId">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="OrderStatusFilterId">@L("OrderStatus")</label>
+                            <select class="form-select reload-on-change " name="OrderStatusFilter" id="OrderStatusFilterId">
+                                <option value="-1">@L("All")</option>
+                                <option value="0">@L("Enum_WithdrawalOrderStatusEnum_0")</option>
+                                <option value="1">@L("Enum_WithdrawalOrderStatusEnum_1")</option>
+                                <option value="2">@L("Enum_WithdrawalOrderStatusEnum_2")</option>
+                                <option value="3">@L("Enum_WithdrawalOrderStatusEnum_3")</option>
+                                <option value="4">@L("Enum_WithdrawalOrderStatusEnum_4")</option>
+                                <option value="5">@L("Enum_WithdrawalOrderStatusEnum_5")</option>
+                                <option value="6">@L("Enum_WithdrawalOrderStatusEnum_6")</option>
+                                <option value="7">@L("Enum_WithdrawalOrderStatusEnum_7")</option>
+                                <option value="9">@L("Enum_WithdrawalOrderStatusEnum_9")</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="NotifyStatusFilterId">@L("ScoreStatus")</label>
+                            <select class="form-select reload-on-change " name="NotifyStatusFilter" id="NotifyStatusFilterId">
+                                <option value="-1">@L("All")</option>
+                                <option value="0">@L("Enum_WithdrawalNotifyStatusEnum_0")</option>
+                                <option value="1">@L("Enum_WithdrawalNotifyStatusEnum_1")</option>
+                                <option value="2">@L("Enum_WithdrawalNotifyStatusEnum_2")</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="BenAccountNoFilterId">@L("BenAccountNo")</label>
+                            <input type="text" class="form-control reload-on-keyup" name="benAccountNoFilter" id="BenAccountNoFilterId">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="BenAccountNameFilterId">@L("BenAccountName")</label>
+                            <input type="text" class="form-control reload-on-keyup" name="benAccountNameFilter" id="BenAccountNameFilterId">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label for="OrderCreationTimeRange" class="form-label">@L("OrderCreationTimeRange")</label>
+                            <input id="OrderCreationTimeRange" type="text" class="form-control reload-on-keyup date-range-picker" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="NotifyStatusFilterId">@L("BankType")</label>
+                            <select class="form-select reload-on-change select2" name="withdrawalDeviceBankTypeFilter" id="WithdrawalDeviceBankTypeFilterId">
+                                <option value="-1">@L("All")</option>
+                                @foreach (var bankType in Enum.GetValues<WithdrawalDevicesBankTypeEnum>())
+                                {
+                                    <option value="@(bankType.ToInt())">@L($"Enum_WithdrawalDevicesBankTypeEnum_{bankType.ToInt()}")</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @if (Model.IsShowDevice)
+                    {
+                        <div class="col-md-3">
+                            <div class="my-3">
+                                <label class="form-label" for="WithdrawalDevicePhoneFilterId">@L("WithdrawalDevice")</label>
+                                <input type="text" class="form-control reload-on-keyup" name="withdrawalDevicePhoneFilter" id="WithdrawalDevicePhoneFilterId">
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="UtcTimeFilterId">GMT</label>
+                            <select class="form-select reload-on-change " name="UtcTimeFilter" id="UtcTimeFilterId">
+                                <option value="GMT7+" selected>GMT+7</option>
+                                <option value="GMT8+">GMT+8</option>
+                                <option value="GMT4-">GMT-4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="ReleaseStatusDDL">@L("ReleaseAmountStatus")</label>
+                            <select class="form-select reload-on-change " name="ReleaseStatusFilter" id="ReleaseStatusDDL">
+                                <option value="" selected>@L("All")</option>
+                                <option value="1">@L("Enum_WithdrawalReleaseStatusEnum_1")</option>
+                                <option value="2">@L("Enum_WithdrawalReleaseStatusEnum_2")</option>
+                                <option value="0">@L("Enum_WithdrawalReleaseStatusEnum_0")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="my-3">
+                            <label class="form-label" for="MinMoneyFilterId">@L("OrderMoney")</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control reload-on-keyup  m-input" placeholder="@L(" MinValue")" name="minMoneyFilter" id="MinMoneyFilterId" />
+                                <input type="number" class="form-control reload-on-keyup  m-input" placeholder="@L(" MaxValue")" name="maxMoneyFilter" id="MaxMoneyFilterId" />
+                            </div>
+                        </div>
+                    </div>
+
+                   <div class="col-md-12 mt-5">
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                </div>
+            </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-xl-12">
+                    <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                    <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                </div>
+            </div>
+            <div class="row mb-12">
+                <div class="col-xl-4">
+                    <label for="OrderNumberFilterId">@L("OrderTotal")：</label><span id="OrderTotal"></span>
+                </div>
+                <div class="col-xl-4">
+                    <label for="OrderNumberFilterId">@L("OrderMoneyTotal")：</label><span id="OrderMoneyTotal"></span>
+                </div>
+                <div class="col-xl-4">
+                    <label for="OrderNumberFilterId">@L("FeeMoneyTotal")：</label><span id="FeeMoneyTotal"></span>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <table id="WithdrawalOrdersTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>@L("Actions")</th>
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("OrderNumber")</th>
+                            <th>@L("BenAccountInfo")</th>
+                            <th>@L("OrderMoney")</th>
+                            <th>@L("OrderStatus")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

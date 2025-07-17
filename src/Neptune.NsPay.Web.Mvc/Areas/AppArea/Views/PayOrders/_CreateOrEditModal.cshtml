@@ -1,0 +1,153 @@
+﻿@using Neptune.NsPay.PayOrders;
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrders
+@model CreateOrEditPayOrderModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditPayOrder")) : L("CreateNewPayOrder")))
+
+<div class="modal-body">
+        <div id="PayOrderInformationsTab">
+            <form name="PayOrderInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.PayOrder.Id" />
+                }
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_MerchantCode">@L("MerchantCode")</label>
+                <input class="form-control" id="PayOrder_MerchantCode" value="@Model.PayOrder.MerchantCode" type="text"
+                       name="merchantCode" maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxMerchantCodeLength" 
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinMerchantCodeLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderNo">@L("OrderNo")</label>
+                <input class="form-control" id="PayOrder_OrderNo" value="@Model.PayOrder.OrderNo" type="text" name="orderNo"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxOrderNoLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinOrderNoLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_TransactionNo">@L("TransactionNo")</label>
+                <input class="form-control" id="PayOrder_TransactionNo" value="@Model.PayOrder.TransactionNo" type="text" name="transactionNo"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxTransactionNoLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinTransactionNoLength" />
+            </div>
+
+            @{
+                var selectListOrderType = Html.GetEnumSelectList(typeof(PayOrderOrderTypeEnum));
+                foreach (var selectOption in selectListOrderType) { selectOption.Text = L("Enum_PayOrderOrderTypeEnum_" + selectOption.Value); }
+            }
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderType">@L("OrderType")</label>
+                <select class="form-select m-input m-input--square" name="orderType" id="PayOrder_OrderType" asp-for="@Model.PayOrder.OrderType" asp-items="@selectListOrderType">
+                </select>
+            </div>
+
+            @{
+                var selectListOrderStatus = Html.GetEnumSelectList(typeof(PayOrderOrderStatusEnum));
+                foreach (var selectOption in selectListOrderStatus) { selectOption.Text = L("Enum_PayOrderOrderStatusEnum_" + selectOption.Value); }
+            }
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderStatus">@L("OrderStatus")</label>
+                <select class="form-select m-input m-input--square" name="orderStatus" id="PayOrder_OrderStatus" asp-for="@Model.PayOrder.OrderStatus" asp-items="@selectListOrderStatus">
+                </select>
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderMoney">@L("OrderMoney")</label>
+                <input class="form-control m-input" id="PayOrder_OrderMoney" value="@Model.PayOrder.OrderMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="orderMoney" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_Rate">@L("Rate")</label>
+                <input class="form-control m-input" id="PayOrder_Rate" value="@Model.PayOrder.Rate.ToString(CultureInfo.InvariantCulture)" type="number" name="rate" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_FeeMoney">@L("FeeMoney")</label>
+                <input class="form-control m-input" id="PayOrder_FeeMoney" value="@Model.PayOrder.FeeMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="feeMoney" />
+            </div>
+
+            
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderTime">@L("OrderTime")</label>
+                <input class="form-control m-input date-picker" id="PayOrder_OrderTime" type="text" name="orderTime" value="@Model.PayOrder.OrderTime" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_TransactionTime">@L("TransactionTime")</label>
+                <input class="form-control m-input date-picker" id="PayOrder_TransactionTime" type="text" name="transactionTime" value="@Model.PayOrder.TransactionTime" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderMark">@L("OrderMark")</label>
+                <input class="form-control" id="PayOrder_OrderMark" value="@Model.PayOrder.OrderMark" type="text" name="orderMark"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxOrderMarkLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinOrderMarkLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_OrderNumber">@L("OrderNumber")</label>
+                <input class="form-control" id="PayOrder_OrderNumber" value="@Model.PayOrder.OrderNumber" type="text" name="orderNumber"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxOrderNumberLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinOrderNumberLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_PlatformCode">@L("PlatformCode")</label>
+                <input class="form-control" id="PayOrder_PlatformCode" value="@Model.PayOrder.PlatformCode" type="text" name="platformCode"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxPlatformCodeLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinPlatformCodeLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_PayMentId">@L("PayMentId")</label>
+                <input class="form-control m-input" id="PayOrder_PayMentId" value="@Model.PayOrder.PayMentId.ToString(CultureInfo.InvariantCulture)" type="number" name="payMentId" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_ScCode">@L("ScCode")</label>
+                <input class="form-control" id="PayOrder_ScCode" value="@Model.PayOrder.ScCode" type="text" name="scCode"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxScCodeLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinScCodeLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_ScSeri">@L("ScSeri")</label>
+                <input class="form-control" id="PayOrder_ScSeri" value="@Model.PayOrder.ScSeri" type="text" name="scSeri"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxScSeriLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinScSeriLength" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_NotifyUrl">@L("NotifyUrl")</label>
+                <input class="form-control" id="PayOrder_NotifyUrl" value="@Model.PayOrder.NotifyUrl" type="text" name="notifyUrl"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxNotifyUrlLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinNotifyUrlLength" />
+            </div>
+
+            @{
+                var selectListScoreStatus = Html.GetEnumSelectList(typeof(PayOrderScoreStatusEnum));
+                foreach (var selectOption in selectListScoreStatus) { selectOption.Text = L("Enum_PayOrderScoreStatusEnum_" + selectOption.Value); }
+            }
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_ScoreStatus">@L("ScoreStatus")</label>
+                <select class="form-select m-input m-input--square" name="scoreStatus" id="PayOrder_ScoreStatus" asp-for="@Model.PayOrder.ScoreStatus" asp-items="@selectListScoreStatus">
+                </select>
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayOrder_PayTypeStr">@L("PayTypeStr")</label>
+                <input class="form-control" id="PayOrder_PayTypeStr" value="@Model.PayOrder.PayTypeStr" type="text" name="payTypeStr"
+                       maxlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MaxPayTypeStrLength"
+                       minlength="@Neptune.NsPay.PayOrders.PayOrderConsts.MinPayTypeStrLength" />
+            </div>
+
+		</form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

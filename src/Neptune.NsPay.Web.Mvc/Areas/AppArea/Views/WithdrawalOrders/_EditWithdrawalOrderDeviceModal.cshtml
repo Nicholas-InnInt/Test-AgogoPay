@@ -1,0 +1,88 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@model EditWithdrawalOrderDeviceModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("WithdrawalOrderChangeDevice")))
+<style>
+	.modal-content {
+		max-height: 90vh;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+		background-color: #fff;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	/* modal-body is fixed height, no scrolling */
+	.modal-body {
+		flex: 1 1 auto;
+		padding: 1.5rem;
+		overflow: hidden;
+	}
+	/* Keep Save/Cancel footer fixed at bottom */
+	.order-no-wrapper {
+		max-height: 150px;
+		overflow-y: auto;
+		padding-right: 1rem;
+		padding-left: 1rem;
+		border: 0px solid #e0e0e0;
+		border-radius: 4px;
+		background-color: #f8f9fa;
+	}
+
+	/* Fix footer to bottom inside modal */
+	.modal-footer {
+		position: sticky;
+		bottom: 0;
+		background-color: #fff;
+		z-index: 100;
+		border-top: 0px solid #dee2e6;
+		padding: 1rem 1.5rem;
+	}
+</style>
+<div class="modal-body">
+	<div id="EditWithdrawalOrderDeviceModal">
+		<form name="EditWithdrawalDeviceForm" role="form" novalidate class="form-validation">
+			<div class="my-3 form-group">
+				<label class="form-label" for="WithdrawalOrder_MerchantName">@L("MerchantName")</label>
+				<input class="form-control" id="WithdrawalOrder_MerchantName" value="@Model.MerchantName" type="text" name="merchantName" disabled />
+			</div>
+			<div class="my-3 form-group">
+				<label class="form-label" for="WithdrawalOrder_MerchantCode">@L("MerchantCode")</label>
+				<input class="form-control" id="WithdrawalOrder_MerchantCode" asp-for="@Model.EditWithdrawalOrderDeviceDto.MerchantCode" type="text" name="merchantCode" disabled />
+			</div>
+			<div class="my-3 form-group">
+				<label class="form-label" for="WithdrawalOrder_OrderNo">@L("OrderNo")</label><br />
+				<div class="order-no-wrapper">
+					<div style="display: flex; flex-wrap: wrap;">
+						@for (var i = 0; i < Model.EditWithdrawalOrderDeviceDto.OrderNos.Count; i++)
+						{
+							<div style="width: 50%; padding: 0.25rem 0;">
+								<label class="form-label" for="WithdrawalOrder_OrderNo">@Model.EditWithdrawalOrderDeviceDto.OrderNos[@i]</label>
+								<input type="hidden" name="OrderNos[@i]" value="@Model.EditWithdrawalOrderDeviceDto.OrderNos[i]" />
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+			<div class="form-group row my-3">
+				<label class="form-label" for="WithdrawalDevice">@L("WithdrawalName")</label>
+				<select class="form-control select2" id="DeviceId" name="DeviceId" asp-for="EditWithdrawalOrderDeviceDto.DeviceId">
+					@foreach (var item in Model.WithdrawalDevice)
+					{
+						<option value="@item.Id">@item.Name  [ @item.MinMoney - @item.MaxMoney ]</option>
+					}
+				</select>
+			</div>
+			@for (var i = 0; i < Model.EditWithdrawalOrderDeviceDto.WithdrawalIds.Count; i++)
+			{
+				<input type="hidden" name="WithdrawalIds[@i]" value="@Model.EditWithdrawalOrderDeviceDto.WithdrawalIds[i]" />
+			}
+
+		</form>
+	</div>
+</div>
+<div class="modal-footer">
+	@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</div>

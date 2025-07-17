@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.CAP" Version="8.1.1" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="8.1.1" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.1.1" />
+    <PackageReference Include="DotNetCore.CAP.SqlServer" Version="8.1.1" />
+    <PackageReference Include="Telegram.BotAPI" Version="6.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neptune.NsPay.BillingExtensions\Neptune.NsPay.BillingExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.Core\Neptune.NsPay.Core.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.MongoDbExtensions\Neptune.NsPay.MongoDbExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.PlatfromServices\Neptune.NsPay.PlatfromServices.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RabbitMqExtensions\Neptune.NsPay.RabbitMqExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.SqlSugarExtensions\Neptune.NsPay.SqlSugarExtensions.csproj" />
+    <ProjectReference Include="..\Neptune.NsPay.RedisExtensions\Neptune.NsPay.RedisExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

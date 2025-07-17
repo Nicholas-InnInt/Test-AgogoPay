@@ -1,0 +1,62 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantFunds
+@model CreateOrEditMerchantFundModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantFund")) : L("CreateNewMerchantFund")))
+
+<div class="modal-body">
+        <div id="MerchantFundInformationsTab">
+            <form name="MerchantFundInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.MerchantFund.Id" />
+                }
+
+				
+                
+				
+                
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_MerchantCode">@L("MerchantCode")</label>
+									<input class="form-control" id="MerchantFund_MerchantCode" value="@Model.MerchantFund.MerchantCode" type="text" name="merchantCode"   maxlength="@Neptune.NsPay.MerchantFunds.MerchantFundConsts.MaxMerchantCodeLength"  minlength="@Neptune.NsPay.MerchantFunds.MerchantFundConsts.MinMerchantCodeLength"  />
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_MerchantId">@L("MerchantId")</label>
+									<input class="form-control m-input" id="MerchantFund_MerchantId" value="@Model.MerchantFund.MerchantId.ToString(CultureInfo.InvariantCulture)" type="number" name="merchantId"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_DepositAmount">@L("DepositAmount")</label>
+									<input class="form-control m-input" id="MerchantFund_DepositAmount" value="@Model.MerchantFund.DepositAmount.ToString(CultureInfo.InvariantCulture)" type="number" name="depositAmount"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_WithdrawalAmount">@L("WithdrawalAmount")</label>
+									<input class="form-control m-input" id="MerchantFund_WithdrawalAmount" value="@Model.MerchantFund.WithdrawalAmount.ToString(CultureInfo.InvariantCulture)" type="number" name="withdrawalAmount"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_RateFeeBalance">@L("RateFeeBalance")</label>
+									<input class="form-control m-input" id="MerchantFund_RateFeeBalance" value="@Model.MerchantFund.RateFeeBalance.ToString(CultureInfo.InvariantCulture)" type="number" name="rateFeeBalance"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_Balance">@L("Balance")</label>
+									<input class="form-control m-input" id="MerchantFund_Balance" value="@Model.MerchantFund.Balance.ToString(CultureInfo.InvariantCulture)" type="number" name="balance"   />								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_CreationTime">@L("CreationTime")</label>
+									<input class="form-control m-input date-picker" id="MerchantFund_CreationTime" type="text" name="creationTime" value="@Model.MerchantFund.CreationTime"/>
+								</div>
+					
+								<div class="my-3">
+									<label class="form-label" for="MerchantFund_UpdateTime">@L("UpdateTime")</label>
+									<input class="form-control m-input date-picker" id="MerchantFund_UpdateTime" type="text" name="updateTime" value="@Model.MerchantFund.UpdateTime"/>
+								</div>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

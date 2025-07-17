@@ -1,0 +1,36 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayGroups
+@model PayGroupViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="PayGroupInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("GroupName") :</h6>
+                @Model.PayGroup.GroupName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankApi") :</h6>
+                @Model.PayGroup.BankApi
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("VietcomApi") :</h6>
+                @Model.PayGroup.VietcomApi
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Status") :</h6>
+                @L("Status_" + Model.PayGroup.Status.ToString())
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

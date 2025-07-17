@@ -1,0 +1,8 @@
+﻿@using Abp.Timing
+@model Neptune.NsPay.Web.Areas.AppArea.Models.Layout.LogoViewModel
+@{
+    Layout = null;
+}
+
+<img alt="Logo" src="@Model.GetLogoUrl(ApplicationPath,  Model.LogoSkinOverride ?? await GetLogoSkin())"
+     class="h-25px @(string.IsNullOrEmpty(Model.LogoClassOverride) ? "header-brand-logo-default" : Model.LogoClassOverride)"/>

@@ -1,0 +1,127 @@
+﻿@using Neptune.NsPay.Authorization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdraws
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantWithdrawsViewModel
+@{
+ViewBag.CurrentPageName = AppAreaPageNames.Withdraw.MerchantWithdraws;
+}
+@section Scripts
+{
+<script abp-src="/view-resources/Areas/AppArea/Views/MerchantWithdraws/Index.js" asp-append-version="true"></script>
+    <script src="~/lib/clipboard/clipboard.min.js"></script>
+}
+
+<abp-page-subheader title='@L("MerchantWithdraws")' description='@L("MerchantWithdrawsHeaderInfo")'>
+    <button id="ExportToExcelButton" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> @L("ExportToExcel")</button>
+
+    @if (IsGranted(AppPermissions.Pages_MerchantWithdraws_Create))
+    {
+    <button id="CreateNewMerchantWithdrawButton" class="btn btn-primary blue"><i class="fa fa-plus"></i> @L("CreateNewMerchantWithdraw")</button>
+    }
+</abp-page-subheader>
+
+<div class="@(await GetContainerClass())">
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <div class="form">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+
+                        <div class="my-3">
+                            <div class="input-group">
+                                <input type="text" id="MerchantWithdrawsTableFilter" class="form-control reload-on-change" placeholder='@L("SearchWithThreeDot")' value="@Model.FilterText">
+                                <button id="GetMerchantWithdrawsButton" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                <div class="col-md-12">
+
+                </div>
+
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="MerchantCodeFilterId">@L("MerchantCode")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="merchantCodeFilter" id="MerchantCodeFilterId">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="WithDrawNoFilterId">@L("WithDrawNo")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="withDrawNoFilter" id="WithDrawNoFilterId">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="BankNameFilterId">@L("BankName")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="bankNameFilter" id="BankNameFilterId">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="ReceivCardFilterId">@L("ReceivCard")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="receivCardFilter" id="ReceivCardFilterId">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="ReceivNameFilterId">@L("ReceivName")</label>
+                        <input type="text" class="form-control reload-on-keyup" name="receivNameFilter" id="ReceivNameFilterId">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="my-3">
+                        <label class="form-label" for="StatusFilterId">@L("Status")</label>
+                        <select class="form-select reload-on-change" name="StatusFilter" id="StatusFilterId">
+                            <option value="-1">@L("All")</option>
+                            <option value="1">@L("Enum_MerchantWithdrawStatusEnum_1")</option>
+
+                            <option value="2">@L("Enum_MerchantWithdrawStatusEnum_2")</option>
+
+                            <option value="3">@L("Enum_MerchantWithdrawStatusEnum_3")</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="my-3">
+                        <label class="form-label" for="MinReviewTimeFilterId">@L("ReviewTimeRange")</label>
+                        <div class="input-group">
+                            <input class="form-control reload-on-keyup m-input date-picker startDate" type="text" placeholder="@L("MinValue")" id="MinReviewTimeFilterId">
+                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                            <input class="form-control reload-on-keyup m-input date-picker endDate" type="text" placeholder="@L("MaxValue")" id="MaxReviewTimeFilterId">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-5">
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-filters">@L("Reset")</button>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-xl-12">
+                    <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                    <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <table id="MerchantWithdrawsTable" class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th></th>
+
+                            <th>@L("Actions")</th>
+                            <th>@L("MerchantCode")</th>
+                            <th>@L("WithDrawNo")</th>
+                            <th>@L("Money")</th>
+                            <th>@L("WithDrawInfo")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

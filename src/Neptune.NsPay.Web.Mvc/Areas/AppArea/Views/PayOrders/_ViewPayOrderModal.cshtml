@@ -1,0 +1,90 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayOrders
+@model PayOrderViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="PayOrderInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.PayOrder.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderNo") :</h6>
+                @Model.PayOrder.OrderNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("TransactionNo") :</h6>
+                @Model.PayOrder.TransactionNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderType") :</h6>
+                @L("Enum_PayOrderOrderTypeEnum_" + (int)Model.PayOrder.OrderType)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderStatus") :</h6>
+                @L("Enum_PayOrderOrderStatusEnum_" + (int)Model.PayOrder.OrderStatus)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderMoney") :</h6>
+                @Model.PayOrder.OrderMoney
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Rate") :</h6>
+                @Model.PayOrder.Rate
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("FeeMoney") :</h6>
+                @Model.PayOrder.FeeMoney
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderTime") :</h6>
+                @Model.PayOrder.OrderTime
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("CallBackTime") :</h6>
+                @Model.PayOrder.TransactionTime
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("CreationTime") :</h6>
+                @Model.PayOrder.CreationTime
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderMark") :</h6>
+                @Model.PayOrder.OrderMark
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("OrderNumber") :</h6>
+                @Model.PayOrder.OrderNumber
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PlatformCode") :</h6>
+                @Model.PayOrder.PlatformCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ScCode") :</h6>
+                @Model.PayOrder.ScCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ScSeri") :</h6>
+                @Model.PayOrder.ScSeri
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ScoreStatus") :</h6>
+                @L("Enum_PayOrderScoreStatusEnum_" + (int)Model.PayOrder.ScoreStatus)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PayTypeStr") :</h6>
+                @Model.PayOrder.PayTypeStr
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

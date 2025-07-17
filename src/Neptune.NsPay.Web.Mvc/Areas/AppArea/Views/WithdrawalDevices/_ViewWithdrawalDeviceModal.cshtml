@@ -1,0 +1,35 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalDevices
+@using Neptune.NsPay.WithdrawalDevices
+@model WithdrawalDeviceViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="WithdrawalDeviceInformationsTab">
+
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("Name") :</h6>
+                @Model.WithdrawalDevice.Name
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Phone") :</h6>
+                @Model.WithdrawalDevice.Phone
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BankType") :</h6>
+                @L("Enum_WithdrawalDevicesBankTypeEnum_" + (int)Model.WithdrawalDevice.BankType)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Status") :</h6>
+                @L("Enum_WithdrawalDevicesProcessTypeEnum_" + (Model.WithdrawalDevice.Process == WithdrawalDevicesProcessTypeEnum.Process ? "0" : "1"))
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")

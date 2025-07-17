@@ -1,0 +1,6 @@
+@Neptune.NsPay.Web.TransferApi_HostAddress = http://localhost:5056
+
+GET {{Neptune.NsPay.Web.TransferApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,5 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Common
+@model IFeatureEditViewModel
+<div class="feature-tree">
+    @await Html.PartialAsync("~/Areas/AppArea/Views/Common/_FeaturesTreeItem.cshtml", new FeatureTreeItemModel(Model, null))
+</div>

@@ -1,0 +1,27 @@
+﻿@using Neptune.NsPay.WithdrawalOrders;
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@model CreateOrEditWithdrawalOrderModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditWithdrawalOrder")) : L("CreateNewWithdrawalOrder")))
+
+<div class="modal-body">
+    <div id="WithdrawalOrderInformationsTab">
+        <form name="WithdrawalOrderInformationsForm" role="form" novalidate class="form-validation">
+
+            @if (Model.IsEditMode)
+            {
+            <input type="hidden" name="id" value="@Model.WithdrawalOrder.Id" />
+            }
+
+            <div class="my-3">
+                <label class="form-label" for="WithdrawalOrder_MerchantCode">@L("MerchantCode")</label>
+                <input class="form-control" id="WithdrawalOrder_MerchantCode" value="@Model.WithdrawalOrder.MerchantCode" type="text" name="merchantCode" maxlength="@Neptune.NsPay.WithdrawalOrders.WithdrawalOrderConsts.MaxMerchantCodeLength" minlength="@Neptune.NsPay.WithdrawalOrders.WithdrawalOrderConsts.MinMerchantCodeLength" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

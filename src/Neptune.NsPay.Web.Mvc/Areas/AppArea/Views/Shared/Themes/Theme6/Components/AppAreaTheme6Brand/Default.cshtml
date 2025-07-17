@@ -1,0 +1,13 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Layout
+@using Neptune.NsPay.Web.Areas.AppArea.Views.Shared.Components.AppAreaLogo
+@model HeaderViewModel
+@{
+    Layout = null;
+}
+<a href="@Url.Action("Index", "Home", new {area = string.Empty})" class="d-flex align-items-center">
+    @await Component.InvokeAsync(typeof(AppAreaLogoViewComponent), new
+    {
+        LogoSkin = ViewBag.BrandLogoSkin,
+        logoClass = "h-45px logo"
+    })
+</a>

@@ -1,0 +1,58 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantBills
+@model MerchantBillViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantBillInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.MerchantBill.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BillNo") :</h6>
+                @Model.MerchantBill.BillNo
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BillType") :</h6>
+                @L("Enum_MerchantBillTypeEnum_" + (int)Model.MerchantBill.BillType)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Money") :</h6>
+                @Model.MerchantBill.Money
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Rate") :</h6>
+                @Model.MerchantBill.Rate
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("FeeMoney") :</h6>
+                @Model.MerchantBill.FeeMoney
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BalanceBefore") :</h6>
+                @Model.MerchantBill.BalanceBefore
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("BalanceAfter") :</h6>
+                @Model.MerchantBill.BalanceAfter
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PlatformCode") :</h6>
+                @Model.MerchantBill.PlatformCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Remark") :</h6>
+                @Model.MerchantBill.Remark
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

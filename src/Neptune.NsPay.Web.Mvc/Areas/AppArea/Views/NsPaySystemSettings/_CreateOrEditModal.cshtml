@@ -1,0 +1,94 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.NsPaySystemSettings
+@using Neptune.NsPay.Commons
+@model CreateOrEditNsPaySystemSettingModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditNsPaySystemSetting")) : L("CreateNewNsPaySystemSetting")))
+
+<div class="modal-body">
+        <div id="NsPaySystemSettingInformationsTab">
+            <form name="NsPaySystemSettingInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.NsPaySystemSetting.Id" />
+                }
+            @{
+                var selectList = new List<string>
+                {
+                    NsPaySystemSettingKeyConst.IpAddress,
+                    NsPaySystemSettingKeyConst.BankApi,
+                    NsPaySystemSettingKeyConst.VcbBankApi,
+                    NsPaySystemSettingKeyConst.InternalWithdrawMerchant,
+                    NsPaySystemSettingKeyConst.PlatformCode,
+                    NsPaySystemSettingKeyConst.Countries,
+                    NsPaySystemSettingKeyConst.AcbBankJobApi,
+                    NsPaySystemSettingKeyConst.BidvBankJobApi,
+                    NsPaySystemSettingKeyConst.TcbBankJobApi,
+                    NsPaySystemSettingKeyConst.VcbBankJobApi,
+                    NsPaySystemSettingKeyConst.VtbBankJobApi,
+                    NsPaySystemSettingKeyConst.MbBankJobApi,
+                    NsPaySystemSettingKeyConst.PvcomBankJobApi,
+                    NsPaySystemSettingKeyConst.BusinessMbBankJobApi,
+                    NsPaySystemSettingKeyConst.BusinessVtbBankJobApi,
+                    NsPaySystemSettingKeyConst.BusinessTcbBankJobApi,
+                    NsPaySystemSettingKeyConst.TcboutbBankJobApi,
+                    NsPaySystemSettingKeyConst.MerchantBankJobApi,
+                    NsPaySystemSettingKeyConst.AutoDepositSuccessTime,
+                    NsPaySystemSettingKeyConst.AutoDepositFailTime,
+                    NsPaySystemSettingKeyConst.ScratchCardType,
+                    NsPaySystemSettingKeyConst.NsPayGroupName,
+                    NsPaySystemSettingKeyConst.SocketChangIpApi,
+                    NsPaySystemSettingKeyConst.SocketTcbPort,
+                    NsPaySystemSettingKeyConst.SocketVcbPort,
+                    NsPaySystemSettingKeyConst.OrderBankRemark,
+                    NsPaySystemSettingKeyConst.UnableWithdrawBank,
+                    NsPaySystemSettingKeyConst.WithdrawBankRule,
+                    NsPaySystemSettingKeyConst.PayOrderQRgenerate,
+                    NsPaySystemSettingKeyConst.TelegramPayHelperBotId,
+                    NsPaySystemSettingKeyConst.TelegramPayHelperChatId,
+                    NsPaySystemSettingKeyConst.WithdrawDeviceMinBalance,
+                    NsPaySystemSettingKeyConst.MerchantUserRoles,
+                    NsPaySystemSettingKeyConst.AccountNameCheckerServerUrl,
+                    NsPaySystemSettingKeyConst.AccountNameCheckerMerchants,
+                    NsPaySystemSettingKeyConst.AccountNameCheckerOnOff,
+                    NsPaySystemSettingKeyConst.LargeWithdrawalOrderAmount,
+                    NsPaySystemSettingKeyConst.MaxDepositAmount,
+                    NsPaySystemSettingKeyConst.TelegramMidStopHelperBotId
+                };
+            }
+            <div class="my-3">
+                <label class="form-label" for="NsPaySystemSetting_Key">@L("Name")</label>
+                <div>
+                    <select class="form-control select2 col-md-12" data-hide-search="true" id="NsPaySystemSetting_Key" name="key">
+                        @{
+                            foreach (var selectOption in selectList)
+                            {
+                                if (Model.NsPaySystemSetting.Key == selectOption)
+                                {
+                                    <option value="@selectOption" selected="selected">@selectOption</option>
+                                }
+                                else
+                                {
+                                    <option value="@selectOption">@selectOption</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+					
+            <div class="my-3">
+                <label class="form-label" for="NsPaySystemSetting_Value">@L("Value")</label>
+                <textarea class="form-control" id="NsPaySystemSetting_Value" type="text" name="value" rows="3" minlength="1" 
+                required>@Model.NsPaySystemSetting.Value</textarea>
+            </div>
+					
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

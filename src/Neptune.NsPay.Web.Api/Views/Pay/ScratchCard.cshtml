@@ -1,0 +1,227 @@
+﻿@{
+    Layout = null;
+}
+@model ScratchCardViewModel
+
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Thanh toán">
+    <meta name="author" content="Noname">
+    <meta name="keyword" content="Bank Gate, Game, Momo, ZaloPay, Viettel Pay, Bank, Money, Transfer, ScratchCard">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-utilities.min.css" rel="stylesheet" />
+    <link href="~/css/payweb.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <title>Thanh toán</title>
+</head>
+
+<body class="bg-light">
+    <main class="container">
+
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm justify-content-between">
+            <div>
+                <img src="~/img/scratchcard-logo.png" style="width: 64px" />
+            </div>
+            @*            <div style="text-align: center">
+            <div>Đơn hàng hết hạn sau</div>
+            <div id="timer" class="label-bg" style="color: #ffffff;display: inline-block;padding: 5px;font-size: 20px;font-weight: bold;border-radius: 5px;margin-top: 5px;">00:00</div>
+            </div>*@
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm" id="formdiv">
+            <form class="form-horizontal" id="cardform">
+                <div>
+                    <input value="@Model.orderid" hidden name="OrderId" />
+                    <input value="@Model.paymentid" hidden name="PayMentId" />
+                    <input value="" hidden name="TelcoName" id="hdntelecom" />
+                    <input value="" hidden name="Amount" id="hdnamount" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inputEmail">Loại thẻ</label>
+                    <ul class="nav nav-pills" id="telecom">
+                        @foreach(var item in Model.TypeCard)
+                        {
+                            <li class="nav-item">
+                                <button type="button" class="btn btn-outline-primary m-2" value="@item.Name">@item.Value</button>
+                            </li>
+                        }
+@*                         <li class="nav-item">
+                            <button type="button" class="btn btn-outline-primary m-2" value="VTT">Viettel</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-primary m-2" value="VMS">Mobifone</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-primary m-2" value="VNP">Vinaphone</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-primary m-2" value="VNM">Vietnammobile</button>
+                        </li> *@
+                    </ul>
+                </div>
+                <div class="form-group" id="amount">
+                    <label class="control-label" for="inputPassword">Mệnh giá thẻ</label>
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-primary m-2 nav-link active" value="@Model.money">@Model.money.ToString("N0")</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="seri">Nhập số seri</label>
+                    <input type="number" class="form-control" id="seri" name="seri">
+                </div>
+                <div class="form-group pb-3 border-bottom">
+                    <label class="control-label" for="code">Nhập mã thẻ</label>
+                    <input type="number" class="form-control" id="code" name="code">
+                </div>
+                <div class="form-group">
+                    <p>
+                        Lưu ý:
+                        <span>Quý khách cần điền đúng Seri để web xử lý nhanh nhất.</span>
+                        <br />
+                        @*<span style="color:red">Hãy chọn đúng mệnh giá thẻ của bạn nếu chọn sai mệnh giá thẻ sẽ bị nuốt thẻ!</span>*@
+                        <span style="color:red">Hãy chọn đúng mệnh giá thẻ của bạn nếu chọn sai mệnh giá thẻ sẽ không thể lên điểm!</span>
+                        @*<br>Nếu nạp thẻ 3 lần thất bại liên tiếp sẽ bị khóa nạp 1 giờ.*@
+                    </p>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="w-100 btn btn-primary btn-lg bg-purple" id="addcard">NẠP</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="succssdiv" style="display:none">
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold">Đang đợi nạp tiền</h1>@*等待充值*@
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4">Đang trong quá trình nạp tiền, vui lòng chờ</p>@*正在充值中，请稍等*@
+                </div>
+            </div>
+        </div>
+
+        <div id="checkstatusdiv" style="display:none">
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold">Trạng thái nạp tiền</h1> @*充值状态*@
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4" id="successtext">Nạp tiền thành công</p>  @*充值完成*@
+                </div>
+            </div>
+        </div>
+
+        <div id="faildiv" style="display:none">
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold">Nạp tiền thất bại</h1>  @*充值失败*@
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4" id="errormessage">Nạp tiền thất bại, vui lòng thao tác lại</p>  @*充值失败，重新填写*@
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        var telecom = "";
+        var amount = @Model.money;
+        var status = @Model.status;
+        $(document).ready(function () {
+            $('#telecom li button').click(function () {
+                $('#telecom li button').removeClass('nav-link active');
+                $(this).addClass('nav-link active');
+                telecom = $(this).val();
+            })
+
+            if (status == 2) {
+                $("#formdiv").hide();
+                $("#faildiv").hide();
+                $("#succssdiv").show();
+                check();
+            }
+
+        })
+
+
+        $("#addcard").click(function () {
+            if (telecom == "") {
+                alert("tele is null");
+                return;
+            }
+            if (amount == "0" || amount == 0) {
+                alert("Mệnh giá thẻ is null");
+                return;
+            }
+            if ($("#seri").val() == "") {
+                alert("hập số seri");
+                return;
+            }
+            if ($("#code").val() == "") {
+                alert("Nhập mã thẻ");
+                return;
+            }
+
+
+            $(this).attr('disabled', true);
+            $("#hdntelecom").val(telecom);
+            $("#hdnamount").val(amount);
+            $.post("/Pay/AddCard", $("#cardform").serialize(), function (result) {
+                if (result.statusCode == 200) {
+                    //成功
+                    $("#formdiv").hide();
+                    $("#faildiv").hide();
+                    $("#succssdiv").show();
+                    check();
+                } else {
+                    $("#formdiv").hide();
+                    $("#faildiv").show();
+                    $("#succssdiv").hide();
+                    $("#errormessage").text(result.message);
+                }
+            }, "json");
+        })
+
+        $("#goback").click(function () {
+            $("#formdiv").show();
+            $("#faildiv").hide();
+            $("#succssdiv").hide();
+            $("#addcard").removeAttr('disabled');
+        })
+
+        $("#resubmit").click(function () {
+            $("#formdiv").show();
+            $("#faildiv").hide();
+            $("#succssdiv").hide();
+            $("#addcard").removeAttr('disabled');
+        })
+    </script>
+    <script type="text/javascript">
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            document.body.classList.add("mobile");
+        }
+
+        function check() {
+            $.post("/Pay/CheckCardStatus", $("#cardform").serialize(), function (result) {
+                if (result.statusCode == 200) {
+                    window.location.href = "/Pay/Success";
+                } else if (result.statusCode == 600) {
+                    window.location.href = "/Pay/Fail";
+                }
+                else {
+                    setTimeout('check()', 3000);
+                }
+            }, "json");
+        }
+
+    </script>
+</body>
+
+</html>

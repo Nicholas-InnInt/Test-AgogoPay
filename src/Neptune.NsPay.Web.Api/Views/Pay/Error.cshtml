@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Thanh toán">
+    <meta name="keyword" content="Bank Gate, Game, Momo, ZaloPay, Viettel Pay, Bank, Money, Transfer, ScratchCard">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link href="~/css/error.css" rel="stylesheet" />
+    <title>Thanh toán</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="box__ghost">
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+
+            <div class="box__ghost-container">
+                <div class="box__ghost-eyes">
+                    <div class="box__eye-left"></div>
+                    <div class="box__eye-right"></div>
+                </div>
+                <div class="box__ghost-bottom">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="box__ghost-shadow"></div>
+        </div>
+
+        <div class="box__description">
+            <div class="box__description-container">
+                <div class="box__description-title" style="color:red">@Model.ErrorMsg.ToString()  </div>
+                <div class="box__description-title">Whoops!</div>
+                <div class="box__description-text">It seems like we couldn't find the page you were looking for</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        var pageX = $(document).width();
+        var pageY = $(document).height();
+        var mouseY = 0;
+        var mouseX = 0;
+
+        $(document).mousemove(function (event) {
+            //verticalAxis
+            mouseY = event.pageY;
+            yAxis = (pageY / 2 - mouseY) / pageY * 300;
+            //horizontalAxis
+            mouseX = event.pageX / -pageX;
+            xAxis = -mouseX * 100 - 100;
+
+            $('.box__ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
+
+            //console.log('X: ' + xAxis);
+
+        });
+    </script>
+</body>
+</html>

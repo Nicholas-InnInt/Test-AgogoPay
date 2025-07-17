@@ -1,0 +1,42 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalOrders
+@using Abp.Extensions
+@using Neptune.NsPay.WithdrawalOrders.Dtos
+@model Dictionary<string, List<WithdrawalOrderDto>>
+
+@{
+    var withdrawalOrderList = Model.Values.SelectMany(x => x).ToHashSet().ToList();
+}
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("BatchCallBackWithdrawal")))
+
+<div class="modal-body">
+    <div id="BatchCallBackWithdrawalModal">
+        <form name="BatchCallBackWithdrawalForm" role="form" novalidate class="form-validation">
+            <label class="form-label" for="WithdrawalOrder_OrderNo">@L("OrderNo")</label><br />
+            @for (int i = 0; i < withdrawalOrderList.Count; i++)
+            {
+                <div>
+                    <label class="form-label" for="WithdrawalOrder_OrderNo">@withdrawalOrderList[i].OrderNo</label>
+                    <input type="hidden" name="WithdrawalId[@i]" value="@withdrawalOrderList[i].Id" />
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light-primary fw-bold close-button" data-bs-dismiss="modal">@L("Cancel")</button>
+    @if (Model["Enforce"].Count >= Model["Retry"].Count && Model["Enforce"].Count >= Model["Cancel"].Count)
+    {
+        <button type="button" id="batchEnforceCallBack" class="btn btn-primary save-button"><span>@L("EnforceCallBcakWithdrawal")</span></button>
+    }
+    @if (Model["Retry"].Count >= Model["Enforce"].Count && Model["Retry"].Count >= Model["Cancel"].Count)
+    {
+        <button type="button" id="batchCallBack" class="btn btn-primary save-button"><span>@L("OrderCallBack")</span></button>
+    }
+    @if (Model["Cancel"].Count >= Model["Enforce"].Count && Model["Cancel"].Count >= Model["Retry"].Count)
+    {
+        <button type="button" id="batchCallBackCancel" class="btn btn-primary save-button"><span>@L("CallBackCancelOrder")</span></button>
+    }
+</div>

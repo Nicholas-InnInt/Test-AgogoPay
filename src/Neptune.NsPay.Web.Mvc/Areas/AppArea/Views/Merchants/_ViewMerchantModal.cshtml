@@ -1,0 +1,56 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Merchants
+@model MerchantViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("Name") :</h6>
+                @Model.Merchant.Name
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Mail") :</h6>
+                @Model.Merchant.Mail
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Phone") :</h6>
+                @Model.Merchant.Phone
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.Merchant.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantSecret") :</h6>
+                @Model.Merchant.MerchantSecret
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PlatformCode") :</h6>
+                @Model.Merchant.PlatformCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("PayGroupId") :</h6>
+                @Model.Merchant.PayGroupId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("CountryType") :</h6>
+                @Model.Merchant.CountryType
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Remark") :</h6>
+                @Model.Merchant.Remark
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

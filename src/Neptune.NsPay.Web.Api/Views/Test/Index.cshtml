@@ -1,0 +1,101 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link href="~/css/index.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+    <style>
+        form {
+            max-width: 35rem;
+            margin: 1rem auto;
+            text-align: center;
+        }
+
+            form legend {
+                font-weight: 500;
+                font-size: 1.2rem;
+            }
+
+            form button[type=submit] {
+                font-size: 1rem;
+                margin-top: 10px;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form method="post" action="/Test/InOrder">
+        <fieldset>
+            <legend>入款</legend>
+
+            <div>
+                <label>商户号： </label>
+                <input name="MerchNo" id="PayMerchNo" />
+            </div>
+
+            <div>
+                <label>订单号： </label>
+                <input name="OrderNo" id="PayOrderNo" />
+            </div>
+
+            <div>
+                <label>订单金额： </label>
+                <input name="Money" id="PayMoney" />
+            </div>
+
+            <div>
+                <label>支付类型： </label>
+                <input name="PayType" id="PayPayType" />
+                <br />
+                <small>[scanbank, onlinebank, momopay, zalopay, usdt_trc20, usdt_erc20]</small>
+            </div>
+
+            <button type="submit" id="PaySubmit">提交</button>
+        </fieldset>
+    </form>
+
+    <form method="post" action="/Test/OutOrder">
+        <fieldset>
+            <legend>出款</legend>
+
+            <div>
+                <label>商户号： </label>
+                <input name="MerchNo" />
+            </div>
+
+            <div>
+                <label>订单号： </label>
+                <input name="OrderNo" />
+            </div>
+
+            <div>
+                <label>金额： </label>
+                <input name="Money" />
+            </div>
+
+            <div>
+                <label>出款账户： </label>
+                <input name="BankAccNo" />
+            </div>
+
+            <div>
+                <label>出款姓名： </label>
+                <input name="BankAccName" />
+            </div>
+
+            <div>
+                <label>出款银行： </label>
+                <input name="BankName" />
+            </div>
+
+            <button type="submit">提交</button>
+        </fieldset>
+    </form>
+</body>
+</html>

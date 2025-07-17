@@ -1,0 +1,40 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantRates
+@model MerchantRateViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="MerchantRateInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.MerchantRate.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantId") :</h6>
+                @Model.MerchantRate.MerchantId
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ScanBankRate") :</h6>
+                @Model.MerchantRate.ScanBankRate
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ScratchCardRate") :</h6>
+                @Model.MerchantRate.ScratchCardRate
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MoMoRate") :</h6>
+                @Model.MerchantRate.MoMoRate
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

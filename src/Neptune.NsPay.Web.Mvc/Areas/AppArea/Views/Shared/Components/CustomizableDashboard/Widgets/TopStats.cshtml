@@ -1,0 +1,91 @@
+﻿<script abp-src="/view-resources/Areas/AppArea/Views/_Bundles/widget-charts.js" asp-append-version="true"></script>
+
+<div class="TopStatsContainer h-100">
+    <div class="row row-no-padding row-col-separator-xl">
+        <!--商户余额-->
+        <div class="col">
+            <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                <div class="card-body">
+                    <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                        @L("TotalMerchantFund")
+                    </div>
+                    <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">@L("TotalMerchantCount")
+                        <span id="totalMerchantCount"></span>
+                    </span>
+                    <div class="fw-bold text-muted font-size-lg text-left">
+                        <span class="text-primary fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalMerchantFund">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--手续费-->
+        <div class="col">
+            <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                <div class="card-body">
+                    <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                        @L("TotalMerchantFee")
+                    </div>
+                    <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">...</span>
+                    <div class="fw-bold text-muted font-size-lg text-left">
+                        <span class="text-info fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalPayOrderFee">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--订单金额-->
+        <div class="col">
+            <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                <div class="card-body">
+                    <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                        @L("TotalPayOrderMoney")
+                    </div>
+                    <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                        @L("TotalPayOrderCount")
+                        <span id="totalPayOrderCount"></span>
+                    </span>
+                    <div class="fw-bold text-muted font-size-lg text-left">
+                        <span class="text-success fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalPayOrderMoney">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--代付金额-->
+        <div class="col">
+            <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                <div class="card-body">
+                    <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                        @L("TotalTransferMoney")
+                    </div>
+                    <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                        @L("TotalTransferCount")
+                        <span id="totalTransferCount"></span>
+                    </span>
+                    <div class="fw-bold text-muted font-size-lg text-left">
+                        <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalTransferMoney">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--提现金额-->
+        <div class="col">
+            <div class="card card-custom bgi-no-repeat card-stretch gutter-b new-subscription-statistics h-100">
+                <div class="card-body">
+                    <div class="card-title text-left fw-bolder text-dark fs-6 mb-0 text-hover-state-dark d-block">
+                        @L("TotalMerchantWithdraw")
+                    </div>
+                    <span class="text-muted fw-bold text-left float-left col-12 p-0 mb-4">
+                        @L("TotalMerchantWithdrawCount")
+                        <span id="totalMerchantWithdrawCount"></span>
+                    </span>
+                    <div class="fw-bold text-muted font-size-lg text-left">
+                        <span class="text-danger fw-bolder fs-2 me-2 dashboard-placeholder2" id="totalMerchantWithdraw">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

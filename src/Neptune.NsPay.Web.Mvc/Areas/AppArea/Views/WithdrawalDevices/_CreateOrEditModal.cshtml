@@ -1,0 +1,163 @@
+﻿@using Neptune.NsPay.WithdrawalDevices;
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.WithdrawalDevices
+@model CreateOrEditWithdrawalDeviceModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditWithdrawalDevice")) : L("CreateNewWithdrawalDevice")))
+
+<div class="modal-body">
+    <div id="WithdrawalDeviceInformationsTab">
+        <form name="WithdrawalDeviceInformationsForm" role="form" novalidate class="form-validation">
+
+            @if (Model.IsEditMode)
+            {
+            <input type="hidden" name="id" value="@Model.WithdrawalDevice.Id" />
+            }
+
+            <div class="form-group my-3">
+                <label class="form-label" for="WithdrawalDevice_Name">@L("Name")</label>
+                <span class="text-danger">*</span>
+                <input class="form-control" id="WithdrawalDevice_Name" value="@Model.WithdrawalDevice.Name" required type="text" name="name" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxNameLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinNameLength" />
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_Phone">@L("Phone")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="WithdrawalDevice_Phone" value="@Model.WithdrawalDevice.Phone" required type="number" inputmode="numeric" name="phone" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxPhoneLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinPhoneLength" pattern="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.PhonePattern" />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_CardNumber">@L("CardNumber")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="WithdrawalDevice_CardNumber" value="@Model.WithdrawalDevice.CardNumber" type="number" inputmode="numeric" required name="cardNumber" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxCardNumberLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinCardNumberLength" pattern="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.CardPattern" />
+                </div>
+            </div>
+@*             <div class="my-3">
+                <label class="form-label" for="WithdrawalDevice_CardNumber">@L("CardNumber")</label>
+                <input class="form-control" id="WithdrawalDevice_CardNumber" value="@Model.WithdrawalDevice.CardNumber" type="text" name="cardNumber" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxPhoneLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinPhoneLength" />
+            </div> *@
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_DeviceAdbName">@L("DeviceAdbName")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="WithdrawalDevice_DeviceAdbName" value="@Model.WithdrawalDevice.DeviceAdbName" type="text" name="deviceAdbName" required maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxMerchantCodeLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinMerchantCodeLength" />
+                </div>
+                <div class="form-group col-lg-6 ">
+                    @{
+                        var selectListBankType = Html.GetEnumSelectList(typeof(WithdrawalDevicesBankTypeEnum));
+                        foreach (var selectOption in selectListBankType) { selectOption.Text = L("Enum_WithdrawalDevicesBankTypeEnum_" + selectOption.Value); }
+                    }
+                    <label class="form-label" for="WithdrawalDevice_BankType">@L("BankType")</label>
+                    <span class="text-danger">*</span>
+                    <select class="form-control select2" name="bankType" id="WithdrawalDevice_BankType">
+
+                        @if (!Model.IsEditMode)
+                        {
+                        <option value="-1" selected">
+                            @L("BankType")
+                        </option>
+                        }
+
+                        @foreach (var bankType in selectListBankType)
+                        {
+                            @if (Model.IsEditMode && bankType.Value == ((int)Model.WithdrawalDevice.BankType).ToString())
+                            {
+                                <option value="@bankType.Value" selected>
+                                    @L("Enum_WithdrawalDevicesBankTypeEnum_" + bankType.Value)
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@bankType.Value" >
+                                    @L("Enum_WithdrawalDevicesBankTypeEnum_" + bankType.Value)
+                                </option>
+                            }
+                         
+                        }
+                    </select>
+                </div>
+            </div>
+@* 
+            <div class="my-3">
+                <label class="form-label" for="WithdrawalDevice_BankType">@L("BankType")</label>
+                <select class="form-select m-input m-input--square select2" name="bankType" id="WithdrawalDevice_BankType" asp-for="@Model.WithdrawalDevice.BankType" asp-items="@selectListBankType">
+                </select>
+            </div> *@
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_BankOtp">@L("BankOtp")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="WithdrawalDevice_BankOtp" value="@Model.WithdrawalDevice.BankOtp" required type="number" inputmode="numeric" name="bankOtp" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxBankOtpLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinBankOtpLength" pattern="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.BankOtpPattern" />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_LoginPassWord">@L("LoginPassWord")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="WithdrawalDevice_LoginPassWord" value="@Model.WithdrawalDevice.LoginPassWord" required type="text" name="loginPassWord" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxLoginPassWordLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinLoginPassWordLength" />
+                </div>
+            </div>
+
+@*             <div class="my-3">
+                <label class="form-label" for="WithdrawalDevice_LoginPassWord">@L("LoginPassWord")</label>
+                <input class="form-control" id="WithdrawalDevice_LoginPassWord" value="@Model.WithdrawalDevice.LoginPassWord" type="text" name="loginPassWord" maxlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MaxLoginPassWordLength" minlength="@Neptune.NsPay.WithdrawalDevices.WithdrawalDeviceConsts.MinLoginPassWordLength" />
+            </div> *@
+
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_MinMoney">@L("MinMoney")</label>
+                    <input class="form-control m-input" id="WithdrawalDevice_MinMoney" value="@Model.WithdrawalDevice.MinMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="minMoney" min="0" step="0.01"  required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="WithdrawalDevice_MaxMoney">@L("MaxMoney")</label>
+                    <input class="form-control m-input" id="WithdrawalDevice_MaxMoney" value="@Model.WithdrawalDevice.MaxMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="maxMoney" min="0" step="0.01" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="WithdrawalDevice_MerchantCode">@L("MerchantCode")</label>
+                <span class="text-danger">*</span>
+                <select class="form-control select2" id="WithdrawalDevice_MerchantCode" name="merchantCode">
+
+
+                    @if (!Model.IsEditMode)
+                    {
+                        <option value="-1" selected>@L("MerchantCode")</option> <!-- Placeholder -->
+                    }
+                    @if (!Model.IsInternalMerchant)
+                    {
+                        <option value="NsPay">NsPay</option>
+                    }else
+                    {
+                        @foreach (var item in Model.Merchants)
+                        {
+                            @if (Model.WithdrawalDevice.MerchantCode == item.MerchantCode)
+                            {
+                                <option value="@item.MerchantCode" selected="selected">@item.Name [ @item.MerchantCode ]</option>
+                            }
+                            else
+                            {
+                                <option value="@item.MerchantCode">@item.Name [ @item.MerchantCode ]</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            @{
+            var selectListProcess = Html.GetEnumSelectList(typeof(WithdrawalDevicesProcessTypeEnum));
+            foreach (var selectOption in selectListProcess) { selectOption.Text = L("Enum_WithdrawalDevicesProcessTypeEnum_" + selectOption.Value); }
+            }
+            <div class="form-group my-3">
+                <label class="form-label" for="WithdrawalDevice_Process">@L("Process")</label>
+                <select class="form-select" name="process" id="WithdrawalDevice_Process" asp-for="@Model.WithdrawalDevice.Process" asp-items="@selectListProcess">
+                </select>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

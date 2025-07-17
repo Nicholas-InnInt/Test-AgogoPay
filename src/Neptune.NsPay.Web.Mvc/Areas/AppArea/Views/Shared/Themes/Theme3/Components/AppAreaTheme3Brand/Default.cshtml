@@ -1,0 +1,14 @@
+﻿@using Neptune.NsPay.Web.Areas.AppArea.Models.Layout
+@using Neptune.NsPay.Web.Areas.AppArea.Views.Shared.Components.AppAreaLogo
+@model HeaderViewModel
+@{
+    Layout = null;
+    var theme = await GetTheme();
+}
+<a href="@Url.Action("Index", "Home", new {area = string.Empty})">
+    @await Component.InvokeAsync(typeof(AppAreaLogoViewComponent), new
+    {
+        logoSkin = theme.BaseSettings.Layout.DarkMode ? "dark": "light", 
+        logoClass = "h-30px logo theme-"+(theme.BaseSettings.Layout.DarkMode ? "dark": "light")+"-show"
+    })
+</a>

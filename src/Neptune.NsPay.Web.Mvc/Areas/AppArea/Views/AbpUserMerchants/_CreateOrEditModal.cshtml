@@ -1,0 +1,27 @@
+﻿
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.AbpUserMerchants
+@model CreateOrEditAbpUserMerchantModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditAbpUserMerchant")) : L("CreateNewAbpUserMerchant")))
+
+<div class="modal-body">
+        <div id="AbpUserMerchantInformationsTab">
+            <form name="AbpUserMerchantInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="id" value="@Model.AbpUserMerchant.Id" />
+                }
+
+				
+                
+				
+                
+
+            </form>
+        </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

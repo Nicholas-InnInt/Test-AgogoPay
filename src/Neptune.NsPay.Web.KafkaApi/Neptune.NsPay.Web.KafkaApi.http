@@ -1,0 +1,6 @@
+@Neptune.NsPay.Web.KafkaApi_HostAddress = http://localhost:5058
+
+GET {{Neptune.NsPay.Web.KafkaApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

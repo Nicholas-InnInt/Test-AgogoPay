@@ -1,0 +1,298 @@
+﻿@using Abp.Extensions
+@using Neptune.NsPay.PayMents;
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.PayMents
+@model CreateOrEditPayMentModalViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditPayMent")) : L("CreateNewPayMent")))
+
+<div class="modal-body">
+    <div id="PayMentInformationsTab">
+        <form name="PayMentInformationsForm" role="form" novalidate class="form-validation">
+            @if (Model.IsEditMode)
+            {
+                <input type="hidden" name="id" value="@Model.PayMent.Id" />
+            }
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_Name">@L("Name")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control" id="PayMent_Name" value="@Model.PayMent.Name" type="text" name="name" required maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxNameLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinNameLength" />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_Type">@L("PayMentsType")</label>
+                    <span class="text-danger">*</span>
+                    <select class="form-control select2" name="type" id="PayMent_Type" required>
+                        <option value="" selected="selected">@L("PayMentsType")</option>
+                        @foreach (var bank in PayMentHelper.GetBankList)
+                        {
+                            var bankValue = bank.PaymentTypeEnum.ToInt();
+
+                            if (Model.PayMent.Type == bank.PaymentTypeEnum)
+                            {
+                                <option value="@bankValue" selected="selected">@L($"Enum_PayMentTypeEnum_{bankValue}")</option>
+                            }
+                            else
+                            {
+                                <option value="@bankValue">@L($"Enum_PayMentTypeEnum_{bankValue}")</option>
+                            }
+                        }
+                        @foreach (var crypto in PayMentHelper.GetCryptoList)
+                        {
+                            var cryptoValue = crypto.ToInt();
+                            if (Model.PayMent.Type == crypto)
+                            {
+                                <option value="@cryptoValue" selected="selected">@L($"Enum_PayMentTypeEnum_{cryptoValue}")</option>
+                            }
+                            else
+                            {
+                                <option value="@cryptoValue">@L($"Enum_PayMentTypeEnum_{cryptoValue}")</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6 businessType">
+                    <label class="form-check form-check-custom">
+                        <input id="PayMent_BusinessType" name="businessType" type="checkbox" class="form-check-input" value="true"
+                               @Html.Raw(Model.PayMent.BusinessType ? "checked=\"checked\"" : "") />
+                        <span class="form-check-label">@L("BusinessType")</span>
+                    </label>
+                </div>
+
+                <div class="form-group col-lg-6 bankcard">
+                    <label class="form-check form-check-custom">
+                        <input id="PayMent_UseMoMo" name="useMoMo" type="checkbox" class="form-check-input" value="true"
+                               @Html.Raw(Model.PayMent.UseMoMo ? "checked=\"checked\"" : "") />
+                        <span class="form-check-label">@L("UseMoMo")</span>
+                    </label>
+                </div>
+            </div>
+
+            <section class="company">
+                <div class="row my-3">
+                    @{
+                        var selectListCompanyType = Html.GetEnumSelectList(typeof(PayMentCompanyTypeEnum));
+                        foreach (var selectOption in selectListCompanyType) { selectOption.Text = L("Enum_PayMentCompanyTypeEnum_" + selectOption.Value); }
+                    }
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_CompanyType">@L("CompanyType")</label>
+                        <select class="form-select m-input m-input--square select2" name="companyType" id="PayMent_CompanyType" asp-for="@Model.PayMent.CompanyType" asp-items="@selectListCompanyType">
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_Gateway">@L("Gateway")</label>
+                        <input class="form-control" id="PayMent_Gateway" value="@Model.PayMent.Gateway" type="text" name="gateway" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxGatewayLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinGatewayLength" />
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_CompanyKey">@L("CompanyKey")</label>
+                        <input class="form-control" id="PayMent_CompanyKey" value="@Model.PayMent.CompanyKey" type="text" name="companyKey" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxCompanyKeyLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinCompanyKeyLength" />
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_CompanySecret">@L("CompanySecret")</label>
+                        <input class="form-control" id="PayMent_CompanySecret" value="@Model.PayMent.CompanySecret" type="text" name="companySecret" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxCompanySecretLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinCompanySecretLength" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="bankcard">
+                <div class="row my-3">
+                    @{
+                        var selectListDispenseType = Html.GetEnumSelectList(typeof(PayMentDispensEnum));
+                        foreach (var selectOption in selectListDispenseType) { selectOption.Text = L("Enum_PayMentDispensEnum_" + selectOption.Value); }
+                    }
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_DispenseType">@L("DispenseType")</label>
+                        <span class="text-danger">*</span>
+                        <select class="form-select m-input m-input--square" name="dispenseType" id="PayMent_DispenseType" asp-for="@Model.PayMent.DispenseType" asp-items="@selectListDispenseType">
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_FullName">@L("FullName")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="PayMent_FullName" value="@Model.PayMent.FullName" type="text" name="fullName" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxFullNameLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinFullNameLength" required />
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_Phone">@L("LoginAccount")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="PayMent_Phone" value="@Model.PayMent.Phone" required type="text" name="phone" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxLoginAccountLength" pattern="^[a-zA-Z0-9]+$" />
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_PassWord">@L("PassWord")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="PayMent_PassWord" value="@Model.PayMent.PassWord" type="text" name="passWord" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxPassWordLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinPassWordLength" required />
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_CardNumber">@L("CardNumber")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="PayMent_CardNumber" value="@Model.PayMent.CardNumber" type="number" name="cardNumber" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxCardNumberLength"
+                               minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinCardNumberLength" pattern="@Neptune.NsPay.PayMents.PayMentConsts.CardNumberRegex" inputmode="numeric" required />
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_Mail">@L("Mail")</label>
+                        <input class="form-control" id="PayMent_Mail" value="@Model.PayMent.Mail" type="email" name="mail"
+                               maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxMailLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinMailLength" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="specialrate">
+                <div class="row my-3">
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_MoMoRate">@L("MoMoRate")</label>
+                        <input class="form-control m-input" id="PayMent_MoMoRate" value="@Model.PayMent.MoMoRate.ToString(CultureInfo.InvariantCulture)" type="number" name="momoRate" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_ZaloRate">@L("ZaloRate")</label>
+                        <input class="form-control m-input" id="PayMent_ZaloRate" value="@Model.PayMent.ZaloRate.ToString(CultureInfo.InvariantCulture)" type="number" name="zaloRate" min="0" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="form-group col-lg-6">
+                        <label class="form-label" for="PayMent_VittelPayRate">@L("VittelPayRate")</label>
+                        <input class="form-control m-input" id="PayMent_VittelPayRate" value="@Model.PayMent.VittelPayRate.ToString(CultureInfo.InvariantCulture)" type="number" name="vittelPayRate" min="0" step="0.01" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="crypto">
+                <div class="form-group my-3">
+                    <label class="form-label" for="PayMent_CryptoWalletAddress">@L("CryptoWalletAddress")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control m-input" id="PayMent_CryptoWalletAddress" value="@Model.PayMent.CryptoWalletAddress" type="text" name="cryptoWalletAddress" required />
+                </div>
+                <div class="row my-3">
+                    <div class="col-lg-4 d-flex align-items-end justify-content-center">
+                        <p class="text-center" style="font-size: large; font-weight: bold;">1 <span class="cryptoCurrency"></span> &#8651;</p>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label" for="PayMent_CryptoMinConversionRate">@L("MinConversionRate")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control m-input" id="PayMent_CryptoMinConversionRate" value="@Model.PayMent.CryptoMinConversionRate" type="number" name="cryptoMinConversionRate" min="0" max="999999999999999.99" step="0.01" required />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label" for="PayMent_CryptoMaxConversionRate">@L("MaxConversionRate")</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control m-input" id="PayMent_CryptoMaxConversionRate" value="@Model.PayMent.CryptoMaxConversionRate" type="number" name="cryptoMaxConversionRate" min="0" max="999999999999999.99" step="0.01" required />
+                    </div>
+                </div>
+            </section>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_MinMoney">@L("MinMoney")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control m-input" id="PayMent_MinMoney" value="@Model.PayMent.MinMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="minMoney" min="0" max="999999999999999.99" step="0.01" required />
+                </div>
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_MaxMoney">@L("MaxMoney")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control m-input" id="PayMent_MaxMoney" value="@Model.PayMent.MaxMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="maxMoney" min="0" max="999999999999999.99" step="0.01" required />
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_LimitMoney">@L("LimitMoney")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control m-input" id="PayMent_LimitMoney" value="@Model.PayMent.LimitMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="limitMoney" min="0" max="999999999999999.99" step="0.01" required />
+                </div>
+
+                <div class="form-group col-lg-6">
+                    <label class="form-label" for="PayMent_BalanceLimitMoney">@L("BalanceLimitMoney")</label>
+                    <span class="text-danger">*</span>
+                    <input class="form-control m-input" id="PayMent_BalanceLimitMoney" value="@Model.PayMent.BalanceLimitMoney.ToString(CultureInfo.InvariantCulture)" type="number" name="balanceLimitMoney" min="0" max="999999999999999.99" step="0.01" required />
+                </div>
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="PayMent_Remark">@L("Remark")</label>
+                <input class="form-control" id="PayMent_Remark" value="@Model.PayMent.Remark" type="text" name="remark" maxlength="@Neptune.NsPay.PayMents.PayMentConsts.MaxRemarkLength" minlength="@Neptune.NsPay.PayMents.PayMentConsts.MinRemarkLength" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#PayMent_Type').change(function () {
+            $(this).valid();  // Trigger validation for the select element on change
+            displayInputSectionByType(this.value);
+        });
+        $('#PayMent_Type').change();
+
+        function displayInputSectionByType(type) {
+            const ScratchCardType = 11;
+            const EWalletType = [
+                8, // MoMoPay
+                9, // ZaloPay
+                10, // ViettelPay
+            ];
+            const CryptoType = [
+                1001, // USDT TRC
+                1002, // USDT ERC
+            ];
+
+            if (type === "" || type === null || type === undefined) {
+                $(".company").hide();
+                $(".businessType").hide();
+                $(".bankcard").hide();
+                $(".specialrate").hide();
+                $(".crypto").hide();
+            }
+            else if (type == ScratchCardType) {
+                $(".company").show();
+                $(".businessType").hide();
+                $(".bankcard").hide();
+                $(".specialrate").hide();
+                $(".crypto").hide();
+            }
+            else if (EWalletType.some(x => x == type)) {
+                $(".company").show();
+                $(".businessType").show();
+                $(".bankcard").hide();
+                $(".specialrate").show();
+                $(".crypto").hide();
+                $("#PayMent_BusinessType").prop("checked", true);
+            }
+            else if (CryptoType.some(x => x == type)) {
+                $(".company").hide();
+                $(".businessType").hide();
+                $(".bankcard").hide();
+                $(".specialrate").hide();
+                $(".crypto").show();
+
+                $(".cryptoCurrency").text("USDT");
+            }
+            else {
+                $(".company").hide();
+                $(".businessType").show();
+                $(".bankcard").show();
+                $(".specialrate").hide();
+                $(".crypto").hide();
+            }
+        }
+    });
+</script>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

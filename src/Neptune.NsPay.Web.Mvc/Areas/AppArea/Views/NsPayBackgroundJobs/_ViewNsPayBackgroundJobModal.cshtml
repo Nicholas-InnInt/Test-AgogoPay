@@ -1,0 +1,60 @@
+﻿
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.NsPayBackgroundJobs
+@model NsPayBackgroundJobViewModel
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="NsPayBackgroundJobInformationsTab">
+        
+        <div class="row">
+            <div class="col-6 mb-3">
+                <h6>@L("Name") :</h6>
+                @Model.NsPayBackgroundJob.Name
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("GroupName") :</h6>
+                @Model.NsPayBackgroundJob.GroupName
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Cron") :</h6>
+                @Model.NsPayBackgroundJob.Cron
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ApiUrl") :</h6>
+                @Model.NsPayBackgroundJob.ApiUrl
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("RequsetMode") :</h6>
+                @L("Enum_NsPayBackgroundJobRequsetModeEnum_" + (int)Model.NsPayBackgroundJob.RequsetMode)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("State") :</h6>
+                @L("Enum_NsPayBackgroundJobStateEnum_" + (int)Model.NsPayBackgroundJob.State)
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("ParamData") :</h6>
+                <span style="word-wrap: break-word; white-space: normal;">@Model.NsPayBackgroundJob.ParamData</span>
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("MerchantCode") :</h6>
+                @Model.NsPayBackgroundJob.MerchantCode
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Description") :</h6>
+                @Model.NsPayBackgroundJob.Description
+            </div>
+            <div class="col-6 mb-3">
+                <h6>@L("Remark") :</h6>
+                @Model.NsPayBackgroundJob.Remark
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

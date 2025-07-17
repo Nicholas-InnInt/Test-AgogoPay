@@ -1,0 +1,282 @@
+﻿@using Neptune.NsPay.Authorization
+@using Abp.Configuration;
+@using Neptune.NsPay
+@using Neptune.NsPay.Configuration
+@using Neptune.NsPay.PayMents
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantConfig
+@using Neptune.NsPay.Web.Areas.AppArea.Startup
+@model MerchantConfigViewModel
+@{
+    ViewBag.CurrentPageName = AppAreaPageNames.Merchant.MerchantConfig;
+}
+
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/AppArea/Views/MerchantConfig/Index.js" asp-append-version="true"></script>
+}
+<div class="@(await GetContainerClass())">
+    <div class="card">
+        <div class="card-body">
+            <div id="SettingsTabPanel" class="tabbable-line">
+                <div>
+                    <h2>@L("MerchantCode")：@Model.MerchantCode</h2>
+                    <input hidden id="MerchantCode" value="@Model.MerchantCode" />
+                    <input hidden id="MerchantId" value="@Model.MerchantId" />
+                </div>
+                 <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a href="#MerchantInformationTab" class="nav-link active" data-bs-toggle="tab" role="tab">
+                            @L("MerchantInformations")
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#MerchantIpAddressTab" data-bs-toggle="tab" role="tab" class="nav-link">
+                            @L("MerchantIpAddress")
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#MerchantNotifyTab" data-bs-toggle="tab" role="tab" class="nav-link">
+                            @L("MerchantNotify")
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#MerchantPlatFromWithdrawTab" data-bs-toggle="tab" role="tab" class="nav-link">
+                            @L("MerchantPlatFromWithdraw")
+                        </a>
+                    </li>
+@*                     <li class="nav-item">
+                        <a href="#MerchantChangeBankIpTab" data-bs-toggle="tab" role="tab" class="nav-link">
+                            @L("MerchantChangeBankIp")
+                        </a>
+                    </li> *@
+                </ul>
+
+                <div class="tab-content">
+                    <!--商户信息Start-->                    
+                        <div class="tab-pane pt-5 active" id="MerchantInformationTab" role="tabpanel">
+                        <form id="MerchantInformationForm" name="MerchantInformationForm" role="form" novalidate class="form-validation">
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfigTitle">@L("MerchantConfigTitle")</label> <span class="text-danger">*</span>
+                                <input class="form-control" id="MerchantConfigTitle" name="merchantConfigTitle" value="@Model.Title"
+                                       maxlength="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.MaxMerchantTitleLength" minlength="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.MinMerchantTitleLength" 
+                                       pattern="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.MerchantTitlePattern" required>
+                            </div>
+
+                            <div id="MerchantConfigTitleError" class="text-danger mt-1" style="display: none;"></div>
+
+                            <div class="my-3  form-group">
+                                <label class="form-label" for="MerchantConfigTitle">@L("OrderBankRemark")</label>
+                                <input class="form-control" id="OrderBankRemark" value="@Model.OrderBankRemark" type="text" name="name" />
+                            </div>
+                            </form>
+
+                        <form id="MerchantConfigForm" method="POST" action="@Url.Action("UploadMerchantLogo", "MerchantConfig", new {area = "AppArea"})">
+                            <div class="col-md-6">
+                                <label class="form-label" for="MerchantConfigLogo">@L("MerchantConfigLogo")</label>
+                                 <div class="row mx-0">
+                                    <div class="mb-5 brand-light-logo-preview-area pl-0 col p-2">
+                                        <img width="250" height="75" style="width: 100%;" src="@Url.Action("GetProfilePicture", "MerchantConfig", new {area = "AppArea"})" />
+                                    </div>
+
+                                    <div class="col">
+                                        <button class="btn btn-primary p-0">
+                                            <span class="fileinput-button p-3">
+                                                <input type="file" class="upload-on-change" name="MerchantLogoPicture" data-bs-toggle="tooltip" title="@L("UploadLogo_Info")">
+                                                @L("Upload")
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                    <div>
+                            <button id="SaveMerchantInformation" class="btn btn-primary ms-5">
+                                <i class="fa fa-save btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    @L("Save")
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                    <!--商户信息End-->
+
+                    <!--商户白名单Start-->
+                    <div class="tab-pane pt-5" id="MerchantIpAddressTab" role="tabpanel">
+                        <form id="MerchantIpForm" name="MerchantIpForm" role="form"  class="form-validation">
+                        <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfig_LoginIpAddress">@L("MerchantConfigLoginIpAddress") [@L("MerchantConfigLoginIpAddressInfo")]</label> <span class="text-danger">*</span>
+                                <textarea id="MerchantConfig_LoginIpAddress" name="loginIpAddress" auto-focus class="form-control" rows="5" pattern="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.BasicIpAddressRegex" required>@Model.LoginIpAddress</textarea>
+                        </div>
+                        </form>
+                        <div>
+                            <button id="SaveMerchantIpAddress" class="btn btn-primary ms-5">
+                                <i class="fa fa-save btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    @L("Save")
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                    <!--商户白名单End-->
+
+                    <!--商户通知Start-->
+                    <div class="tab-pane pt-5" id="MerchantNotifyTab" role="tabpanel">
+                        <form id="MerchantNotifyForm" name="MerchantNotifyForm" role="form" novalidate class="form-validation">
+                        <div class="my-3">
+                            <h2>
+                                @L("MerchantConfigBankNotify")
+                            </h2>
+                            <div class="my-3 form-group">
+                                <label for="MerchantWithdraw_BankId">@L("MerchantWithdrawBanks")</label>
+                                <select class="form-control select2" id="MerchantConfig_MerchantBanks">
+                                    @foreach (var item in Model.MerchantBanks)
+                                    {
+                                        <option value="@item.Id">@item.ReceivCard [ @item.ReceivName ]</option>
+                                    }
+                                </select>
+                            </div>
+@*                             @{
+                                var selectListType = Html.GetEnumSelectList(typeof(PayMentTypeEnum));
+                                foreach (var selectOption in selectListType)
+                                {
+                                    var configBank = Model.MerchantConfigBank.FirstOrDefault(r => r.Type == (PayMentTypeEnum)Convert.ToInt32(selectOption.Value));
+                                    var isopen = configBank == null ? false : configBank.IsOpen;
+                                    var money = configBank == null ? 0 : configBank.Money;
+                                    if (selectOption.Value != "0" && selectOption.Value != "2" && selectOption.Value != "8" && selectOption.Value != "9" && selectOption.Value != "10" && selectOption.Value != "11")
+                                    {
+                                        <div class="col-lg-6 my-3">
+                                            <span class="form-check form-switch form-check-custom">
+                                                <label>
+                                                    <span class="form-check-label">
+                                                        @L("Enum_PayMentTypeEnum_"+selectOption.Value)
+                                                    </span>
+                                                    <input type="checkbox" name="EditableCheckbox" class="form-check-input" value="@selectOption.Value" @(isopen ? "checked=\" checked\"" : "")>
+                                                    <input type="text" id="BankNotify_@selectOption.Value" value="@money" />
+                                                </label>
+                                            </span>
+                                        </div>
+                                    }
+                                }
+                            } *@
+                            <div class="my-3 form-group">
+                                <h2>
+                                    @L("MerchantConfigBankNotifyTelegram")
+                                </h2>
+                                <label class="form-label" for="TelegramNotifyBotId">@L("TelegramNotifyBotId")</label>
+                                <input class="form-control" id="TelegramNotifyBotId" value="@Model.TelegramNotifyBotId" type="text"
+                                           maxlength="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.MaxTelegramNotifyBotIdLength" pattern="^[a-zA-Z0-9@@#$%^&amp;*()_+\=\[\]{}|\\;:'&quot;&lt;&gt;?/`~!-]*$" />
+                            </div>
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="TelegramNotifyChatId">@L("TelegramNotifyChatId")</label>
+                                <input class="form-control" id="TelegramNotifyChatId" value="@Model.TelegramNotifyChatId" type="text"
+                                           maxlength="@Neptune.NsPay.MerchantConfig.MerchantConfigConst.MaxTelegramNotifyChatIdLength" pattern="^[a-zA-Z0-9@@#$%^&amp;*()_+\=\[\]{}|\\;:'&quot;&lt;&gt;?/`~!-]*$" />
+                            </div>
+                            <div class="my-3 form-group">
+                                    <label class="form-label" for="MerchantConfig_BankNotifyText">@L("MerchantConfigBankNotifyText")【转账账户：#cardno,转账手机号：#phone,转账金额：#money,转账备注:#remark,转账时间：#time】</label> <span class="text-danger">*</span>
+                                <textarea id="MerchantConfig_BankNotifyText" name="bankNotifyText" auto-focus class="form-control my-3" rows="4" 
+                                required maxlength="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MaxBankNotifyTextLength">@Model.BankNotifyText</textarea>
+                            </div>                        
+                        </div>
+                        </form>
+                        <div>
+                            <button id="SaveMerchantNotify" class="btn btn-primary ms-5">
+                                <i class="fa fa-save btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    @L("Save")
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <!--商户通知End-->
+        
+                    <!--商户平台出款Start-->
+                    <div class="tab-pane pt-5" id="MerchantPlatFromWithdrawTab" role="tabpanel">
+                        <form id="MerchantPlatFromWithdrawForm" name="MerchantPlatFromWithdrawForm" role="form" novalidate class="form-validation">
+                            <div class="my-3 form-group">
+                                <label class="form-check form-check-custom">
+                                        <input
+                                            id="MerchantConfigOpenRiskWithdrawal"
+                                            name="openRiskWithdrawal"                                        
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            value="false"
+                                            @Html.Raw(Model.OpenRiskWithdrawal ?"checked=\"checked\"":"") 
+                                        />
+                                        <span class="form-check-label">
+                                            @L("Status")
+                                        </span>
+                                    </label>
+                            </div>
+
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfigPlatformUrl">@L("PlatformUrl")</label> <span class="text-danger">*</span>
+                                <input class="form-control" id="MerchantConfigPlatformUrl" value="@Model.PlatformUrl" type="text" name="platformUrl"/>
+                            </div>
+                        
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfigPlatformUserName">@L("MerchantConfigPlatformUserName")</label> <span class="text-danger">*</span>
+                                <input class="form-control" id="MerchantConfigPlatformUserName" value="@Model.PlatformUserName" type="text" name="platformUserName"/>
+                            </div>
+                        
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfigPlatformPassWord">@L("MerchantConfigPlatformPassWord")</label> <span class="text-danger">*</span>
+                                <input class="form-control" id="MerchantConfigPlatformPassWord" value="@Model.PlatformPassWord" type="text" name="platformPassWord"/>
+                            </div>
+
+                            <div class="my-3 form-group">
+                                <label class="form-label" for="MerchantConfigPlatformLimitMoney">@L("MerchantConfigPlatformLimitMoney")</label>
+                                <input class="form-control" id="MerchantConfigPlatformLimitMoney" value="@Model.PlatformLimitMoney" type="text" name="platformLimitMoney" min="@Neptune.NsPay.MerchantSettings.MerchantSettingConsts.MinPlatformLimitMoney" step="0.01" />
+                            </div>
+                        </form>
+                        <div>
+                            <button id="SaveMerchantPlatFromWithdraw" class="btn btn-primary ms-5">
+                                <i class="fa fa-save btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    @L("Save")
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                     <!--商户平台出款End-->
+
+
+                    <!--银行ip更换Start-->
+@*                     <div class="tab-pane pt-5" id="MerchantChangeBankIpTab" role="tabpanel">
+                        <div class="my-3">
+                            <label class="form-label" for="MerchantChangeBankIpTcb">TCB</label>
+                            <button id="SaveMerchantChangeBankIpTcb" class="btn btn-primary ms-5">
+                                <span class="d-none d-md-inline-block">
+                                    @L("Refresh")
+                                </span>
+                            </button>
+                        </div>
+                        
+                        <div class="my-3">
+                            <label class="form-label" for="MerchantChangeBankIpVcb">VCB</label>
+                            <button id="SaveMerchantChangeBankIpVcb" class="btn btn-primary ms-5">
+                                <span class="d-none d-md-inline-block">
+                                    @L("Refresh")
+                                </span>
+                            </button>
+                        </div>
+
+                    </div> *@
+                    <!--银行ip更换End-->
+
+                </div>
+            </div>
+        </div>
+
+@*         <div class="card-footer">
+            <button id="SaveAllSettingsButton" class="btn btn-primary ms-5">
+                <i class="fa fa-save btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    @L("SaveAll")
+                </span>
+            </button>
+        </div> *@
+
+    </div>
+</div>

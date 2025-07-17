@@ -1,0 +1,93 @@
+﻿@using Neptune.NsPay.MerchantWithdraws;
+@using System.Globalization
+@using Neptune.NsPay.Web.Areas.AppArea.Models.Common.Modals
+@using Neptune.NsPay.Web.Areas.AppArea.Models.MerchantWithdraws
+@model CreateOrEditMerchantWithdrawModalViewModel
+@using Abp.Extensions
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMerchantWithdraw")) : L("CreateNewMerchantWithdraw")))
+
+<div class="modal-body">
+    <div id="MerchantWithdrawInformationsTab">
+        <form name="MerchantWithdrawInformationsForm" role="form" novalidate class="form-validation">
+
+            @if (Model.IsEditMode)
+            {
+            <input type="hidden" name="id" value="@Model.MerchantWithdraw.Id" />
+            }
+
+            <div class="my-3">
+                <label class="form-label" for="MerchantWithdraw_MerchantCode">@L("MerchantCode")</label>
+                <input class="form-control" readonly name="merchantCode" id="MerchantWithdraw_MerchantCode" value="@Model.MerchantWithdraw.MerchantCode" type="text" required />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label" for="MerchantWithdraw_Money">@L("Money")</label>
+                <input class="form-control m-input" id="MerchantWithdraw_Money" value="@Model.MerchantWithdraw.Money.ToString(CultureInfo.InvariantCulture)" type="number" name="money" min="1" max="@Model.Balance" required />
+                <label>@L("CurrentWithdrawMoney"):<span id="currentMoney" style="font-weight:bold;color:red" data-bs-toggle="tooltip" title="@Html.Raw(Model.BalanceInit.ToString(CultureInfo.InvariantCulture) + " - " + Model.PendingMerchantWithdrawalAmount.ToString(CultureInfo.InvariantCulture) + " - " + Model.PendingWithdrawalOrderAmount.ToString(CultureInfo.InvariantCulture))">@Model.Balance</span></label>
+            </div>
+
+            <div class="my-3">
+                <label for="MerchantWithdraw_BankId">@L("MerchantWithdrawBanks")</label>
+                <select class="form-control select2" id="MerchantWithdraw_BankId" name="bankId" required>
+                    <option value="-1">@L("ChooseSelectItem")</option>
+                    @foreach (var item in Model.MerchantBanks)
+                    {
+                        <option value="@item.Id">@item.ReceivCard [ @item.ReceivName ]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="my-3">
+                <label class="form-label">@L("WithdrawBankName")</label>
+                <input class="form-control" readonly id="MerchantWithdraw_BankName" type="text" name="bankName" required />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label">@L("WithdrawReceivCard")</label>
+                <input class="form-control" readonly id="MerchantWithdraw_ReceivCard" type="text" name="receivCard" required />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label">@L("WithdrawReceivName")</label>
+                <input class="form-control" readonly id="MerchantWithdraw_ReceivName" type="text" name="receivName" required />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        @{
+            var merchantBanks = Model.MerchantBanks;
+            List<string> merchantBankList = new List<string>();
+            foreach(var item in merchantBanks)
+            {
+                merchantBankList.Add(item.Id + "-" + item.BankName + "-" + item.ReceivCard + "-" + item.ReceivName);
+            }
+            var merchantbank = string.Join(",", merchantBankList.ToArray());
+         }
+         $("#MerchantWithdraw_BankId").change(function (data) {
+            var merchantBanks = "@merchantbank";
+            var bankId = $("#MerchantWithdraw_BankId").val();
+            var merchantArr = merchantBanks.split(",");
+            var BankName="";
+            var ReceivCard="";
+            var ReceivName="";
+            for (var i = 0; i < merchantArr.length; i++) {
+                var info=merchantArr[i].split("-");
+                if (parseInt(bankId)==parseInt(info[0])) {
+                    BankName=info[1];
+                    ReceivCard=info[2];
+                    ReceivName=info[3];
+                    break;
+                }
+            }
+            $("#MerchantWithdraw_BankName").val(BankName);
+            $("#MerchantWithdraw_ReceivCard").val(ReceivCard);
+            $("#MerchantWithdraw_ReceivName").val(ReceivName);
+        })
+    });
+</script>
+
+@await Html.PartialAsync("~/Areas/AppArea/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")
