@@ -3,8 +3,8 @@ using Neptune.NsPay.HttpExtensions.Crypto.Enums;
 
 namespace Neptune.NsPay.HttpExtensions.Crypto.Helpers.Interfaces
 {
-    public interface ITronCryptoHelper
+    public interface IEthereumCryptoHelper
     {
-        Task<List<TokenTransactionDto>> GetTokenTransactionsByAddress(TronTokenTypeEnum tokenType, string toAddress);
+        Task<List<TokenTransactionDto>> GetTokenTransactionsByAddress(TronTokenTypeEnum tokenType, string address);
     }
 }

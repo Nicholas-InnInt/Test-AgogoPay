@@ -44,6 +44,7 @@ builder.Services.AddScoped<IBusinessMBBankHelper, BusinessMBBankHelper>();
 builder.Services.AddScoped<IBusinessVtbBankHelper, BusinessVtbBankHelper>();
 builder.Services.AddScoped<IBankHelper, BankHelper>();
 builder.Services.AddScoped<ITronCryptoHelper, TronCryptoHelper>();
+builder.Services.AddScoped<IEthereumCryptoHelper, EthereumCryptoHelper>();
 
 builder.Services.AddMongoSetup();
 builder.Services.AddScoped<IBankBalanceService, BankBalanceService>();

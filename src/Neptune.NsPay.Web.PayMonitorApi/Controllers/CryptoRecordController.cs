@@ -10,7 +10,6 @@ using Neptune.NsPay.MongoDbExtensions.Services.Interfaces;
 using Neptune.NsPay.PayMents;
 using Neptune.NsPay.SqlSugarExtensions.Services;
 using Neptune.NsPay.SqlSugarExtensions.Services.Interfaces;
-using Newtonsoft.Json;
 using SqlSugar;
 using System.Collections.Concurrent;
 
@@ -26,6 +25,7 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
         private readonly IMerchantService _merchantService;
         private readonly IPayGroupMentService _payGroupMentService;
         private readonly IKafkaProducer _kafkaProducer;
+        private readonly IEthereumCryptoHelper _ethereumCryptoHelper;
 
         public CryptoRecordController(
             ITronCryptoHelper tronCryptoHelper,
@@ -33,7 +33,8 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
             IPayOrderDepositsMongoService payOrderDepositsMongoService,
             IMerchantService merchantService,
             IPayGroupMentService payGroupMentService,
-            IKafkaProducer kafkaProducer)
+            IKafkaProducer kafkaProducer,
+            IEthereumCryptoHelper ethereumCryptoHelper)
         {
             _tronCryptoHelper = tronCryptoHelper;
             _payMentService = payMentService;
@@ -41,29 +42,54 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
             _merchantService = merchantService;
             _payGroupMentService = payGroupMentService;
             _kafkaProducer = kafkaProducer;
+            _ethereumCryptoHelper = ethereumCryptoHelper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> TronUSDTRecord()
+        public async Task<IActionResult> Record([FromBody] int paymentType)
         {
-            var paymentList = _payMentService.GetWhere(x => x.Type == PayMentTypeEnum.USDT_TRC20);
+            var paymentTypeEnum = (PayMentTypeEnum)paymentType;
+            if (paymentTypeEnum != PayMentTypeEnum.USDT_TRC20 && paymentTypeEnum != PayMentTypeEnum.USDT_ERC20)
+                return BadRequest($"Unsupported payment type: {paymentType}");
+
+            var paymentList = _payMentService.GetWhere(x => x.Type == paymentTypeEnum && x.Status == PayMentStatusEnum.Show && !x.IsDeleted);
             if (paymentList is not { Count: > 0 })
                 return Ok("No Tron USDT payment found");
 
-            var payGroupMent = _payGroupMentService.GetWhere(x => paymentList.Select(y => y.Id).Contains(x.PayMentId))?.GroupBy(x => x.GroupId).ToDictionary(x => x.Key, x => x.ToList());
+            var payGroupMent = _payGroupMentService.GetWhere(x => paymentList.Select(y => y.Id).Contains(x.PayMentId) && x.Status && !x.IsDeleted);
             if (payGroupMent is not { Count: > 0 })
                 return Ok("No payment methods found for this merchant");
 
-            var merchantList = _merchantService.GetWhere(x => payGroupMent.Keys.Contains(x.PayGroupId) && !x.IsDeleted);
+            var merchantList = _merchantService.GetWhere(x => payGroupMent.Select(y => y.GroupId).Contains(x.PayGroupId) && !x.IsDeleted);
             if (merchantList is not { Count: > 0 })
-                return NotFound($"No merchant not found");
+                return Ok($"No merchant not found");
 
-            var cryptoWalletTransactionDict = new ConcurrentDictionary<string, List<TronTokenTransactionDto>>();
-            await Parallel.ForEachAsync(paymentList.Select(x => x.CryptoWalletAddress).ToHashSet(), async (cryptoWalletAddress, ct) =>
+            var merchantPaymentList = (from pgm in payGroupMent
+                                       join pm in paymentList on pgm.PayMentId equals pm.Id
+                                       join mc in merchantList on pgm.GroupId equals mc.PayGroupId
+                                       group new { pm, mc } by new { mc.Id, mc.MerchantCode } into g
+                                       select new
+                                       {
+                                           Id = g.Key.Id,
+                                           Code = g.Key.MerchantCode,
+                                           Payments = g.Select(x => new
+                                           {
+                                               x.pm.Id,
+                                               x.pm.CryptoWalletAddress
+                                           }).ToList()
+                                       }).ToList();
+
+            var cryptoWalletTransactionDict = new ConcurrentDictionary<string, List<TokenTransactionDto>>();
+            await Parallel.ForEachAsync(merchantPaymentList.SelectMany(x => x.Payments.Select(y => y.CryptoWalletAddress)).ToHashSet(), async (cryptoWalletAddress, ct) =>
             {
                 try
                 {
-                    var transactions = await _tronCryptoHelper.GetTokenTransactionsByAddress(TronTokenTypeEnum.USDT, cryptoWalletAddress);
+                    var transactions = paymentTypeEnum switch
+                    {
+                        PayMentTypeEnum.USDT_TRC20 => await _tronCryptoHelper.GetTokenTransactionsByAddress(TronTokenTypeEnum.USDT, cryptoWalletAddress),
+                        PayMentTypeEnum.USDT_ERC20 => await _ethereumCryptoHelper.GetTokenTransactionsByAddress(TronTokenTypeEnum.USDT, cryptoWalletAddress),
+                        _ => throw new NotSupportedException($"Unsupported payment type: {paymentType}")
+                    };
 
                     cryptoWalletTransactionDict[cryptoWalletAddress] = transactions;
                 }
@@ -74,19 +100,19 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
             });
 
             var merchantNewPayOrderListDict = new ConcurrentDictionary<string, List<string>>();
-            await Parallel.ForEachAsync(merchantList, async (merchant, ct) =>
+            await Parallel.ForEachAsync(merchantPaymentList, async (merchant, ct) =>
             {
                 try
                 {
                     var newPayOrderDepositIdList = new List<string>();
 
-                    foreach (var payment in paymentList.Where(x => payGroupMent[merchant.PayGroupId].Select(y => y.PayMentId).Contains(x.Id)))
+                    foreach (var payment in merchant.Payments)
                     {
                         try
                         {
-                            var transactions = cryptoWalletTransactionDict[payment.CryptoWalletAddress];
+                            //var transactions = cryptoWalletTransactionDict[payment.CryptoWalletAddress];
 
-                            if (transactions is { Count: > 0 })
+                            if (cryptoWalletTransactionDict.ContainsKey(payment.CryptoWalletAddress) && cryptoWalletTransactionDict.GetValueOrDefault(payment.CryptoWalletAddress) is { Count: > 0 } transactions)
                             {
                                 foreach (var transaction in transactions)
                                 {
@@ -95,22 +121,22 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
 
                                     var payOrderDeposit = new PayOrderDepositsMongoEntity
                                     {
-                                        PayType = PayMentTypeEnum.USDT_TRC20.ToInt(),
+                                        PayType = paymentType.ToInt(),
                                         UserName = "",
                                         AccountNo = payment.CryptoWalletAddress,
                                         RefNo = transaction.Hash,
                                         Description = "",
                                         AvailableBalance = 0,
                                         PayMentId = payment.Id,
-                                        MerchantCode = merchant.MerchantCode,
+                                        MerchantCode = merchant.Code,
                                         MerchantId = merchant.Id,
-                                        TransactionTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Math.Round(transaction.BlockTimestamp / 1000d)).ToLocalTime(),
+                                        TransactionTime = transaction.Timestamp,
                                     };
 
                                     // Credit
-                                    if (transaction.Direction is TronTransferDirectionEnum.Outbound)
+                                    if (transaction.To == payment.CryptoWalletAddress)
                                     {
-                                        payOrderDeposit.CreditBank = transaction.Id;
+                                        payOrderDeposit.CreditBank = transaction.TokenName;
                                         payOrderDeposit.CreditAcctNo = transaction.From;
                                         payOrderDeposit.CreditAcctName = "";
                                         payOrderDeposit.CreditAmount = transaction.Amount;
@@ -120,9 +146,9 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
                                         newPayOrderDepositIdList.Add(newPayOrderDepositId);
                                     }
                                     // Debit
-                                    else if (transaction.Direction is TronTransferDirectionEnum.Inbound)
+                                    else if (transaction.From == payment.CryptoWalletAddress)
                                     {
-                                        payOrderDeposit.DebitBank = transaction.Id;
+                                        payOrderDeposit.DebitBank = transaction.TokenName;
                                         payOrderDeposit.DebitAcctNo = transaction.To;
                                         payOrderDeposit.DebitAcctName = "";
                                         payOrderDeposit.DebitAmount = transaction.Amount;
@@ -130,25 +156,20 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
 
                                         var newPayOrderDepositId = await _payOrderDepositsMongoService.AddAsync(payOrderDeposit);
                                     }
-                                    else
-                                    {
-                                        NlogLogger.Warn($"Skipped transaction due to unknown direction: {transaction.Direction}, payload: {JsonConvert.SerializeObject(transaction)}");
-                                        continue;
-                                    }
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            NlogLogger.Error($"Tron USDT 运行错误: {ex.Message}", ex);
+                            NlogLogger.Error($"{paymentType} 运行错误: {ex.Message}", ex);
                         }
                     }
 
-                    merchantNewPayOrderListDict[merchant.MerchantCode] = newPayOrderDepositIdList;
+                    merchantNewPayOrderListDict[merchant.Code] = newPayOrderDepositIdList;
                 }
                 catch (Exception ex)
                 {
-                    NlogLogger.Error($"Error processing merchant {merchant.MerchantCode}: {ex.Message}", ex);
+                    NlogLogger.Error($"Error processing merchant {merchant.Code}: {ex.Message}", ex);
                 }
             });
 
@@ -159,7 +180,7 @@ namespace Neptune.NsPay.Web.PayMonitorApi.Controllers
                     await _kafkaProducer.ProduceAsync(KafkaTopics.PayOrderCrypto, key, new PayOrderCryptoPublishDto
                     {
                         MerchantCode = key,
-                        PaymentType = PayMentTypeEnum.USDT_TRC20,
+                        PaymentType = paymentTypeEnum,
                         PayOrderDepositIds = value,
                     });
                 }

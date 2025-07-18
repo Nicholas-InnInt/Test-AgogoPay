@@ -17,7 +17,7 @@ namespace Neptune.NsPay.HttpExtensions.Crypto.Helpers
             _configuration = configuration;
         }
 
-        public async Task<List<TronTokenTransactionDto>> GetTokenTransactionsByAddress(TronTokenTypeEnum tokenType, string address)
+        public async Task<List<TokenTransactionDto>> GetTokenTransactionsByAddress(TronTokenTypeEnum tokenType, string address)
         {
             var baseUrl = _configuration.GetValue<string>("Crypto:Tron:ScannerUrl");
 
@@ -42,18 +42,15 @@ namespace Neptune.NsPay.HttpExtensions.Crypto.Helpers
             var response = await client.ExecuteGetAsync<TronAPIResponse<List<TronTokenDataResponse>>>(request);
             if (response.IsSuccessful && response.Data?.Data is { Count: > 0 } tokenDataList)
             {
-                return tokenDataList.Select(data => new TronTokenTransactionDto
+                return tokenDataList.Select(data => new TokenTransactionDto
                 {
+                    TokenName = data.TokenName,
                     Amount = decimal.Parse(data.Amount) / (decimal)Math.Pow(10, data.Decimals),
-                    Status = data.Status,
-                    BlockTimestamp = data.BlockTimestamp,
-                    Block = data.Block,
                     From = data.From,
                     To = data.To,
                     Hash = data.Hash,
-                    Confirmed = data.Confirmed,
-                    Id = data.Id,
-                    Direction = data.Direction,
+                    Status = data.Status,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds(data.BlockTimestamp).UtcDateTime,
                 }).ToList();
             }
 

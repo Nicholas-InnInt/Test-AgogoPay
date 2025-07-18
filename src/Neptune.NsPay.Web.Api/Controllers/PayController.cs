@@ -444,8 +444,7 @@ namespace Neptune.NsPay.Web.Api.Controllers
                     return toResponseError(StatusCodeType.ParameterError, "签名错误");
                 }
 
-                var payGroupId = merchant.PayGroupId;
-                if (payGroupId <= 0)
+                if (merchant.PayGroupId <= 0)
                 {
                     return toResponseError(StatusCodeType.ParameterError, "商户支付未配置");
                 }
@@ -454,8 +453,7 @@ namespace Neptune.NsPay.Web.Api.Controllers
 
                 #region 检查订单信息
 
-                var checkPayOrder = await _payOrdersMongoService.GetPayOrderByOrderNumber(merchant.MerchantCode, payRequest.OrderNo);
-                if (checkPayOrder != null)
+                if (await _payOrdersMongoService.GetPayOrderByOrderNumber(merchant.MerchantCode, payRequest.OrderNo) != null)
                 {
                     return toResponseError(StatusCodeType.ParameterError, "请不要重复提交订单");
                 }
@@ -465,12 +463,9 @@ namespace Neptune.NsPay.Web.Api.Controllers
                 #region 检查系统配置
 
                 var maxDepositAmount = _redisService.GetNsPaySystemSettingKeyValue(NsPaySystemSettingKeyConst.MaxDepositAmount);
-                if (maxDepositAmount != null && int.TryParse(maxDepositAmount, out var _value))
+                if (maxDepositAmount != null && int.TryParse(maxDepositAmount, out var _value) && payRequest.Money > _value)
                 {
-                    if (payRequest.Money > _value)
-                    {
-                        return toResponseError(StatusCodeType.ParameterError, "订单金额超过最大额度");
-                    }
+                    return toResponseError(StatusCodeType.ParameterError, "订单金额超过最大额度");
                 }
 
                 #endregion 检查系统配置
@@ -480,7 +475,7 @@ namespace Neptune.NsPay.Web.Api.Controllers
                 var paymentList = _redisService.GetPayGroupMentRedisValue(merchant.PayGroupId.ToString())?
                     .PayMents
                     .Where(r => r.UseStatus == true && r.ShowStatus == PayMentStatusEnum.Show)
-                    .Where(r => PayMentHelper.GetCryptoList.Contains(r.Type))
+                    .Where(r => r.Type == orderPayType)
                     .ToList();
                 if (paymentList is not { Count: > 0 })
                     return toResponseError(StatusCodeType.ParameterError, "商户支付未配置");
