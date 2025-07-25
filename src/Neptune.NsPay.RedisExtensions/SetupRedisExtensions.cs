@@ -1,27 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Neptune.NsPay.Commons;
 using NewLife.Redis.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Neptune.NsPay.RedisExtensions
 {
     public static class SetupRedisExtensions
     {
-        public static IConfiguration GetConfiguration()
-        {
-            return new ConfigurationBuilder()
-            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
-            .Build();
-        }
-
         public static IServiceCollection AddStackExchangeRedisExtensions(this IServiceCollection services)
         {
-            var config = GetConfiguration();
+            var config = AppSettings.Configuration;
             var rdStr = "";
             if (string.IsNullOrEmpty(config["RedisCache:Password"]))
             {
