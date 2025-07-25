@@ -119,8 +119,8 @@ src/Neptune.NsPay.Web.Host/wwwroot/Temp/Downloads
 src/Neptune.NsPay.Web.Mvc/wwwroot/Temp/Downloads
 src/Neptune.NsPay.Web.Mvc/Properties/PublishProfiles
 src/Neptune.NsPay.Web.Mvc/node_modules
-src/Neptune.NsPay.Web.Mvc/wwwroot/lib
 src/Neptune.NsPay.Web.Mvc/wwwroot/dist
+src/Neptune.NsPay.Web.Mvc/wwwroot/lib
 src/Neptune.NsPay.Web.Mvc/wwwroot/view-resources/Views/_Bundles
 src/Neptune.NsPay.Web.Mvc/wwwroot/view-resources/Areas/AppArea/Views/_Bundles
 src/Neptune.NsPay.Web.Mvc/wwwroot/view-resources/**/*.min.*
