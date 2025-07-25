@@ -1,29 +1,19 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MongoDB.Entities;
-using Neptune.NsPay.DataEvent;
-using Neptune.NsPay.MongoDbExtensions.Models;
+using Neptune.NsPay.Commons;
 
 namespace Neptune.NsPay.MongoDbExtensions
 {
     public static class SetupMongo
     {
-        public static IConfiguration GetConfiguration()
-        {
-            return new ConfigurationBuilder()
-            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
-            .Build();
-        }
         public static async void AddMongoSetup(this IServiceCollection services)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
-            var config = GetConfiguration();
+            var config = AppSettings.Configuration;
 
             var setting = MongoClientSettings.FromConnectionString(config["MongoDb:MongoDBConnection"]);
             setting.MaxConnectionPoolSize = 500;
