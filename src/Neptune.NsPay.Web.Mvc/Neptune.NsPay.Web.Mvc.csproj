@@ -37,8 +37,6 @@
 
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="wwwroot\lib\clipboard\clipboard.min.js" />
-    <None Include="wwwroot\metronic\assets\media\svg\shapes\tech.svg" />
     <None Include="wwwroot\Plugins\.gitkeep" />
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
